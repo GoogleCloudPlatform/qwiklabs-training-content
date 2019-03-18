@@ -1,0 +1,58 @@
+---
+:name: 'Big Data & ML Fundamentals Lab 3 : Setup Rentals Data in Cloud SQL v1.3'
+:description: "This lab has the following steps: \r\n\ 1. Create bucket & Stage .sql and .csv files into Cloud Storage. \r\n 2. Create Cloud SQL instance."
+:pass_percent: !ruby/object:BigDecimal 18:0.75e2
+:notify: false
+:score_completion_only: false
+:steps:
+- :title: Create bucket and stage .sql and csv files into Cloud Storage
+  :points: 5
+  :max: 60
+  :interval: 30
+  :multi_region: false
+  :api: GCP
+  :services:
+  - StorageV1
+  :method_name: step_one_check
+  :code:  |-
+    def step_one_check(handles, points)
+      storage = handles[:StorageV1]
+      ret_hash = { :done => false, :score => 0, :message => "" }
+      buckets = storage.list_buckets&.items || []
+      buckets.each do |bucket|
+        if bucket.name==storage.project
+          ret_hash[:score ] +=2
+          objects = storage.list_objects(bucket.name)&.items || []
+          if objects.count > 0
+            ret_hash[:score] += 3
+          end
+        end
+      end
+        if ret_hash[:score] == points
+        ret_hash = { :done => true, :score => points, :message => "Success: Create bucket & Stage .sql and .csv files into Cloud Storage" }
+        end
+      return ret_hash
+    end
+
+- :title: Create Cloud SQL Instance
+  :points: 5
+  :max: 60
+  :interval: 30
+  :multi_region: false
+  :api: GCP
+  :services:
+  - SqladminV1beta4
+  :method_name: step_two_check
+  :code:  |-
+    def step_two_check(handles, points)
+      sql = handles[:SqladminV1beta4]
+      ret_hash = { :done => false, :score => 0, :message => "" }
+      desired_instance = 'rentals'
+      instances =  sql.list_instances&. items || []
+      instances.each do |instance|
+        if instance.name.include?(desired_instance)
+          ret_hash = { :done => true, :score => points, :message => "Success: Create Cloud SQL instance" }
+        end
+      end
+      return ret_hash
+    end

@@ -1,0 +1,29 @@
+---
+schema_version: 1
+title: "[ML on GCP C7] Kubeflow End to End"
+description: In this hands-on lab, you will install Kubeflow on an empty Kubernetes
+  Engine cluster and use it to train and serve a sequence-to-sequence model using
+  TensorFlow, Keras, and SeldonIO.
+default_locale: en
+duration: 90
+max_duration: 120
+level: introductory
+tags:
+- ELIX2411
+credits: 0
+tagline:
+resources: []
+environment_resources:
+- type: gcp_user
+  id: user_0
+  permissions:
+  - project: project_0
+    roles:
+    - roles/owner
+    - roles/appengine.appAdmin
+    - roles/container.admin
+    - roles/container.clusterAdmin
+    - roles/storage.admin
+- type: gcp_project
+  id: project_0
+  fleet: gcpondemand

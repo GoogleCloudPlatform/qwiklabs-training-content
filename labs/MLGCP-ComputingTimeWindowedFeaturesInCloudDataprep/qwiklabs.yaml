@@ -1,0 +1,27 @@
+---
+schema_version: 1
+title: '[ML on GCP C4] Computing Time-Windowed Features in Cloud Dataprep'
+description: 'In this lab you will ingest, transform, and analyze a taxi cab dataset
+  using Google Cloud Dataprep. We will calculate key reporting metrics like the average
+  number of passengers picked up in the past hour. '
+default_locale: en
+duration: 90
+max_duration: 120
+level: fundamental
+tags: []
+credits: 0
+tagline:
+resources: []
+environment_resources:
+- type: gcp_user
+  id: user_0
+  permissions:
+  - project: project_0
+    roles:
+    - roles/editor
+    - roles/owner
+    - roles/appengine.appAdmin
+    - roles/bigquery.admin
+- type: gcp_project
+  id: project_0
+  fleet: gcpondemand

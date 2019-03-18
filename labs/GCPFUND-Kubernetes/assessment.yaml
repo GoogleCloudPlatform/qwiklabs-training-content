@@ -1,0 +1,82 @@
+---
+:name: 'GCP Fundamentals: Getting Started with Kubernetes Engine'
+:description: "1. Start a Kubernetes Engine cluster.\r\n2. Run and deploy a container.\r\n"
+:pass_percent: !ruby/object:BigDecimal 18:0.75e2
+:notify: false
+:score_completion_only: false
+:steps:
+- :title: Start a Kubernetes Engine cluster
+  :points: 5
+  :max: 35
+  :interval: 10
+  :multi_region: false
+  :api: GCP
+  :services:
+  - ContainerV1
+  :method_name: step_one_check
+  :code:  |-
+    def step_one_check(handles, points)
+      container = handles[:ContainerV1]
+      ret_hash = { :done => false, :score => 0, :message => "" }
+      desired_cluster = 'webfrontend'
+      desired_node_count = 2
+
+      clusters = container.list_zone_clusters &. clusters || []
+      clusters.each do |cluster|
+        if  cluster.name == desired_cluster &&  cluster.current_node_count == desired_node_count
+          ret_hash = { :done => true, :score => points, :message => "Success: Start a Kubernetes Engine cluster" }
+        end
+      end
+      return ret_hash
+    end
+- :title: Run and deploy a container
+  :points: 5
+  :max: 35
+  :interval: 10
+  :multi_region: false
+  :api: GCP
+  :services:
+  - Kubernetes
+  :method_name: step_two_check
+  :code:  |-
+    def step_two_check(handles, points)
+      gke = handles[:Kubernetes]
+      ret_hash = { :done => false, :score => 0, :message => "" }
+      desired_pod  = 'nginx'
+      desired_service = 'nginx'
+      desired_image = 'nginx'
+      desired_node = 'webfrontend'
+      desired_type = 'LoadBalancer'
+      desired_port = 80
+      checker = 0
+
+      gke.each do |cluster|
+        pods = cluster[:client].get_pods
+        pods.each do |pod|
+          if pod.metadata.name.include?(desired_pod) && pod.spec.nodeName.include?(desired_node)
+            pod.status.containerStatuses.each do |item|
+             if item.image.include?(desired_image)
+              services = cluster[:client].get_services
+                services.each do |service|
+                  if service.metadata.name == desired_service  && service.spec.type == desired_type
+                    ports_check = service.spec.ports || []
+                    ports_check.each do |item|
+                      if item.port == desired_port
+                        checker +=  1
+                      end
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+        if checker != 3
+          checker = 0
+        elsif checker == 3
+          ret_hash = { :done => true, :score => points, :message => "Success: Run and deploy a container" }
+          break
+        end
+      end
+      return ret_hash
+    end

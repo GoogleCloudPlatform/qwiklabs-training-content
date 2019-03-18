@@ -1,0 +1,234 @@
+<h1>Dataproc を使用したレコメンデーション機械学習モデルの構築</h1>
+<h2>概要</h2>
+<p>このラボでは、Dataproc を使用して、レコメンデーション（おすすめ）を行う機械学習モデルを構築します。</p>
+<h3>学習内容</h3>
+<p>このラボの内容:</p>
+<ul>
+<li>
+<p>Dataproc を起動する</p>
+</li>
+<li>
+<p>Dataproc を使用して SparkML ジョブを実行する</p>
+</li>
+</ul>
+<h2>はじめに</h2>
+<p>このラボでは、Dataproc を使用して、ユーザーの過去の評価に基づいてレコメンデーションを行う機械学習（ML）モデルのトレーニングを行います。その後トレーニングしたモデルを使用して、データベースに存在するすべてのユーザーに対するレコメンデーションのリストを作成します。</p>
+<p>このラボの内容:</p>
+<ul>
+<li>Dataproc を起動する</li>
+<li>PySpark で作成した ML モデルのトレーニングと適用を行い、商品のおすすめを作成する</li>
+<li>Cloud SQL で加えられた行について詳しく確認する</li>
+</ul>
+<fragment path="/fragments/startqwiklab"></fragment>
+<h2>設定</h2>
+<fragment path="/fragments/cloudshell"></fragment>
+<h2>タスク 1: アセットを作成する</h2>
+<p>コード リポジトリのクローンを作成し、GCP プロジェクトでストレージ バケットを作成していくつかのファイルのステージングを行います。前のラボで行ったものと同様の手順です。</p>
+<ol>
+<li>
+<p>Cloud Shell で次のコマンドを使用して、リポジトリのクローンを作成します。</p>
+<pre><code class="language-bash">git clone https://github.com/GoogleCloudPlatform/training-data-analyst
+</code></pre>
+<p>これにより、github からコードがダウンロードされます。</p>
+</li>
+<li>
+<p>このラボに対応するフォルダに移動します。</p>
+<pre><code class="language-bash">cd training-data-analyst/CPB100/lab3a
+</code></pre>
+</li>
+<li>
+<p>GCP Console の[ナビゲーション メニュー]（<img alt="mainmenu.png" src="img/mainmenu.png">）で、[Storage] をクリックします。</p>
+</li>
+<li>
+<p>[バケットを作成] をクリックします。</p>
+</li>
+<li>
+<p>[名前] に<strong>プロジェクト ID</strong> を入力し。[アクセス制御モデル] の下にある [オブジェクト レベルとバケットレベルの権限を設定] を選択し、[作成]をクリックします。[プロジェクト ID] を探すには、GCP Console のトップメニューでプロジェクトをクリックし、選択したプロジェクトの <strong>ID</strong> の値をコピーします。</p>
+</li>
+<li>
+<p>最後に、テーブル定義とデータファイルを Cloud Storage にステージングします。これにより、Cloud Shell で lab3a ディレクトリから次のように入力すると、Cloud SQL にインポートできるようになります。<code>&lt;BUCKET-NAME&gt;</code> は、先ほど作成したバケットの名前に置き換えてください。</p>
+<pre><code class="language-bash">gsutil cp cloudsql/* gs://&lt;BUCKET-NAME&gt;/sql/
+</code></pre>
+</li>
+<li>
+<p>GCP Console から [Storage] に移動してバケットを確認し、.sql ファイルと .csv ファイルが Cloud Storage に存在すること確認します。</p>
+</li>
+</ol>
+<h2>タスク 2: Cloud SQL インスタンスを作成する</h2>
+<p>Cloud SQL インスタンスを作成するには:</p>
+<ol>
+<li>
+<p>GCP Console の[ナビゲーション メニュー]（<img alt="mainmenu.png" src="img/mainmenu.png">）で、[ストレージ] セクションの [SQL] をクリックします。</p>
+</li>
+<li>
+<p>[インスタンスを作成] をクリックします。</p>
+</li>
+<li>
+<p>[MySQL を選択]。もし必要なら、[次へ] をクリックします。[MySQL の開発 の設定] <strong>又は</strong> [第 2 世代を選択] をクリックします。</p>
+</li>
+<li>
+<p>[インスタンス ID] に「rentals」と入力します。</p>
+<p><img src="img/ab1cdf08212ecadf.png" alt="ab1cdf08212ecadf.png"></p>
+</li>
+<li>
+<p>下にスクロールして root パスワードを指定します。忘れてしまわないように、このパスワードをメモしておきます（実生活ではパスワードのメモは危険ですので避けてください）。</p>
+</li>
+<li>
+<p>下にスクロールして、[接続性を設定する]をクリックします　又は　（もし必要なら）、[設定オプションを表示] をクリックします。[ネットワークの承認] をクリックし、[+ ネットワークを追加] をクリックします。</p>
+<p><img src="img/ad40ddbc1cfc0a81.png" alt="ad40ddbc1cfc0a81.png"></p>
+</li>
+<li>
+<p>Cloud Shell で <strong>lab3a</strong> ディレクトリにいることを確認し、次のように入力して自分の IP アドレスを検索します。</p>
+<pre><code class="language-bash">bash ./find_my_ip.sh
+</code></pre>
+</li>
+<li>
+<p>[新しいネットワーク] ダイアログでオプションの [名前] を入力します。また、[IP アドレス] には前のステップで確認したものを入力します。[完了] をクリックします。</p>
+<p><img src="img/54d82efbc516bceb.png" alt="54d82efbc516bceb.png"></p>
+<p><strong>注</strong>: 非アクティブになって Cloud Shell VM との接続が失われた場合は、Cloud SQL を使用する新しい Cloud Shell VM を再度認証する必要があります。lab3a にある <strong>authorize_cloudshell.sh</strong> というスクリプトを実行すると便利です。</p>
+</li>
+<li>
+<p>[作成] をクリックしてインスタンスを作成します。約 1 分で Cloud SQL インスタンスがプロビジョニングされます。</p>
+</li>
+<li>
+<p>ブラウザ ウィンドウで表示される Cloud SQL インスタンスの<strong>プライマリ IP アドレス</strong>をメモしておきます。</p>
+</li>
+</ol>
+<h2>タスク 3: テーブルを作成してデータを入れる</h2>
+<p>Cloud Storage からテーブル定義をインポートするには:</p>
+<ol>
+<li>
+<p><strong>rentals</strong> をクリックし、Cloud SQL インスタンスの詳細情報を表示します。</p>
+</li>
+<li>
+<p>[インポート] をクリックします。</p>
+</li>
+<li>
+<p>[参照] をクリックします。バケットのリストが表示されます。作成したバケットをクリックして「sql」に移動し、<strong>table_creation.sql</strong> &gt; [選択] をクリックします。</p>
+</li>
+<li>
+<p>[インポート] をクリックします。</p>
+</li>
+<aside class="warning"><p>
+<strong>注意</strong>: <code>.sql</code> 又は <code>.csv</code> ファイルをインポートするのに初回に失敗する場合は、再びお試しください。
+</p>
+</aside>
+<li>
+<p>次に、Cloud Storage から CSV ファイルをインポートするには、[インポート] をクリックします。</p>
+</li>
+<li>
+<p>[参照] をクリックして「sql」に移動し、<strong>accommodation.csv</strong> &gt; [選択] をクリックします。</p>
+</li>
+<li>
+<p>ダイアログの残りには次のように入力します。</p>
+<p>[データベース] で <strong>recommendation_spark</strong> を選択します。</p>
+<p>[テーブル] に「<strong>Accommodation</strong>」と入力します。</p>
+<p><img src="img/c899adb7fdb39f17.png" alt="c899adb7fdb39f17.png"></p>
+</li>
+<li>
+<p>[インポート] をクリックします。</p>
+</li>
+<li>
+<p><strong>rating.csv</strong> を対象にインポート処理（ステップ 5～8）をもう一度行います。ただし、[テーブル] に「Rating」と入力します。</p>
+</li>
+</ol>
+<h2>タスク 4: Dataproc を起動する</h2>
+<p>Dataproc を起動して、クラスタ内のマシンそれぞれが Cloud SQL にアクセスできるように構成する手順は次のとおりです。</p>
+<ol>
+<li>
+<p>GCP Console の[ナビゲーション メニュー]（<img alt="mainmenu.png" src="img/mainmenu.png">）で [SQL] をクリックし、Cloud SQL インスタンスのリージョンをメモします。</p>
+<p><img src="img/fc8f254ae64a75b4.png" alt="fc8f254ae64a75b4.png"></p>
+<p>上の画面では、リージョンが <code>us-central1</code> になっています。</p>
+</li>
+<li>
+<p>GCP Console の[ナビゲーション メニュー]（<img alt="mainmenu.png" src="img/mainmenu.png">）で [Dataproc] をクリックします。プロンプトが表示されたら、[API を有効にする] をクリックします。有効になったら、[クラスタを作成] をクリックします。</p>
+</li>
+<li>
+<p>Regionはglobalとしてそのままにします、Cloud SQL インスタンスと同じリージョンになるようゾーンを変更します。これでクラスタとデータベース間のネットワーク レイテンシを最小限に抑えることができます。</p>
+</li>
+<li>
+<p>[マスターノード] の [マシンタイプ] で、[2 つの vCPU（n1-standard-2）] を選択します。</p>
+</li>
+<li>
+<p>[ワーカーノード] の [マシンタイプ] で、[2 つの vCPU（n1-standard-2）] を選択します。</p>
+</li>
+<li>
+<p>他の値はすべてデフォルトのままにし、[作成] をクリックします。1～2 分でクラスタのプロビジョニングが終了します。</p>
+</li>
+<li>
+<p>クラスタの<strong>名前</strong>、<strong>ゾーン</strong>、<strong>ワーカーノード総数</strong>をメモします。</p>
+</li>
+<li>
+<p>Cloud Shell でこのラボのフォルダに移動し、すべての Dataproc ノードから Cloud SQL インスタンスにアクセスできるよう認証します。<code>&lt;Cluster-Name&gt;</code>、<code>&lt;Zone&gt;</code>、<code>&lt;Total-Worker-Nodes&gt;</code> は、前のステップでメモした値に置き換えてください。</p>
+<pre><code class="language-bash">cd ~/training-data-analyst/CPB100/lab3b
+bash authorize_dataproc.sh &lt;Cluster-Name&gt; &lt;Zone&gt; &lt;Total-Worker-Nodes&gt;
+</code></pre>
+<p>プロンプトが表示されたら、「Y」と入力し、<strong>Enter</strong> キーを押して続行します。</p>
+</li>
+</ol>
+<h2>タスク 5: ML モデルを実行する</h2>
+<p>次の手順でトレーニングを行ったモデルを作成し、システム内のすべてのユーザーに適用します。</p>
+<ol>
+<li>
+<p><code>nano</code> を使用して、モデル トレーニング ファイルを編集します。</p>
+<pre><code class="language-bash">nano sparkml/train_and_apply.py
+</code></pre>
+</li>
+<li>
+<p>ファイルの先頭に #CHANGE とマークされたいくつかのフィールド（下矢印キーを使用して下にスクロールできます）を Cloud SQL の設定（上述）に合わせて変更し、<strong>Ctrl+O</strong>、<strong>Enter</strong> キーの順に押してファイルを保存、<strong>Ctrl+X</strong> キーを押してファイルを閉じます。</p>
+</li>
+<li>
+<p>次のコマンドを使用して、このファイルを Cloud Storage バケットにコピーします。</p>
+<pre><code class="language-bash">gsutil cp sparkml/tr*.py gs://&lt;bucket-name&gt;/
+</code></pre>
+</li>
+<li>
+<p><strong>Dataproc</strong> コンソールで [ジョブ] をクリックします。</p>
+<p><img src="img/8508ce301ff584c3.png" alt="8508ce301ff584c3.png"></p>
+</li>
+<li>
+<p>[ジョブを送信] をクリックします。</p>
+</li>
+<li>
+<p>[ジョブタイプ] で [PySpark] を選択し、[メインの Python ファイル] では、バケットにアップロードした Python ファイルの場所を指定します。</p>
+<p><img src="img/e15bafe2c29956b5.png" alt="e15bafe2c29956b5.png"></p>
+<p><code>gs://&lt;bucket-name&gt;/train_and_apply.py</code></p>
+</li>
+<li>
+<p>[送信] をクリックして、ジョブのステータスが [<code>実行中</code>] から [<code>完了</code>] に変わるまで（最大 5 分）待機します。</p>
+<p><img src="img/af55e2a91617b1d5.png" alt="af55e2a91617b1d5.png"></p>
+<p>ジョブが [<code>失敗</code>] した場合は、ログを使用してトラブルシューティングし、エラーを修正してください。変更した Python ファイルを Cloud Storage に再度アップロードし、失敗したジョブのクローンを作成して再度送信する必要があることもあります。</p>
+</li>
+</ol>
+<h2>タスク 6: 挿入された行を確認する</h2>
+<ol>
+<li>
+<p>GCP Console の[ナビゲーション メニュー]（<img alt="mainmenu.png" src="img/mainmenu.png">）で、[ストレージ] セクションの [SQL] をクリックします。</p>
+</li>
+<li>
+<p><strong>rentals</strong> をクリックし、Cloud SQL インスタンスに関連する詳細情報を表示します。</p>
+</li>
+<li>
+<p>[このインスタンスに接続] セクションで [Cloud Shell を使用して接続] をクリックします。これにより、新しい Cloudshell タブが開始されます。Cloudshell タブで <strong>Enter</strong> キーを押します。</p>
+<p>受信接続用の IP がホワイトリストに登録されるまで、数分かかることがあります。</p>
+</li>
+<li>
+<p>プロンプトが表示されたら、構成した root パスワードを入力して <strong>Enter</strong> キーを押します。</p>
+</li>
+<li>
+<p>mysql プロンプトで、次のコマンドを入力します。</p>
+<pre><code class="language-bash">use recommendation_spark;
+</code></pre>
+<p>これで mysql セッションにデータベースが設定されます。</p>
+</li>
+<li>
+<p>特定のユーザー向けのレコメンデーションを探してみます。</p>
+<pre><code class="language-bash">select r.userid, r.accoid, r.prediction, a.title, a.location, a.price, a.rooms, a.rating, a.type from Recommendation as r, Accommodation as a where r.accoid = a.id and r.userid = 10;
+</code></pre>
+<p>このユーザーにおすすめの宿泊施設は上記の 5 つです。今回はデータセットが非常に小さいため、レコメンデーションの質があまり良くはありません（予測評価があまり高くありません）が、商品のレコメンデーションを作成するプロセスは以上で学習できました。</p>
+</li>
+</ol>
+<fragment path="/fragments/endqwiklab"></fragment>
+<h5>マニュアルの最終更新日: 2019 年 2 月 25 日</h5>
+<h5>ラボの最終テスト日: 2019 年 2 月 25 日</h5>
+<fragment path="/fragments/copyright"></fragment>

@@ -1,0 +1,64 @@
+<h1>Cómo realizar AA con TensorFlow</h1>
+<h2>Descripción general</h2>
+<p>En este lab, continuaremos con el notebook de Datalab del lab anterior para crear una red neuronal de TensorFlow capaz de predecir la demanda de taxis en una ciudad.</p>
+<h3><strong>Qué aprenderá</strong></h3>
+<p>En este lab, aprenderá lo siguiente:</p>
+<p>Cómo usar TensorFlow para crear un modelo de red neuronal capaz de predecir la demanda de taxis en Nueva York</p>
+<h2>Introducción</h2>
+<p>En este lab, continuará creando un sistema de previsión de la demanda mediante aprendizaje automático. En el lab anterior, creó un conjunto de datos de entrenamiento con los factores que afectan la demanda de taxis (“atributos de entrada”) y la demanda real que hubo (el “objetivo”) durante un período anterior compuesto de varios días. En este lab, usará estos datos para entrenar una red neuronal de TensorFlow capaz de predecir la demanda diaria en el futuro a partir de esos atributos de entrada.</p>
+<h2>Configuración</h2>
+<fragment path="/fragments/cloudshell"></fragment>
+<h2>Tarea 1: Inicie Cloud Datalab</h2>
+<p>Siga estos pasos para iniciar Cloud Datalab:</p>
+<ol>
+<li>En <strong>Cloud Shell</strong>, ingrese lo siguiente:</li>
+</ol>
+<pre><code>datalab create bdmlvm --zone us-central1-a
+</code></pre>
+<p>Datalab tardará unos 5 minutos en iniciarse.</p>
+<p><code><strong>Nota</strong>: Recuerde seguir las indicaciones durante el proceso.</code></p>
+<h2>Tarea 2: Registre el notebook en Cloud Datalab</h2>
+<p>Si es necesario, espere hasta que Datalab termine de iniciarse. Estará listo cuando vea un mensaje que le sugiera usar una “Web Preview”.</p>
+<ol>
+<li>
+<p>Haga clic en el ícono de <strong>Vista Previa Web</strong>, ubicado en la esquina superior derecha de la cinta de Cloud Shell. Haga clic en <strong>Cambiar puerto</strong>. Cambie al puerto <strong>8081</strong> con el cuadro de diálogo <strong>Cambiar Puerto de Vista Previa</strong> y, luego, haga clic en <strong>Cambiar Y Obtener Vista Previa</strong>.</p>
+<p><img src="img/ChangePort.png" alt="ChangePort.png"></p>
+<p><img src="img/ChangePreviewPort.png" alt="ChangePreviewPort.png"></p>
+<p><strong>Nota</strong>: La conexión a su instancia de Datalab se mantiene abierta mientras permanezca activo el comando datalab. Si se cierra o interrumpe la instancia de Cloud Shell utilizada para ejecutar el comando datalab, perderá la conexión con su VM de Cloud Datalab. Si esto ocurre, tal vez pueda restablecer la conexión mediante el comando <code>datalab connect bdmlvm</code> en una nueva instancia de Cloud Shell.</p>
+</li>
+<li>
+<p>En <strong>Datalab</strong>, haga clic en el ícono <strong>Open ungit</strong> ubicado en la esquina superior derecha.</p>
+<p><img src="img/fc5c4f63c40f83f.png" alt="fc5c4f63c40f83f.png"></p>
+</li>
+<li>
+<p>En la ventana de Ungit, seleccione el texto que dice <strong>/content/datalab/notebooks</strong>, quite la palabra <strong>notebooks</strong> para que quede <strong>/content/datalab</strong> y presione la tecla <strong>Enter</strong>.</p>
+<p><img src="img/dbeb32393b0874e4.png" alt="dbeb32393b0874e4.png"></p>
+</li>
+<li>
+<p>En el panel que aparecerá, escriba lo siguiente para indicar el repositorio de GitHub que <strong>Clone from</strong>:</p>
+<pre><code class="language-bash">https://github.com/GoogleCloudPlatform/training-data-analyst
+</code></pre>
+</li>
+<li>
+<p>Haga clic en <strong>Clone repository</strong>.</p>
+</li>
+</ol>
+<h2>Tarea 3: Abra un notebook de Datalab</h2>
+<ol>
+<li>
+<p>En el navegador de Datalab, vaya a <strong>training-data-analyst &gt; CPB100 &gt; lab4a &gt; demandforecast.ipynb</strong>.</p>
+</li>
+<li>
+<p>Igual que en el lab anterior, ejecute todas las celdas del notebook hasta llegar a la sección <strong>Machine Learning with Tensorflow</strong>.</p>
+</li>
+<li>
+<p>Siga ejecutando las celdas restantes.</p>
+</li>
+<li>
+<p>Lea los comentarios y haga clic en <strong>Clear | Clear all cells</strong>. Luego, ejecute los fragmentos de Python en la celda, paso a paso (use <strong>Shift+Enter</strong> para ejecutar cada parte del código).</p>
+</li>
+</ol>
+<fragment path="/fragments/endqwiklab"></fragment>
+<p>Última actualización del manual: 10 de octubre de 2018</p>
+<p>Prueba más reciente del lab: 10 de octubre de 2018</p>
+<fragment path="/fragments/copyright"></fragment>

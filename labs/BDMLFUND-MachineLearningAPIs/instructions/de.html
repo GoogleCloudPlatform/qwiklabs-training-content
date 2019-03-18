@@ -1,0 +1,95 @@
+<h1>APIs für maschinelles Lernen aufrufen</h1>
+<h2>Übersicht</h2>
+<p>In diesem Lab nutzen Sie APIs für maschinelles Lernen in Datalab.</p>
+<h3><strong>Lerninhalte</strong></h3>
+<p>In diesem Lab lernen Sie, wie Sie mit Python APIs für maschinelles Lernen aufrufen und deren Ergebnisse verwenden.</p>
+<h2>Einführung</h2>
+<p>In diesem Lab rufen Sie die folgenden APIs für maschinelles Lernen aus Datalab auf, um bestimmte Aufgaben auszuführen:</p>
+<ul>
+<li>
+<p>Vision API zur Erkennung von Text in einem Bild</p>
+</li>
+<li>
+<p>Translate API zum Übersetzen des Texts ins Englische</p>
+</li>
+<li>
+<p>Natural Language API für die Sentimentanalyse einiger berühmter Zitate</p>
+</li>
+<li>
+<p>Speech API für das Transkribieren einer Audiodatei</p>
+</li>
+</ul>
+<h2>Einrichtung</h2>
+<fragment path="/fragments/cloudshell"></fragment>
+<h2>Aufgabe 1: Cloud Datalab starten</h2>
+<p>So starten Sie Cloud Datalab:</p>
+<ol>
+<li>
+<p>Geben Sie Folgendes in Cloud Shell ein:</p>
+</li>
+</ol>
+<pre><code class="language-bash">datalab create bdmlvm --zone us-central1-a
+</code></pre>
+<p>Das Starten von Datalab dauert etwa 5 Minuten.</p>
+<p><code>Hinweis: Folgen Sie bei diesem Vorgang den Eingabeaufforderungen.</code></p>
+<h2>Aufgabe 2: Notebook in Cloud Datalab auschecken</h2>
+<p>Warten Sie gegebenenfalls, bis Datalab hochgefahren ist. Datalab ist bereit, wenn eine Meldung angezeigt wird, die Sie zu einer Webvorschau auffordert.</p>
+<ol>
+<li>
+<p>Klicken Sie oben rechts in der Cloud Shell-Seitenleiste auf das Symbol <strong>Webvorschau</strong>. Klicken Sie auf <strong>Port ändern</strong>. Ändern Sie den Port über das Dialogfeld <strong>Vorschauport ändern</strong> in <strong>8081</strong> und klicken Sie dann auf <strong>Ändern und Vorschau</strong>.</p>
+<p><img src="img/ChangePort.png" alt="ChangePort.png"></p>
+<p><img src="img/ChangePreviewPort.png" alt="ChangePreviewPort.png"></p>
+<p>Hinweis: Die Verbindung zur Datalab-Instanz bleibt so lange bestehen, wie der Befehl "datalab" aktiv ist. Wenn die zum Ausführen des Befehls "datalab" verwendete Cloud Shell-Anwendung geschlossen oder unterbrochen wurde, wird die Verbindung zu Ihrer Cloud Datalab-VM beendet. In diesem Fall können Sie die Verbindung in einer neuen Cloud Shell-Anwendung mit dem Befehl <code>datalab connect bdmlvm</code> wiederherstellen.</p>
+</li>
+<li>
+<p>Klicken Sie in <strong>Datalab</strong> auf der oberen rechten Seitenleiste auf das Symbol <strong>Open ungit</strong>.</p>
+<p><img src="img/fc5c4f63c40f83f.png" alt="fc5c4f63c40f83f.png"></p>
+</li>
+<li>
+<p>Markieren Sie im Ungit-Fenster den Text <strong>/content/datalab/notebooks</strong> und löschen Sie <strong>notebooks</strong>, sodass dort nur noch <strong>/content/datalab</strong> steht. Drücken Sie anschließend die <strong>Enter</strong>.</p>
+<p><img src="img/dbeb32393b0874e4.png" alt="dbeb32393b0874e4.png"></p>
+</li>
+<li>
+<p>Geben Sie im neu angezeigten Feld als GitHub-Repository für den <strong>Clone from</strong> Folgendes ein:</p>
+<pre><code class="language-bash">https://github.com/GoogleCloudPlatform/training-data-analyst
+</code></pre>
+</li>
+<li>
+<p>Klicken Sie auf <strong>Clone repository</strong>.</p>
+</li>
+</ol>
+<h2>Aufgabe 3: API-Schlüssel abrufen</h2>
+<p>So rufen Sie einen API-Schlüssel ab:</p>
+<ol>
+<li>
+<p>Klicken Sie in der GCP Console im <strong>Navigationsmenü</strong> (<img alt="8ab244f9cffa6198.png" src="img/mainmenu.png">) auf <strong>APIs &amp; Dienste</strong> und dann auf <strong>Bibliothek</strong>.</p>
+</li>
+<li>
+<p>Geben Sie im Suchfeld den Begriff <strong>vision</strong> ein, um die <strong>Cloud Vision API</strong> von Google zu finden. Klicken Sie dann auf den Hyperlink.</p>
+</li>
+<li>
+<p>Klicken Sie bei Bedarf auf <strong>Aktivieren</strong>.</p>
+</li>
+<li>
+<p>Aktivieren Sie anschließend auf die gleiche Weise die <strong>Cloud Translation API</strong>, die <strong>Cloud Speech API</strong> und die <strong>Cloud Natural Language API</strong> von Google.</p>
+</li>
+<li>
+<p>Wählen Sie im Menü der GCP Console <strong>APIs &amp; Dienste</strong> und dann <strong>Anmeldedaten</strong> aus.</p>
+</li>
+<li>
+<p>Falls Sie noch keinen API-Schlüssel haben, klicken Sie auf die Schaltfläche <strong>Anmeldedaten erstellen</strong> und wählen Sie <strong>API-Schlüssel</strong> aus. Kopieren Sie den neu erstellten API-Schlüssel und klicken Sie dann auf <strong>Schließen</strong>. Diesen API-Schlüssel benötigen Sie später im Notebook.</p>
+</li>
+</ol>
+<h2>Aufgabe 4: APIs für maschinelles Lernen in Datalab aufrufen</h2>
+<ol>
+<li>
+<p>Kehren Sie zum Datalab-Browser zurück und rufen Sie <strong>training-data-analyst &gt; CPB100 &gt; lab4c &gt; mlapis.ipynb</strong> auf.</p>
+</li>
+<li>
+<p>Lesen Sie die Bemerkungen. Klicken Sie dann auf <strong>Clear | Clear all Cells</strong> und führen Sie Schritt für Schritt die Python-Snippets in den Zellen aus. Verwenden Sie die Tastenkombination <strong>Shift + Enter</strong>, um alle Teile des Codes auszuführen. Fügen Sie Ihren API-Schlüssel in die erste Python-Zelle ein.</p>
+</li>
+</ol>
+<fragment path="/fragments/endqwiklab"></fragment>
+<h5>Handbuch zuletzt aktualisiert am 10. Oktober 2018</h5>
+<h5>Lab zuletzt getestet am 10. Oktober 2018</h5>
+<fragment path="/fragments/copyright"></fragment>

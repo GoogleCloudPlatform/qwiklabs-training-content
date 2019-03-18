@@ -1,0 +1,67 @@
+---
+:name: 'Big Data & ML Fundamentals Lab 5: Create ML Dataset with BigQuery v1.3'
+:description: "1. Launch Cloud Datalab.\r\n2. Checkout notebook into Cloud Datalab."
+:pass_percent: !ruby/object:BigDecimal 18:0.75e2
+:notify: false
+:score_completion_only: false
+:steps:
+- :title: Launch Cloud Datalab
+  :points: 5
+  :max: 90
+  :interval: 30
+  :multi_region: false
+  :api: GCP
+  :services:
+  - ComputeV1
+  :method_name: step_one_check
+  :code: "def step_one_check(handles, points)\r\n  compute = handles[:ComputeV1]\r\n
+    \ ret_hash = { :done => false, :score => 0, :message => \"\" }\r\n  desired_network_name
+    = 'datalab-network'\r\n  firewall_protocol = 'tcp'\r\n  port = '22'\r\n  desired_instance
+    = 'bdmlvm'\r\n  desired_tag = 'datalab'\r\n  desired_disk = 'datalab-pd'\r\n  avail_network
+    = false\r\n  avail_firewall = false\r\n  avail_instance_network = false\r\n  avail_tag
+    = false\r\n  avail_disk = false\r\n  avail_instance = false\r\n  networks = compute.list_networks
+    &. items || []\r\n  networks.each do |network|\r\n    if network.name == desired_network_name
+    && network.auto_create_subnetworks\r\n      avail_network = true\r\n    end\r\n
+    \ end\r\n  firewalls = compute.list_firewalls&.items || []\r\n  firewalls.each
+    do |firewall|\r\n    if network_name = URI(firewall.network).path.split('/').last
+    == desired_network_name\r\n      avail_firewall = true\r\n    end\r\n  end\r\n
+    \ \r\n  instances = compute.list_instances &.items || []\r\n  instances.each do
+    |instance|\r\n    if instance.name.include?(desired_instance)\r\n      if instance.network_interfaces
+    && instance.tags.items\r\n        instance.network_interfaces.each do |item|\r\n
+    \         if URI(item.network).path.split('/').last == desired_network_name\r\n
+    \           avail_instance_network =  true\r\n          end\r\n        end\r\n
+    \       instance.tags.items.each do |tag|\r\n          if tag == desired_tag\r\n
+    \           avail_tag = true\r\n          end\r\n        end\r\n        instance.disks.each
+    do |disk|\r\n          if disk.device_name == desired_disk\r\n            avail_disk
+    = true\r\n          end\r\n        end\r\n      end\r\n    end\r\n    if avail_instance_network
+    && avail_tag && avail_disk\r\n      avail_instance = true\r\n      break\r\n    else\r\n
+    \     avail_tag = avail_tag = avail_instance_network = false\r\n    end\r\n  end\r\n
+    \ \r\n  if avail_network\r\n    ret_hash[:score] += 1\r\n  end\r\n   if avail_firewall\r\n
+    \   ret_hash[:score] += 1\r\n  end\r\n   if avail_instance\r\n    ret_hash[:score]
+    += 3\r\n  end\r\n  if avail_network && avail_firewall && avail_instance\r\n    ret_hash
+    = { :done => true, :score => points, :message => \"Success: Create a Datalab\"
+    }\r\n  end\r\n  return ret_hash\r\nend"
+- :title: Checkout notebook into Cloud Datalab
+  :points: 5
+  :max: 90
+  :interval: 30
+  :multi_region: false
+  :api: GCP
+  :services:
+  - ComputeV1
+  - SSH
+  :method_name: step_two_check
+  :code: "def step_two_check(handles, points)\r\n  compute = handles[:ComputeV1]\r\n
+    \ ssh = handles[:SSH]\r\n  ssh_cmd = 'docker container exec datalab /bin/sh -c
+    \"find . -name \"' + '*mlapis.ipynb'\r\n  desired_folder = 'content/datalab/training-data-analyst/'\r\n
+    \ ret_hash = { :done => false, :score => 0, :message => \"\" }\r\n  desired_instance
+    = 'bdmlvm'\r\n  avail_folder = false\r\n  instances = compute.list_instances &.items
+    || []\r\n  instances.each do |instance|\r\n    if instance.name.include?(desired_instance)\r\n
+    \     if instance.network_interfaces && instance.tags.items\r\n        instance.network_interfaces.each
+    do |item|\r\n          item.access_configs.each do |config|\r\n            nat_ip
+    = config.nat_ip\r\n            result = ssh.ssh_exec nat_ip, ssh_cmd\r\n            if
+    result.include?(desired_folder)\r\n              avail_folder = true\r\n            end\r\n
+    \         end\r\n        end\r\n      end\r\n    end\r\n    if avail_folder\r\n
+    \     break\r\n    end\r\n  end\r\n\r\n  if avail_folder\r\n    ret_hash = { :done
+    => true, :score => points, :message => \"Success: Checkout notebook into Cloud
+    Datalab\" }\r\n  end\r\n  return ret_hash\r\nend"

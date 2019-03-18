@@ -1,0 +1,70 @@
+---
+:name: 'Big Data & ML Fundamentals Lab 1 : Create a Compute Engine Instance v1.3'
+:description: "This lab has the following steps: \r\n\ 1. Create Compute Engine instance with the necessary API access. \r\n\ 2. Install software."
+:pass_percent: !ruby/object:BigDecimal 18:0.75e2
+:notify: false
+:score_completion_only: false
+:steps:
+- :title: Create Compute Engine instance with the necessary API access
+  :points: 5
+  :max: 60
+  :interval: 30
+  :multi_region: false
+  :api: GCP
+  :services:
+  - ComputeV1
+  :method_name: step_one_check
+  :code:  |-
+    def step_one_check(handles, points)
+      compute = handles[:ComputeV1]
+      ret_hash = { :done => false, :score => 0, :message => "" }
+      desired_instance = 'instance'
+      desired_scope = 'https://www.googleapis.com/auth/cloud-platform'
+      instances = compute.list_instances&.items || []
+      instances.each do |instance|
+        if instance.name.include?(desired_instance)
+          ret_hash[:score] += 2
+          if instance.service_accounts[0].scopes.include?(desired_scope)
+            ret_hash[:score] += 3
+          end
+        end
+      end
+      if ret_hash[:score] == points
+        ret_hash = { :done => true, :score => points, :message => "Success: Create Compute Engine instance with the necessary API access" }
+        return ret_hash
+      end
+      return ret_hash
+    end
+
+- :title: Install software
+  :points: 5
+  :max: 60
+  :interval: 30
+  :multi_region: false
+  :api: GCP
+  :services:
+  - ComputeV1
+  - SSH
+  :method_name: step_two_check
+  :code:  |-
+    def step_two_check(handles, points)
+      compute = handles[:ComputeV1]
+      ssh = handles[:SSH]
+      ssh_cmd = 'git --version'
+      desired_output = 'git version'
+      ret_hash = { :done => false, :score => 0, :message => "" }
+      instances = compute.list_instances&.items || []
+      instances.each do |instance|
+        network_interface = instance.network_interfaces
+        nat_ip = network_interface[0].access_configs[0].nat_ip
+        result = ssh.ssh_exec nat_ip, ssh_cmd
+        if result.include?(desired_output)
+          ret_hash[:score] += 5
+        end
+      end
+      if ret_hash[:score] == points
+        ret_hash = { :done => true, :score => points, :message => "Success: Install software" }
+        return ret_hash
+      end
+      return ret_hash
+    end

@@ -1,0 +1,4 @@
+description: Neste laboratório, você usará o BigQuery no Datalab para criar um DataFrame
+  do Pandas que servirá como dados de treinamento para prever a demanda de táxis.
+title: 'Princípios básicos de Big Data e Machine Learning Laboratório 5: criar conjunto
+  de dados de ML com o BigQuery v1.3'

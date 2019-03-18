@@ -1,0 +1,28 @@
+---
+schema_version: 1
+title: 'GCP Fundamentals: Getting Started with App Engine'
+description: In this lab, you create a simple App Engine application using the Cloud
+  Shell local development environment, and then deploy it to App Engine.
+default_locale: en
+duration: 20
+max_duration: 20
+level: introductory
+tags: []
+credits: 0
+tagline:
+resources: []
+environment_resources:
+- type: gcp_user
+  id: user_0
+  permissions:
+  - project: project_0
+    roles:
+    - roles/editor
+    - roles/appengine.appAdmin
+    - roles/bigquery.admin
+    - roles/owner
+- type: gcp_project
+  id: project_0
+  dm_script: minimal-qwiklabs-dm.zip
+assessment: assessment.yaml
+lab_test_script: test_script.yaml

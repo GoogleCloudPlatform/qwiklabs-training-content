@@ -1,0 +1,90 @@
+---
+:name: 'GCP Fundamentals: Getting Started with Compute Engine'
+:description: "1. Create a virtual machine using the GCP Console.\r\n2. Create a virtual
+  machine using the gcloud command line.\r\n"
+:pass_percent: !ruby/object:BigDecimal 18:0.75e2
+:notify: false
+:score_completion_only: false
+:steps:
+- :title: Create a virtual machine using the GCP Console
+  :points: 5
+  :max: 25
+  :interval: 10
+  :multi_region: false
+  :api: GCP
+  :services:
+  - ComputeV1
+  :method_name: step_one_check
+  :code:  |-
+    def step_one_check(handles, points)
+      compute = handles[:ComputeV1]
+      ret_hash = { :done => false, :score => 0, :message => "" }
+      desired_instance = 'my-vm-1'
+      desired_tag = 'http-server'
+      desired_disk = 'debian-9-stretch'
+
+      instances = compute.list_instances &. items || []
+      instances.each do |instance|
+        if instance.name.strip == desired_instance
+          if instance.tags.items.include?(desired_tag)
+            instance.disks.each do |disk|
+              disk.licenses.each do |license|
+                if license.include?(desired_disk)
+                  ret_hash = { :done => true, :score => points, :message => "Success: Create a virtual machine using the GCP Console" }
+                end
+              end
+            end
+          end
+        end
+      end
+      return ret_hash
+    end
+- :title: Create a virtual machine using the gcloud command line
+  :points: 5
+  :max: 25
+  :interval: 10
+  :multi_region: false
+  :api: GCP
+  :services:
+  - ComputeV1
+  :method_name: step_two_check
+  :code:  |-
+    def step_two_check(handles, points)
+      compute = handles[:ComputeV1]
+      ret_hash = { :done => false, :score => 0, :message => "" }
+      project = compute.project
+      desired_instance = 'my-vm-2'
+      desired_project = 'debian-cloud'
+      desired_disk = 'debian-9-stretch'
+      desired_machine_type = 'n1-standard-1'
+      desired_subnetwork = 'default'
+      zones = ['us-central1-b', 'us-central1-c', 'us-central1-f']
+
+      zones.each do |zone|
+        instances = compute.list_instances(project, zone, freeze_args:true) &. items || []
+        instances.each do |instance|
+          if instance.name.strip == desired_instance
+            if instance.machine_type.include?(desired_machine_type)
+              instance.network_interfaces.each do |network|
+                if network.subnetwork.include?(desired_subnetwork)
+                  ret_hash[:score] += 3
+                end
+              end
+              instance.disks.each do |disk|
+                disk.licenses.each do |license|
+                  if license.include?(desired_project) && license.include?(desired_project)
+                    ret_hash[:score] += 2
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+
+      if ret_hash[:score] == points
+        ret_hash = { :done => true, :score => points, :message => "Success: Create a virtual machine using the gcloud command line " }
+      end
+
+      return ret_hash
+    end

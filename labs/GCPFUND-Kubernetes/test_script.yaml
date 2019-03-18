@@ -1,0 +1,19 @@
+name: GCP Fundamentals - Getting Started with Kubernetes Engine - Test
+description: "The script creates the Kubernetes Engine, deploys and manages Docker containers using kubectl."
+deployment_manager_time: 500
+run_regularly: true
+failure_alerts_only: true
+subscribers:
+ - training-qa-testers@google.com
+ - jrambo@google.com
+steps:
+ - command: |
+    sudo apt-get install kubectl
+    # Enable the required APIs
+    gcloud -q services enable compute.googleapis.com container.googleapis.com containerregistry.googleapis.com
+    # Start a Kubernetes Engine cluster
+    gcloud container clusters create webfrontend --zone $ZONE --num-nodes 2
+    # Run and deploy a container
+    kubectl run nginx --image=nginx:1.10.0
+    kubectl expose deployment nginx --port 80 --type LoadBalancer
+    kubectl scale deployment nginx --replicas 3

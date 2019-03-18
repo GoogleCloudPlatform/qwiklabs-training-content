@@ -1,0 +1,5 @@
+description: En este lab, usará BigQuery desde Datalab para crear un DataFrame de
+  Pandas que se usará como datos de entrenamiento para la predicción de la demanda
+  de taxis en una ciudad.
+title: 'Lab 5 de Big Data & ML Fundamentals: Cree un conjunto de datos de AA con BigQuery
+  (versión 1.3)'

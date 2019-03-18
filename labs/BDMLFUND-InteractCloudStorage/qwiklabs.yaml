@@ -1,0 +1,47 @@
+---
+schema_version: 1
+title: 'Big Data & ML Fundamentals Lab 2: Interact with Google Cloud Storage v1.3'
+description: In this lab you spin up a virtual machine, configure its API access,
+  and log into it remotely.  You will rarely work with Compute Engine instances at
+  such a low-level, but knowing the foundations of GCP can be helpful in troubleshooting. You then carry out the steps of an ingest-transform-and-publish
+  data pipeline manually.
+default_locale: en
+duration: 60
+max_duration: 90
+level: fundamental
+tags:
+- ELIX2636
+credits: 1
+tagline:
+resources: []
+environment_resources:
+- type: gcp_user
+  id: user_0
+  permissions:
+  - project: project_0
+    roles:
+    - roles/viewer
+    - roles/editor
+    - roles/appengine.appAdmin
+    - roles/bigquery.admin
+    - roles/compute.admin
+    - roles/compute.imageUser
+    - roles/compute.instanceAdmin
+    - roles/compute.instanceAdmin.v1
+    - roles/compute.networkAdmin
+    - roles/compute.networkUser
+    - roles/compute.networkViewer
+    - roles/compute.osAdminLogin
+    - roles/compute.osLogin
+    - roles/compute.securityAdmin
+    - roles/compute.storageAdmin
+    - roles/compute.viewer
+    - roles/dns.admin
+    - roles/compute.storageAdmin
+    - roles/storage.admin
+    - roles/storage.objectAdmin
+    - roles/storage.objectCreator
+- type: gcp_project
+  id: project_0
+assessment: assessment.yaml
+lab_test_script: test_script.yaml

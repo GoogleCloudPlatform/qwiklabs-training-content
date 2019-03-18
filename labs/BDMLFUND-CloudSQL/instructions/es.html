@@ -1,0 +1,237 @@
+<h1>Preparación de datos de alquileres en Cloud SQL</h1>
+<h2>Descripción general</h2>
+<p>En este lab, propagará tablas con datos de alquileres en Cloud SQL para que las utilice el motor de recomendaciones de alquileres.</p>
+<h3><strong>Qué aprenderá</strong></h3>
+<p>En este lab, aprenderá a realizar las siguientes actividades:</p>
+<ul>
+<li>
+<p>Crear una instancia de Cloud SQL</p>
+</li>
+<li>
+<p>Crear tablas de bases de datos mediante la importación de archivos .sql de Cloud Storage</p>
+</li>
+<li>
+<p>Propagar las tablas mediante la importación de archivos .csv desde Cloud Storage</p>
+</li>
+<li>
+<p>Permitir el acceso a Cloud SQL</p>
+</li>
+<li>
+<p>Explorar los datos de alquileres mediante instrucciones de SQL en Cloud Shell</p>
+</li>
+</ul>
+<h2>Introducción</h2>
+<p>En este lab, propagará tablas con datos de alquileres en Cloud SQL para que las utilice el motor de recomendaciones de alquileres. El motor de recomendaciones se ejecutará en Dataproc mediante Spark ML y usted lo configurará en el próximo lab.</p>
+<fragment path="/fragments/startqwiklab"></fragment>
+<h2>Configuración</h2>
+<fragment path="/fragments/cloudshell"></fragment>
+<h2>Paso 1: Acceda al código de lab</h2>
+<p>Siga estos pasos para explorar el código del lab en Cloud Shell:</p>
+<ol>
+<li>
+<p>En Cloud Shell, escriba lo siguiente:</p>
+<pre><code class="language-bash">git clone https://github.com/GoogleCloudPlatform/training-data-analyst
+</code></pre>
+<p>Eso hará que se descargue el código de github.</p>
+</li>
+<li>
+<p>Navegue a la carpeta correspondiente a este lab:</p>
+<pre><code class="language-bash">cd training-data-analyst/CPB100/lab3a
+</code></pre>
+</li>
+<li>
+<p>Examine el archivo de creación de tablas con el comando <strong>less</strong>:</p>
+<pre><code class="language-bash">less cloudsql/table_creation.sql
+</code></pre>
+<p>El comando <strong>less</strong> le permite ver el archivo. Presione la <strong>barra espaciadora</strong> para desplazarse hacia abajo, la letra <strong>b</strong> para crear una copia de seguridad de una página y la letra <strong>q</strong> para salir.</p>
+</li>
+<li>
+<p>Llene esta información (la primera línea se completó como ejemplo):</p>
+<table>
+<thead>
+<tr>
+<th align="left">Nombre de la tabla</th>
+<th align="left">Columnas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Accommodation</td>
+<td align="left">Id, title, location, price, rooms, rating, type</td>
+</tr>
+<tr>
+<td align="left">_______________</td>
+<td align="left">_______________</td>
+</tr>
+<tr>
+<td align="left">_______________</td>
+<td align="left">_______________</td>
+</tr>
+</tbody>
+</table>
+<p>¿Cómo se relaciona esto con la situación de recomendaciones de alquileres? Llene los siguientes espacios en blanco:</p>
+<ul>
+<li>Cuando un usuario califica una casa (por ejemplo, con cuatro estrellas), se agrega una entrada a la tabla _________________________.</li>
+<li>La información general sobre las casas, como la cantidad de habitaciones y la calificación promedio, se almacena en la tabla ________________.</li>
+<li>El propósito del motor de recomendaciones es llenar la tabla __________________________ con datos de cada usuario y casa. Esta es la calificación que se prevé que el usuario le daría a esa casa.</li>
+</ul>
+</li>
+<li>
+<p>Examine los archivos de datos con el comando <strong>head</strong>:</p>
+<pre><code class="language-bash">head cloudsql/*.csv
+</code></pre>
+<p>El comando <strong>head</strong> le muestra las primeras líneas de cada archivo.</p>
+</li>
+</ol>
+<h2>Paso 2: Cree un depósito</h2>
+<ol>
+<li>
+<p>En GCP Console, vaya al <strong>menú de navegación</strong> (<img alt="8ab244f9cffa6198.png" src="img/mainmenu.png">).</p>
+</li>
+<li>
+<p>Haga clic en <strong>Storage</strong>.</p>
+</li>
+<li>
+<p>Haga clic en <strong>Crear Segmento</strong>.</p>
+</li>
+<li>
+<p>En <strong>Nombre</strong>, ingrese su <strong>ID del proyecto</strong>. Seleccione <strong>Configurar permisos en los niveles de objeto y de segmento</strong> en <strong>Modelo de control de acceso</strong>,  luego, haga clic en <strong>Crear</strong>. Para buscar su <strong>ID del proyecto</strong>, haga clic en el proyecto en el menú superior de GCP Console y copie el valor que aparece debajo del <strong>ID</strong> del proyecto seleccionado.</p>
+<p>Anote el nombre de su depósito. En el resto del lab, reemplace <code>&lt;BUCKET-NAME&gt;</code> con el nombre único de su depósito.</p>
+</li>
+</ol>
+<h2>Paso 3: Haga el staging de los archivos .sql y .csv en Cloud Storage</h2>
+<p>Haga el staging de la definición de la tabla y los archivos de datos en Cloud Storage para que luego se puedan importar a Cloud SQL:</p>
+<ol>
+<li>
+<p>En Cloud Shell, dentro del directorio <strong>lab3a</strong>, escriba lo siguiente:</p>
+<pre><code class="language-bash">gsutil cp cloudsql/* gs://&lt;BUCKET-NAME&gt;/sql/
+</code></pre>
+<p>y reemplace BUCKET-NAME con el nombre de su depósito.</p>
+</li>
+<li>
+<p>En GCP Console, vaya a <strong>Storage</strong>, luego a su depósito y verifique que los archivos <code>.sql</code> y <code>.csv</code> ya se encuentren allí.</p>
+</li>
+</ol>
+<h2>Paso 4: Cree una instancia de Cloud SQL</h2>
+<ol>
+<li>
+<p>En GCP Console, haga clic en <strong>SQL</strong> (en la sección Storage).</p>
+</li>
+<li>
+<p>Haga clic en <strong>Crear una instancia</strong>.</p>
+</li>
+<li>
+<p><Strong>Elegir MySQL</Strong>. Haga clic en <Strong>Siguiente</Strong> si es necesario. Haga clic en <Strong>Configurar desarrollo: MySQL</Strong> o <Strong>Elegir la segunda generación</Strong>.</p>
+</li>
+<li>
+<p>En <strong>ID de instancia</strong>, escriba <strong>rentals</strong>.</p>
+<p><img src="img/ab1cdf08212ecadf.png" alt="ab1cdf08212ecadf.png"></p>
+</li>
+<li>
+<p>Desplácese hacia abajo y especifique una contraseña de root. Antes de que olvides, anota la contraseña de root.</p>
+<li>
+<p>Haga clic en <strong>Crear</strong> para crear la instancia. Su instancia de Cloud SQL demorará aproximadamente un minuto en aprovisionarse.</p>
+</li>
+</ol>
+<h2>Paso 5: Cree tablas</h2>
+<ol>
+<li>
+<p>En <strong>Cloud SQL</strong>, haga clic en <strong>rentals</strong> para consultar la información de la instancia.</p>
+</li>
+<li>
+<p>Haga clic en <strong>Importar</strong> (en la barra de menú superior).</p>
+</li>
+<li>
+<p>Haga clic en <strong>Examinar</strong>. Aparecerá una lista de depósitos. Haga clic en el depósito que creó y, luego, vaya a <strong>sql</strong> y haga clic en <strong>table_creation.sql</strong>.</p>
+</li>
+<li>
+<p>Haga clic en <strong>Seleccionar</strong> y, luego, en <strong>Importar</strong>.</p>
+</li>
+</ol>
+
+    <aside class="warning"><p>
+    <strong>Nota</strong>: Si la importación de los archivos <code>.sql</code> o <code>.csv</code> falla en el primer intento, intente nuevamente.
+    </p>
+    </aside>
+
+<h2>Paso 6: Propague las tablas</h2>
+<ol>
+<li>
+<p>Para importar archivos CSV de Cloud Storage, haga clic en <strong>Importar</strong> (menú superior) en la página de GCP Console que muestra los detalles de la instancia de Cloud SQL.</p>
+</li>
+<li>
+<p>Haga clic en <strong>Examinar</strong>; en el depósito que creó, vaya a <strong>sql</strong> y, luego, haga clic en <strong>accommodation.csv</strong>. Haga clic en <strong>Seleccionar</strong>.</p>
+</li>
+<li>
+<p>En <strong>Base de Datos</strong>, seleccione <strong>recommendation_spark</strong>.</p>
+</li>
+<li>
+<p>En <strong>Tabla</strong>, escriba <strong>Accommodation</strong>.</p>
+<p><img src="img/c899adb7fdb39f17.png" alt="c899adb7fdb39f17.png"></p>
+</li>
+<li>
+<p>Haga clic en <strong>Importar</strong>.</p>
+</li>
+<li>
+<p>Repita el proceso de importación con la opción <strong>Importar</strong> (pasos 1-5) para <strong>rating.csv</strong>, pero en <strong>Tabla</strong> escriba <strong>Rating</strong>.</p>
+</li>
+</ol>
+<h2>Paso 7: Explore Cloud SQL</h2>
+<ol>
+<li>
+<p>Para explorar Cloud SQL, use la CLI de MySQL. En Cloud Shell, escriba lo que aparece a continuación:</p>
+<pre><code class="language-bash">wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
+chmod +x cloud_sql_proxy
+</code></pre>
+</li>
+<li>
+<p>En la Consola GCP, busque el nombre de conexión de la instancia SQL en la pestaña Overview y cópielo. En el siguiente comando, reemplace <INSTANCE_CONNECTION_NAME> con este valor y ejecútelo.</p>
+<pre><code class="language-bash">./cloud_sql_proxy -instances=&lt;INSTANCE_CONNECTION_NAME&gt;=tcp:3306 &
+</code></pre>
+</li>
+<li>
+<p>Conéctese a la instancia de Cloud SQL usando mysql:</p>
+<pre><code class="language-bash">mysql -u root -p --host 127.0.0.1
+</code></pre>
+</li>
+<li>
+<p>MySQL le solicitará la contraseña raíz. Escríbala cuando se le indique.</p>
+</li>
+<li>
+<p>En el cuadro de MySQL de Cloud Shell, escriba lo siguiente:</p>
+<pre><code class="language-bash">use recommendation_spark;
+</code></pre>
+<p>Con esta acción, se configura la base de datos en la sesión de MySQL.</p>
+</li>
+<li>
+<p>Revise la lista de tablas que creó. Esto será útil para evitar cualquier error tipográfico en su consulta en el paso 4.</p>
+<pre><code class="language-bash">show tables;
+</code></pre>
+</li>
+<li>
+<p>Verifique que se cargaron los datos:</p>
+<pre><code>select * from Rating;
+</code></pre>
+<p>Resultado de ejemplo:</p>
+<pre><code>| 23     | 99     |      5 |
+| 4      | 99     |      4 |
+| 7      | 99     |      5 |
+| 8      | 99     |      5 |
++--------+--------+--------+
+1186 rows in set (0.03 sec)
+</code></pre>
+</li>
+<li>
+<p>Veamos si hay alguna buena oferta en algún lugar:</p>
+<pre><code>select * from Accommodation where type = 'castle' and price &lt; 1500;
+</code></pre>
+<p>Parece que todos los castillos económicos tienen mala calificación.</p>
+</li>
+<li>
+<p>Para salir del cuadro de MySQL, escriba <strong>exit</strong>.</p>
+</li>
+</ol>
+<fragment path="/fragments/endqwiklab"></fragment>
+<h5>Última actualización del manual: 22 de Febrero de 2019</h5>
+<h5>Prueba más reciente del lab: 22 de Febrero de 2019</h5>
+<fragment path="/fragments/copyright"></fragment>

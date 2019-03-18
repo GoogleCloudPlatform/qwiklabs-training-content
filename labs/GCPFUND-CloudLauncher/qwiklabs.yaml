@@ -1,0 +1,28 @@
+---
+schema_version: 1
+title: 'GCP Fundamentals: Getting Started with Cloud Marketplace'
+description: In this lab you use Cloud Marketplace to quickly and easily deploy a LAMP
+  stack on a Compute Engine instance. The Bitnami LAMP Stack provides a complete web
+  development environment for Linux that can be launched in one click.
+default_locale: en
+duration: 25
+max_duration: 25
+level: introductory
+tags: []
+credits: 0
+tagline:
+resources: []
+environment_resources:
+- type: gcp_user
+  id: user_0
+  permissions:
+  - project: project_0
+    roles:
+    - roles/editor
+    - roles/appengine.appAdmin
+    - roles/bigquery.admin
+- type: gcp_project
+  id: project_0
+  dm_script: minimal-qwiklabs-dm.zip
+assessment: assessment.yaml
+lab_test_script: test_script.yaml

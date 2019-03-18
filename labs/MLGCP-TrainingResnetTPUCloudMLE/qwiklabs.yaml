@@ -1,0 +1,30 @@
+---
+schema_version: 1
+title: Training a ResNet Image Classifier from Scratch with TPUs on Cloud Machine Learning Engine
+description: In this lab, you will train a state-of-the-art image classification model
+  on your own data using Google's Cloud TPUs from CloudShell.
+default_locale: en
+duration: 90
+max_duration: 90
+level: introductory
+tags:
+- MLGCP
+- Course 8
+- Tensorflow
+- ResNet image classifier
+credits: 0
+tagline: 
+resources: []
+environment_resources:
+- type: gcp_user
+  id: user_0
+  permissions:
+  - project: project_0
+    roles:
+    - roles/editor
+    - roles/owner
+    - roles/appengine.appAdmin
+    - roles/bigquery.admin
+- type: gcp_project
+  fleet: gcpasl
+  id: project_0

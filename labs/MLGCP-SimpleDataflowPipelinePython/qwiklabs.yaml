@@ -1,0 +1,25 @@
+---
+schema_version: 1
+title: '[ML on GCP C4] A simple Dataflow pipeline (Python)'
+description: In this lab, you learn how to write a simple Dataflow pipeline and run
+  it both locally and on the cloud.
+default_locale: en
+duration: 90
+max_duration: 120
+level: fundamental
+tags: []
+credits: 0
+tagline:
+resources: []
+environment_resources:
+- type: gcp_user
+  id: user_0
+  permissions:
+  - project: project_0
+    roles:
+    - roles/editor
+    - roles/appengine.appAdmin
+    - roles/bigquery.admin
+    - roles/dataflow.developer
+- type: gcp_project
+  id: project_0

@@ -1,0 +1,202 @@
+---
+:name: Big Data & ML Fundamentals ILT Lab 1 v1.3
+:description: "1. Create Compute Engine instance with the necessary API access and
+  install software\r\n2. Ingest USGS data and transform the data\r\n3. Create bucket,
+  store data and publish Cloud Storage files to web\r\n4. Stage .sql and .csv files
+  into Cloud Storage\r\n6. Launch Dataproc\r\n5. Create Cloud SQL instance and populate
+  tables\r\n6. Launch Dataproc\r\n7. Run ML model"
+:pass_percent: !ruby/object:BigDecimal 18:0.75e2
+:notify: false
+:score_completion_only: false
+:steps:
+- :title: Create Compute Engine instance with the necessary API access and install
+    software
+  :points: 5
+  :max: 60
+  :interval: 60
+  :multi_region: false
+  :api: GCP
+  :services:
+  - ComputeV1
+  - SSH
+  :method_name: step_one_check
+  :code: "def step_one_check(handles, points)\r\n  compute = handles[:ComputeV1]\r\n
+    \ ssh = handles[:SSH]\r\n  ret_hash = { :done => false, :score => 0, :message
+    => \"\" }\r\n  desired_instance = 'instance'\r\n  desired_scope = 'https://www.googleapis.com/auth/cloud-platform'\r\n
+    \ ssh_cmd = 'git --version'\r\n  desired_output = 'git version'\r\n  avail_instance
+    = false\r\n  avail_software = false\r\n  \r\n  instances = compute.list_instances&.items
+    || []\r\n  instances.each do |instance|\r\n    if instance.name.include?(desired_instance)\r\n
+    \     if instance.service_accounts[0].scopes.include?(desired_scope)\r\n        avail_instance
+    = true\r\n        network_interface = instance.network_interfaces\r\n        nat_ip
+    = network_interface[0].access_configs[0].nat_ip\r\n        result = ssh.ssh_exec
+    nat_ip, ssh_cmd\r\n        if result.include?(desired_output)\r\n          avail_software
+    = true \r\n        end\r\n      end\r\n    end\r\n  end\r\n  \r\n  if avail_instance\r\n
+    \   ret_hash[:score] += 3\r\n  end\r\n  if avail_software\r\n    ret_hash[:score]
+    += 2\r\n  end\r\n  \r\n  if ret_hash[:score] == points\r\n    ret_hash = { :done
+    => true, :score => points, :message => \"Success: Create Compute Engine instance
+    with the necessary API access and install software\" }\r\n  end\r\n  return ret_hash\r\nend\r\n"
+- :title: Ingest USGS data and transform the data
+  :points: 5
+  :max: 60
+  :interval: 60
+  :multi_region: false
+  :api: GCP
+  :services:
+  - ComputeV1
+  - SSH
+  :method_name: step_two_check
+  :code: "def step_two_check(handles, points)\r\n  compute = handles[:ComputeV1]\r\n
+    \ ssh = handles[:SSH]\r\n  ret_hash = { :done => false, :score => 0, :message
+    => \"\" }\r\n  desired_instance = 'instance'\r\n  desired_scope = 'https://www.googleapis.com/auth/cloud-platform'\r\n
+    \ ssh_cmd_1 = 'git --version'\r\n  ssh_cmd_2 = 'ls'\r\n  ssh_cmd_3 = ' find .
+    -name \"*.csv\"'\r\n  ssh_cmd_4 = 'find . -name \"*earthquakes.png\"'\r\n  desired_output
+    = 'git version'\r\n  desired_file = 'earthquakes'\r\n  desired_image = 'earthquakes.png'\r\n
+    \ ingest_data = false\r\n  transform_data = false\r\n \r\n  instances = compute.list_instances&.items
+    || []\r\n  instances.each do |instance|\r\n    if instance.name.include?(desired_instance)\r\n
+    \     if instance.service_accounts[0].scopes.include?(desired_scope)\r\n        network_interface
+    = instance.network_interfaces\r\n        nat_ip = network_interface[0].access_configs[0].nat_ip\r\n
+    \       result = ssh.ssh_exec nat_ip, ssh_cmd_1\r\n        if result.include?(desired_output)\r\n
+    \         result = ssh.ssh_exec nat_ip, ssh_cmd_2\r\n          if !result.empty?\r\n
+    \           result = ssh.ssh_exec nat_ip, ssh_cmd_3\r\n            if result.include?(desired_file)\r\n
+    \             ingest_data = true\r\n              result = ssh.ssh_exec nat_ip,
+    ssh_cmd_4\r\n              if result.include?(desired_image)\r\n                transform_data
+    = true  \r\n              end\r\n            end         \r\n          end\r\n
+    \       end\r\n      end\r\n    end\r\n  end\r\n    \r\n  if ingest_data\r\n    ret_hash[:score]
+    += 3\r\n  end\r\n  if transform_data\r\n    ret_hash[:score] += 2\r\n  end\r\n
+    \ \r\n  if ret_hash[:score] == points\r\n    ret_hash = { :done => true, :score
+    => points, :message => \"Success: Ingest USGS data and transform the data\" }\r\n
+    \ end\r\n  \r\n  return ret_hash\r\nend"
+- :title: Create bucket, store data and publish Cloud Storage files to web
+  :points: 5
+  :max: 60
+  :interval: 60
+  :multi_region: false
+  :api: GCP
+  :services:
+  - StorageV1
+  :method_name: step_three_check
+  :code: "def step_three_check(handles, points)\r\n  storage = handles[:StorageV1]\r\n
+    \ desired_object = 'earthquakes/'\r\n  object_count = 0\r\n  checker = 0\r\n  entity_value
+    = \"allUsers\"\r\n  avail_bucket = false\r\n  avail_objects = false\r\n  \r\n
+    \ ret_hash = { :done => false, :score => 0, :message => \"\" }\r\n  project_id
+    = storage.project\r\n  buckets = storage.list_buckets &. items || []\r\n  buckets.each
+    do |bucket|\r\n    if bucket.name.strip == project_id\r\n      avail_bucket =
+    true\r\n      objects = storage.list_objects(bucket.name) &.items || []\r\n      objects.each
+    do |object|\r\n        if object.name.include?(desired_object) && object.id.include?(desired_object)\r\n
+    \         object_count += 1\r\n          acl = storage.list_object_access_controls(bucket.name,
+    object.name)&.items || []\r\n          acl.each do |property|\r\n            if
+    property.entity == entity_value\r\n              checker += 1\r\n            end\r\n
+    \         end\r\n        end\r\n        if checker == object_count\r\n          avail_objects
+    = true\r\n          break\r\n        elsif checker != object_count\r\n          checker
+    = 0\r\n        end\r\n      end\r\n    end\r\n  end\r\n  \r\n  if avail_bucket\r\n
+    \   ret_hash[:score] += 1\r\n  end\r\n  if avail_objects\r\n    ret_hash[:score]
+    += 4\r\n  end\r\n  \r\n  if ret_hash[:score] == points\r\n    ret_hash = { :done
+    => true, :score => points, :message => \"Success: Create bucket, store data and
+    publish Cloud Storage files to web\" }\r\n  end\r\n\r\n  return ret_hash\r\nend\r\n"
+- :title: Stage .sql and .csv files into Cloud Storage
+  :points: 5
+  :max: 60
+  :interval: 60
+  :multi_region: false
+  :api: GCP
+  :services:
+  - StorageV1
+  :method_name: step_four_check
+  :code: "def step_four_check(handles, points)\r\n  storage = handles[:StorageV1]\r\n
+    \ ret_hash = { :done => false, :score => 0, :message => \"\" }\r\n  desired_file
+    = 'sql/'\r\n  object_count = 0\r\n  \r\n  buckets = storage.list_buckets&.items
+    || []\r\n  buckets.each do |bucket|\r\n    if bucket.name == storage.project\r\n
+    \     objects = storage.list_objects(bucket.name)&.items || []\r\n      objects.each
+    do |object|   \r\n        if object.name.include?(desired_file) && object.id.include?(desired_file)\r\n
+    \         object_count += 1\r\n        end\r\n      end\r\n      if object_count
+    == 3\r\n        ret_hash = { :done => true, :score => points, :message => \"Success:
+    Stage .sql and .csv files into Cloud Storage\" }  \r\n        break\r\n      elsif
+    object_count != 3\r\n        object_count = 0\r\n      end\r\n    end\r\n  end\r\n
+    \   \r\n  return ret_hash\r\nend"
+- :title: Create Cloud SQL instance and populate tables
+  :points: 5
+  :max: 60
+  :interval: 60
+  :multi_region: false
+  :api: GCP
+  :services:
+  - SqladminV1beta4
+  :method_name: step_five_check
+  :code: " def step_five_check(handles, points)\r\n  sql = handles[:SqladminV1beta4]\r\n
+    \ ret_hash = { :done => false, :score => 0, :message => \"\" }\r\n  desired_instance
+    = 'rentals'\r\n  desired_operation_type = 'IMPORT'\r\n  desired_status = 'DONE'\r\n
+    \ desired_uri_1 = 'sql/table_creation.sql'\r\n  desired_uri_2 = 'sql/accommodation.csv'\r\n
+    \ desired_uri_3 = 'sql/rating.csv'\r\n  checker = 0\r\n  avail_instance = false\r\n
+    \ populate_tables = false\r\n  \r\n  instances =  sql.list_instances&. items ||
+    []\r\n  instances.each do |instance|\r\n    if instance.name.include?(desired_instance)\r\n
+    \     avail_instance = true\r\n      instance_name = instance.name\r\n      operations
+    = sql.list_operations(desired_instance) &. items || []\r\n      operations.each
+    do |operation|\r\n        if operation.operation_type.include?(desired_operation_type)
+    && operation.target_id == instance_name\r\n          if operation.import_context.uri.include?(desired_uri_1)
+    && operation.status == desired_status\r\n            checker += 1\r\n          end\r\n
+    \         if operation.import_context.uri.include?(desired_uri_2) && operation.status
+    == desired_status\r\n            checker += 1\r\n          end\r\n          if
+    operation.import_context.uri.include?(desired_uri_3) && operation.status == desired_status\r\n
+    \           checker += 1\r\n          end\r\n        end\r\n      end\r\n    end\r\n
+    \   if checker != 3\r\n      checker = 0\r\n    elsif checker == 3\r\n      populate_tables
+    = true\r\n      break\r\n    end\r\n  end\r\n  \r\n  if avail_instance\r\n    ret_hash[:score]
+    += 2\r\n  end\r\n  if populate_tables\r\n    ret_hash[:score] += 3\r\n  end\r\n
+    \ \r\n  if ret_hash[:score] == points\r\n    ret_hash = { :done => true, :score
+    => points, :message => \"Success: Create Cloud SQL instance and populate tables\"
+    }\r\n  end \r\n  return ret_hash\r\nend"
+- :title: Launch Dataproc
+  :points: 5
+  :max: 60
+  :interval: 60
+  :multi_region: false
+  :api: GCP
+  :services:
+  - ComputeV1
+  - DataprocV1
+  - SqladminV1beta4
+  :method_name: step_six_check
+  :code: "def step_six_check(handles, points)\r\n  dataproc = handles[:DataprocV1]\r\n
+    \ sql = handles[:SqladminV1beta4]\r\n  compute = handles[:ComputeV1]\r\n  ret_hash
+    = { :done => false, :score => 0, :message => \"\" }\r\n  region = 'global'\r\n
+    \ desired_state = 'RUNNING'\r\n  desired_instance = 'rentals'\r\n  cluster_instances
+    = []\r\n  checker = 0\r\n  \r\n  clusters = dataproc.list_clusters(dataproc.project,
+    region, freeze_args:true)&.clusters || []\r\n  clusters.each do |cluster|\r\n
+    \   if cluster.status.state == desired_state\r\n      cluster.config.master_config.instance_names.each
+    do |master_instance|\r\n        cluster_instances.push(master_instance)\r\n        cluster.config.worker_config.instance_names.each
+    do |worker_instance|\r\n          cluster_instances.push(worker_instance)\r\n
+    \       end\r\n      end\r\n      instances =  sql.list_instances&. items || []\r\n
+    \     instances.each do |instance|\r\n        if instance.name.include?(desired_instance)\r\n
+    \         instance.settings.ip_configuration.authorized_networks.each do |network|\r\n
+    \           ip_value = network.value\r\n            vm_instances = compute.list_instances
+    &. items || []\r\n            cluster_instances.each do |cluster_instance|\r\n
+    \             vm_instances.each do |vm_instance|\r\n                if cluster_instance.to_s
+    == vm_instance.name\r\n                  network_interface = vm_instance.network_interfaces\r\n
+    \                 nat_ip = network_interface[0].access_configs[0].nat_ip\r\n                  if
+    ip_value.include?(nat_ip)\r\n                    checker += 1\r\n                  end\r\n
+    \               end\r\n              end\r\n            end\r\n          end\r\n
+    \       end\r\n      end\r\n      if checker == 3\r\n        ret_hash = { :done
+    => true, :score => points, :message => \"Success: Launch Dataproc\" }\r\n        break\r\n
+    \     else\r\n        cluster_instances = []\r\n        checker = 0 \r\n      end\r\n
+    \   end\r\n  end\r\n\r\n  return ret_hash \r\nend"
+- :title: Run ML model
+  :points: 5
+  :max: 60
+  :interval: 60
+  :multi_region: false
+  :api: GCP
+  :services:
+  - DataprocV1
+  :method_name: step_seven_check
+  :code: "def step_seven_check(handles, points)\r\n  dataproc = handles[:DataprocV1]\r\n
+    \ ret_hash = { :done => false, :score => 0, :message => \"\" }\r\n  region = 'global'\r\n
+    \ desired_state = 'DONE'\r\n  desired_file_uri = 'gs://' + dataproc.project +
+    '/train_and_apply.py'\r\n  desired_app = 'train_model'\r\n  avail_app = false\r\n
+    \ \r\n  clusters = dataproc.list_clusters(dataproc.project, region, freeze_args:true)&.clusters
+    || []\r\n  clusters.each do |cluster|\r\n    jobs = dataproc.list_jobs(dataproc.project,
+    region, freeze_args:true) &. jobs || []\r\n    jobs.each do |job|\r\n      if
+    job.status.state == desired_state && job.placement.cluster_name == cluster.cluster_name\r\n
+    \       if job &.pyspark_job &. main_python_file_uri == desired_file_uri\r\n          job.yarn_applications.each
+    do |application|\r\n            if application.name == desired_app\r\n              avail_app
+    = true\r\n            end\r\n          end\r\n        end\r\n      end\r\n    end\r\n
+    \ end\r\n  \r\n  if avail_app\r\n    ret_hash = { :done => true, :score => points,
+    :message => \"Success: Run ML model\" }\r\n  end\r\n  return ret_hash\r\nend"

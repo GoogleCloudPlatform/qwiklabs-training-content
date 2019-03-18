@@ -1,0 +1,95 @@
+<h1>Cómo invocar las API de aprendizaje automático</h1>
+<h2>Descripción general</h2>
+<p>En este lab, aprenderá a usar las API de aprendizaje automático en Datalab.</p>
+<h3><strong>Qué aprenderá</strong></h3>
+<p>En este lab, aprenderá cómo invocar las API de AA en Python y usar sus resultados.</p>
+<h2>Introducción</h2>
+<p>En este lab, invocará las API de AA en Datalab con el fin de ejecutar varias tareas importantes:</p>
+<ul>
+<li>
+<p>La API de Vision para detectar texto en una imagen</p>
+</li>
+<li>
+<p>La API de Translate para traducir texto al inglés</p>
+</li>
+<li>
+<p>La API de Natural Language para identificar el contenido emocional de algunas citas conocidas</p>
+</li>
+<li>
+<p>La API de Speech para transcribir un archivo de audio</p>
+</li>
+</ul>
+<h2>Configuración</h2>
+<fragment path="/fragments/cloudshell"></fragment>
+<h2>Tarea 1: Inicie Cloud Datalab</h2>
+<p>Siga estos pasos para iniciar Cloud Datalab:</p>
+<ol>
+<li>
+<p>En Cloud Shell, escriba lo siguiente:</p>
+</li>
+</ol>
+<pre><code class="language-bash">datalab create bdmlvm --zone us-central1-a
+</code></pre>
+<p>Datalab tardará unos 5 minutos en iniciarse.</p>
+<p><code>Nota: Recuerde seguir las indicaciones durante el proceso.</code></p>
+<h2>Tarea 2: Registre el notebook en Cloud Datalab</h2>
+<p>Si es necesario, espere hasta que Datalab termine de iniciarse. Estará listo cuando vea un mensaje que le sugiera usar una “Web Preview”.</p>
+<ol>
+<li>
+<p>Haga clic en el ícono de <strong>vista previa Web</strong>, ubicado en la esquina superior derecha de la cinta de Cloud Shell. Haga clic en <strong>Cambiar puerto</strong>. Cambie al puerto <strong>8081</strong> con el cuadro de diálogo <strong>Cambiar puerto de vista previa</strong> y, luego, haga clic en <strong>cambiar obtener vista previa</strong>.</p>
+<p><img src="img/ChangePort.png" alt="ChangePort.png"></p>
+<p><img src="img/ChangePreviewPort.png" alt="ChangePreviewPort.png"></p>
+<p>Nota: La conexión a su instancia de Datalab se mantiene abierta mientras permanezca activo el comando datalab. Si se cierra o interrumpe la instancia de Cloud Shell utilizada para ejecutar el comando datalab, perderá la conexión con su VM de Cloud Datalab. Si esto ocurre, tal vez pueda restablecer la conexión mediante el comando <code>datalab connect bdmlvm</code> en una nueva instancia de Cloud Shell.</p>
+</li>
+<li>
+<p>En <strong>Datalab</strong>, haga clic en el ícono <strong>Open ungit</strong> ubicado en la esquina superior derecha.</p>
+<p><img src="img/fc5c4f63c40f83f.png" alt="fc5c4f63c40f83f.png"></p>
+</li>
+<li>
+<p>En la ventana de Ungit, seleccione el texto que dice <strong>/content/datalab/notebooks</strong>, quite la palabra <strong>notebooks</strong> para que quede <strong>/content/datalab</strong> y presione la tecla <strong>Enter</strong>.</p>
+<p><img src="img/dbeb32393b0874e4.png" alt="dbeb32393b0874e4.png"></p>
+</li>
+<li>
+<p>En el panel que aparecerá, escriba lo siguiente para indicar el repositorio de GitHub que <strong>Clone from</strong>:</p>
+<pre><code class="language-bash">https://github.com/GoogleCloudPlatform/training-data-analyst
+</code></pre>
+</li>
+<li>
+<p>Haga clic en <strong>Clone repository</strong>.</p>
+</li>
+</ol>
+<h2>Tarea 3: Obtenga una clave de API</h2>
+<p>Para obtener una clave de API, haga lo siguiente:</p>
+<ol>
+<li>
+<p>En GCP Console, en el <strong>menú de navegación</strong> (<img alt="8ab244f9cffa6198.png" src="img/mainmenu.png">), haga clic en <strong>APIs y servicios</strong> y, luego, en <strong>Panel de control</strong>.</p>
+</li>
+<li>
+<p>En el cuadro de búsqueda, escriba <strong>vision</strong> para buscar la <strong>Cloud Vision API</strong> publicada por Google y, luego, haga clic en el hipervínculo.</p>
+</li>
+<li>
+<p>Haga clic en <strong>Habilita</strong> si hace falta.</p>
+</li>
+<li>
+<p>Siga el mismo proceso que usó para habilitar las <strong>Cloud Translation API</strong>, <strong>Cloud Speech API</strong> y <strong>Cloud Natural Language API</strong>, todas publicadas por Google.</p>
+</li>
+<li>
+<p>En el menú de GCP Console, seleccione <strong>APIs y servicios</strong> y, luego, <strong>Credenciales</strong>.</p>
+</li>
+<li>
+<p>Si todavía no dispone de una clave de API, haga clic en el botón <strong>Crear credenciales</strong> y seleccione <strong>Clave de API</strong>. Una vez creada, cópiela y haga clic en <strong>Cerrar</strong>. Necesitará esta clave de API en el notebook más tarde.</p>
+</li>
+</ol>
+<h2>Tarea 4: Invoque API de AA desde Datalab</h2>
+<ol>
+<li>
+<p>Vuelva al navegador de Datalab y diríjase a <strong>training-data-analyst &gt; CPB100 &gt; lab4c &gt; mlapis.ipynb</strong></p>
+</li>
+<li>
+<p>Lea los comentarios y haga clic en <strong>Clear | Clear all cells</strong>. Luego, ejecute los fragmentos de Python en la celda, paso a paso (use <strong>Shift + Enter</strong> para ejecutar cada parte del código). No olvide ingresar su clave de API en la primera celda de Python.</p>
+</li>
+</ol>
+<fragment path="/fragments/endqwiklab"></fragment>
+<h5>Última actualización del manual: 10 de octubre de 2018</h5>
+<h5>Prueba más reciente del lab: 10 de octubre de 2018</h5>
+<fragment path="/fragments/copyright"></fragment>

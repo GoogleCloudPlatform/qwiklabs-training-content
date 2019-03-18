@@ -1,0 +1,26 @@
+name: 'Big Data & ML Fundamentals Lab 5: Create ML Dataset with BigQuery v1.3 - Test'
+description: "The script launches the Cloud datalab.\nCheckouts notebook into Cloud Datalab."
+deployment_manager_time: 540
+run_regularly: true
+failure_alerts_only: true
+subscribers:
+ - training-qa-testers@google.com
+ - ajaych@google.com
+steps:
+ - command: |
+     sudo apt-get install google-cloud-sdk-datalab
+     #Create Datalab Instance and download the notebook in the docker container
+     datalab create bdmlvm --no-connect --no-create-repository --zone us-central1-a < <(yes y)
+     gcloud compute config-ssh --quiet
+     ssh bdmlvm.us-central1-a.$PROJECT -o StrictHostKeyChecking=no <<'EOF'
+     while :
+     do
+     STATUS_CHECK=$(sudo docker ps --filter "name=datalab" --filter "status=running" --format '{{.Names}}')
+     if [ "$STATUS_CHECK" == 'datalab' ]
+     then
+      break
+     fi
+     sleep 20s
+     done
+     docker container exec -i datalab sh -c "cd /content/datalab/ && git clone https://github.com/GoogleCloudPlatform/training-data-analyst"
+     EOF

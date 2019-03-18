@@ -1,0 +1,6 @@
+description: En este lab, usará Dataproc para entrenar el modelo de aprendizaje automático
+  de recomendaciones con las calificaciones anteriores de los usuarios. Luego, aplicará
+  el modelo a fin de crear una lista de recomendaciones para cada usuario de la base
+  de datos.
+title: 'Lab 4 de Big Data & ML Fundamentals: AA para recomendaciones con Dataproc
+  v1.2'

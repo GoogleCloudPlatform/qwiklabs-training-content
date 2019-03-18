@@ -1,0 +1,7 @@
+description: En este lab, iniciará una máquina virtual, configurará su acceso a la
+  API y accederá a ella de forma remota. Trabajará muy poco con instancias de Compute Engine
+  en este nivel, pero conocer los conceptos básicos de GCP puede ser útil para solucionar
+  problemas. Luego, seguirá los pasos para realizar la canalización de datos de transferencia-transformación-publicación
+  de forma manual.
+title: 'Lab 2 de Big Data & ML Fundamentals: Cómo interactuar con Google Cloud Storage
+  (versión 1.2)'

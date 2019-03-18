@@ -1,0 +1,8 @@
+description: Dans cet atelier, vous allez démarrer une machine virtuelle, configurer
+  ses paramètres d'accès aux API et vous y connecter à distance. À ce niveau de compétence,
+  vous n'aurez à utiliser des instances Compute Engine que rarement, mais il peut
+  être utile de connaître les principes de base de GCP en cas de problème. Vous effectuerez
+  ensuite manuellement les étapes d'un pipeline de données de type "Ingestion, transformation,
+  publication".
+title: 'Formation "Big Data & ML Fundamentals", Atelier 1 : Créer une instance Compute Engine
+  v1.2'

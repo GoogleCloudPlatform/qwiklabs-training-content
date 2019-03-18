@@ -1,0 +1,36 @@
+---
+schema_version: 1
+title: '[ML on GCP C4] Improving model accuracy with new features'
+description: This lab is part of a lab series, where you go from exploring a taxicab
+  dataset to training and deploying a high-accuracy distributed model with Cloud ML
+  Engine.
+default_locale: en
+duration: 90
+max_duration: 120
+level: advanced
+tags: []
+credits: 0
+tagline:
+resources: []
+environment_resources:
+- type: gcp_user
+  id: user_0
+  permissions:
+  - project: project_0
+    roles:
+    - roles/editor
+    - roles/owner
+    - roles/appengine.appAdmin
+    - roles/dataflow.developer
+    - roles/appengine.appAdmin
+    - roles/bigquery.admin
+    - roles/cloudsql.admin
+    - roles/cloudsql.editor
+    - roles/compute.admin
+    - roles/dataflow.admin
+    - roles/iam.serviceAccountAdmin
+    - roles/ml.admin
+    - roles/source.admin
+    - roles/storage.admin
+- type: gcp_project
+  id: project_0

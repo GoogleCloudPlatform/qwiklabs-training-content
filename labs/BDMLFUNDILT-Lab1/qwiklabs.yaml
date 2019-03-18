@@ -1,0 +1,54 @@
+---
+schema_version: 1
+title: 'Big Data & ML Fundamentals ILT Lab 1 v1.3'
+description: "In this lab series, you get to setup Compute Engine instance, interact
+  with Cloud Storage, explore Cloud SQL and run ML with Dataproc.\r\n"
+default_locale: en
+duration: 420
+max_duration: 420
+level: introductory
+tags:
+- ELIX2635
+credits: 1
+tagline:
+resources: []
+environment_resources:
+- type: gcp_user
+  id: user_0
+  permissions:
+  - project: project_0
+    roles:
+    - roles/viewer
+    - roles/browser
+    - roles/editor
+    - roles/owner
+    - roles/appengine.appAdmin
+    - roles/bigquery.admin
+    - roles/bigquery.dataEditor
+    - roles/bigquery.dataOwner
+    - roles/bigquery.dataViewer
+    - roles/bigquery.user
+    - roles/compute.imageUser
+    - roles/compute.instanceAdmin
+    - roles/compute.networkAdmin
+    - roles/compute.networkViewer
+    - roles/compute.securityAdmin
+    - roles/compute.storageAdmin
+    - roles/container.admin
+    - roles/container.clusterAdmin
+    - roles/dataflow.developer
+    - roles/dataflow.viewer
+    - roles/dataflow.worker
+    - roles/dataproc.editor
+    - roles/iam.serviceAccountUser
+    - roles/ml.developer
+    - roles/pubsub.admin
+    - roles/compute.storageAdmin
+    - roles/storage.admin
+    - roles/storage.objectAdmin
+    - roles/storage.objectCreator
+    - roles/storage.objectViewer
+- type: gcp_project
+  id: project_0
+assessment: assessment.yaml
+lab_test_script: test_script.yaml

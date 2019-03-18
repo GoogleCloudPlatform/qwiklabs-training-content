@@ -1,0 +1,3 @@
+description: In diesem Lab erstellen Sie mit BigQuery in Datalab einen Pandas-Dataframe,
+  der als Trainings-Dataset für die Vorhersage des Bedarfs an Taxis dient.
+title: 'Big Data &amp; ML Fundamentals, Lab 5: ML-Dataset mit BigQuery erstellen v1.3'

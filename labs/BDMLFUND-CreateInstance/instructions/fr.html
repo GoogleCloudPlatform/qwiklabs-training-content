@@ -1,0 +1,73 @@
+<h1>Créer une instance Compute Engine</h1>
+<h2>Présentation</h2>
+<p>Dans cet atelier, vous allez apprendre à créer une machine virtuelle, configurer ses paramètres de sécurité et y accéder à distance.</p>
+<h3>Objectifs de l'atelier</h3>
+<p>Au cours de cet atelier, vous allez apprendre à réaliser les opérations suivantes :</p>
+<ul>
+<li>
+<p>Créer une instance Compute Engine et définir les paramètres d'accès et de sécurité appropriés</p>
+</li>
+<li>
+<p>Établir une connexion SSH à l'instance</p>
+</li>
+</ul>
+<h2>Introduction</h2>
+<p>Dans cet atelier, vous allez démarrer une machine virtuelle, configurer ses paramètres d'accès aux API et vous y connecter à distance.  À ce niveau de compétence, vous n'aurez à utiliser des instances Compute Engine que rarement, mais il peut être utile de connaître les principes de base de GCP en cas de problème.</p>
+<fragment path="/fragments/startqwiklab"></fragment>
+<h2>Tâche 1 : Créer une instance Compute Engine et définir ses paramètres d'accès aux API</h2>
+<p>Pour créer une instance Compute Engine, procédez comme suit :</p>
+<ol>
+<li>
+<p>Dans la console GCP, accédez au <strong>menu de navigation</strong> (<img alt="8ab244f9cffa6198.png" src="img/mainmenu.png">), puis cliquez sur <strong>Compute Engine</strong>.</p>
+</li>
+<li>
+<p>Cliquez sur <strong>Create</strong> (Créer), puis patientez pendant le chargement du formulaire. Vous allez devoir modifier certaines options sur celui-ci.</p>
+</li>
+<li>
+<p>Laissez la valeur par défaut dans le champ <strong>Name</strong> (Nom). Ensuite, sélectionnez <strong>us-central1</strong> dans <strong>Region</strong> (Région) et <strong>us-central1-a</strong> dans <strong>Zone</strong> (Zone).</p>
+</li>
+<li>
+<p>Pour le paramètre <strong>Access scopes</strong> (Champs d'application de l'accès) du menu <strong>Identity and API access</strong> (Identité et accès à l'API), sélectionnez <strong>Allow full access to all Cloud APIs</strong> (Autoriser l'accès complet à l'ensemble des API Cloud).</p>
+<p><img src="img/8ab244f9cffa6198.png" alt="8ab244f9cffa6198.png"></p>
+</li>
+<li>
+<p>Cliquez sur <strong>Create</strong> (Créer).</p>
+</li>
+</ol>
+<h2>Tâche 2 : Se connecter en SSH à l'instance</h2>
+<p>Une fois votre instance Compute Engine créée, vous pouvez y accéder à distance à l'aide du protocole Secure Shell (SSH) :</p>
+<ol>
+<li>
+<p>Lorsque l'instance que vous venez de créer est disponible, cliquez sur <strong>SSH</strong> :</p>
+<p><img src="img/e4d9f3244db5ba38.png" alt="e4d9f3244db5ba38.png"></p>
+<p><strong>Remarque</strong> : Les clés SSH sont transférées automatiquement. Vous pouvez ainsi vous connecter en SSH directement depuis votre navigateur, sans utiliser de logiciel spécifique.</p>
+</li>
+<li>
+<p>Pour obtenir des informations sur l'instance Compute Engine que vous venez de lancer, saisissez ce qui suit dans votre terminal SSH :</p>
+<pre><code class="language-bash">cat /proc/cpuinfo
+</code></pre>
+</li>
+</ol>
+<h2>Tâche 3 : Installer le logiciel</h2>
+<ol>
+<li>
+<p>Dans le terminal SSH, saisissez la commande ci-dessous :</p>
+<pre><code class="language-bash">sudo apt-get update
+sudo apt-get -y -qq install git
+</code></pre>
+</li>
+<li>
+<p>Vérifiez que le logiciel git est bien installé. Pour ce faire, exécutez la commande suivante :</p>
+<pre><code class="language-bash">git --version
+</code></pre>
+</li>
+<li>
+<p>Quittez la session en saisissant la commande ci-dessous :</p>
+<pre><code class="language-bash">exit
+</code></pre>
+</li>
+</ol>
+<fragment path="/fragments/endqwiklab"></fragment>
+<h5>Dernière mise à jour du manuel : 08 octobre 2018</h5>
+<h5>Dernier test de l'atelier : 08 octobre 2018</h5>
+<fragment path="/fragments/copyright"></fragment>

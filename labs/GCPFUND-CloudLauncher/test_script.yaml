@@ -1,0 +1,23 @@
+name: GCP Fundamentals - Getting Started with Cloud Marketplace - Test
+description: "The script deploys a LAMP stack on a Compute Engine instance"
+deployment_manager_time: 350
+run_regularly: true
+failure_alerts_only: true
+subscribers:
+ - training-qa-testers@google.com
+ - jrambo@google.com
+steps:
+ - command: |  
+    # Enable the Compute Engine and Deployment Manager API
+    gcloud -q services enable deploymentmanager.googleapis.com compute.googleapis.com
+    sudo apt-get install unzip -y
+    curl -O https://storage.googleapis.com/cloud-training/labtesting/lampstack.zip
+    unzip lampstack.zip
+    cd lampstack
+    # Deploy a LAMP stack
+    gcloud deployment-manager deployments create lampstack --config=config.yaml
+    # Copy the phpinfo.php script from the installation directory to a publicly accessible location under the web server document root
+    gcloud compute ssh lampstack-vm --zone us-central1-a --quiet <<EOF
+    cd /opt/bitnami
+    sudo cp docs/phpinfo.php apache2/htdocs
+    EOF  

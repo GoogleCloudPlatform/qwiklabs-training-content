@@ -1,0 +1,20 @@
+name: 'Big Data & ML Fundamentals Lab 1 : Create a Compute Engine Instance v1.3 - Test'
+description: "The script creates a compute engine instance with necessary API access.\nChecks the status of the instance.\nSSH into the instance."
+deployment_manager_time: 180
+run_regularly: true
+failure_alerts_only: true
+subscribers:
+ - training-qa-testers@google.com
+ - ajaych@google.com
+steps:
+ - command: |
+    # Create Compute Engine instance with the necessary API access
+    gcloud compute instances create instance-1 --zone us-central1-a --scopes=https://www.googleapis.com/auth/cloud-platform
+ - command: |
+    gcloud compute config-ssh --quiet
+    # ssh into the instance
+    ssh instance-1.us-central1-a.$PROJECT -o StrictHostKeyChecking=no <<EOF
+    # Install software and Ingest USGS data
+    sudo apt-get update
+    sudo apt-get -y -qq install git
+    EOF

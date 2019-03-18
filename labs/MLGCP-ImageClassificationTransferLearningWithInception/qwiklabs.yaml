@@ -1,0 +1,28 @@
+---
+schema_version: 1
+title: '[ML on GCP C8] Image Classification Transfer Learning with Inception v3'
+description: 'In this lab, you carry out a transfer learning example based on Inception-v3
+  image recognition neural network. '
+default_locale: en
+duration: 90
+max_duration: 120
+level: introductory
+tags:
+- ELIX2413
+credits: 0
+tagline:
+resources: []
+environment_resources:
+- type: gcp_user
+  id: user_0
+  permissions:
+  - project: project_0
+    roles:
+    - roles/editor
+    - roles/owner
+    - roles/appengine.appAdmin
+    - roles/bigquery.admin
+    - roles/ml.admin
+- type: gcp_project
+  id: project_0
+  fleet: gcpondemand

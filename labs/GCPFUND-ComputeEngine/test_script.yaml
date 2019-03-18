@@ -1,0 +1,23 @@
+name: GCP Fundamentals - Getting Started with Compute Engine - Test
+description: "The script creates two compute engine virtual machines and installs the Nginx web server."
+deployment_manager_time: 300
+run_regularly: true
+failure_alerts_only: true
+subscribers:
+ - training-qa-testers@google.com
+ - jrambo@google.com
+steps:
+ - command: |  
+    # Enable the Compute Engine API
+    gcloud -q services enable compute.googleapis.com
+    # Create a virtual machine using the GCP Console
+    gcloud compute --project=$PROJECT instances create my-vm-1 --zone=us-central1-a --tags=http-server --machine-type=n1-standard-1 --image=debian-9-stretch-v20190213 --image-project=debian-cloud --subnet=default
+    gcloud compute --project=$PROJECT firewall-rules create default-allow-http --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0 --target-tags=http-server
+    # Create a virtual machine using the gcloud command line
+    gcloud config set compute/zone us-central1-b
+    gcloud compute --project=$PROJECT instances create "my-vm-2" --machine-type "n1-standard-1" --image-project "debian-cloud" --image "debian-9-stretch-v20190213" --subnet "default"
+    # Connect VM instances
+    gcloud compute ssh my-vm-1 --zone us-central1-a --quiet <<EOF
+    sudo apt-get install nginx-light -y
+    sudo sed -i 's/<\/h1>/<\/h1>\nHi from GCP Fundamentals/g' /var/www/html/index.nginx-debian.html
+    EOF

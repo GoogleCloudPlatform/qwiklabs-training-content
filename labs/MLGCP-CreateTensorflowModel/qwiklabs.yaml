@@ -1,0 +1,31 @@
+---
+schema_version: 1
+title: '[ML on GCP C6] Create TensorFlow model'
+description: "This lab is part of a lab series where you train, evaluate, and deploy
+  a machine learning model to predict a baby’s weight.  \r\nIn this lab #1, you explore
+  and visualize a BigQuery dataset.\r\n"
+default_locale: en
+duration: 90
+max_duration: 120
+level: advanced
+tags: []
+credits: 0
+tagline:
+resources: []
+environment_resources:
+- type: gcp_user
+  id: user_0
+  permissions:
+  - project: project_0
+    roles:
+    - roles/editor
+    - roles/owner
+    - roles/appengine.appAdmin
+    - roles/bigquery.admin
+    - roles/compute.admin
+    - roles/iam.serviceAccountAdmin
+    - roles/ml.admin
+    - roles/source.admin
+    - roles/storage.admin
+- type: gcp_project
+  id: project_0

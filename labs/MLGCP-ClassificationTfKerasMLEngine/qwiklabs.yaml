@@ -1,0 +1,30 @@
+---
+schema_version: 1
+title: '[ML on GCP C9] Text Classification using TensorFlow/Keras on Cloud
+  ML Engine'
+description: In this lab, you will define a text classification model to look at the
+  titles of articles and figure out whether the article came from the New York Times,
+  TechCrunch or GitHub.
+default_locale: en
+duration: 120
+max_duration: 120
+level: introductory
+tags:
+- ELIX2415
+credits: 0
+tagline:
+resources: []
+environment_resources:
+- type: gcp_user
+  id: user_0
+  permissions:
+  - project: project_0
+    roles:
+    - roles/editor
+    - roles/owner
+    - roles/appengine.appAdmin
+    - roles/bigquery.admin
+    - roles/compute.storageAdmin
+    - roles/ml.admin
+- type: gcp_project
+  id: project_0

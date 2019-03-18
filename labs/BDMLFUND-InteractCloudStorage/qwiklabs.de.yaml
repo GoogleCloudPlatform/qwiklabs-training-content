@@ -1,0 +1,8 @@
+description: In diesem Lab richten Sie eine virtuelle Maschine ein, konfigurieren
+  den API-Zugriff und melden sich über die Remote-Funktion an. Sie werden nur selten
+  auf einer systemnahen Ebene wie dieser mit Compute Engine-Instanzen arbeiten, aber
+  für die Fehlerbehebung kann es hilfreich sein, die Grundlagen der GCP zu kennen.
+  Anschließend führen Sie die Schritte einer Pipeline zur Aufnahme, Transformation
+  und Veröffentlichung von Daten manuell aus.
+title: 'Big Data &amp; ML Fundamentals, Lab 2: Interaktion mit Google Cloud Storage
+  v1.2'

@@ -1,0 +1,73 @@
+<h1>Compute Engine インスタンスの作成</h1>
+<h2>概要</h2>
+<p>このラボでは、仮想マシンを起動してセキュリティを構成し、リモートでアクセスします。</p>
+<h3>学習内容</h3>
+<p>このラボの内容:</p>
+<ul>
+<li>
+<p>必要なアクセスとセキュリティを備えた Compute Engine インスタンスを作成する</p>
+</li>
+<li>
+<p>インスタンスに SSH 接続する</p>
+</li>
+</ul>
+<h2>はじめに</h2>
+<p>このラボでは、仮想マシンを起動して API アクセスを構成し、リモートでログインします。このような低レベルで Compute Engine インスタンスを操作するケースは少ないと思われますが、GCP の基礎がわかっていれば、トラブルシューティング時に役に立つ可能性があります。</p>
+<fragment path="/fragments/startqwiklab"></fragment>
+<h2>タスク 1: 必要な API アクセスを備えた Compute Engine インスタンスを作成する</h2>
+<p>Compute Engine のインスタンスを作成するには:</p>
+<ol>
+<li>
+<p>GCP Console の[<strong>ナビゲーション メニュー</strong>]（<img alt="8ab244f9cffa6198.png" src="img/mainmenu.png">）で、[<strong>Compute Engine</strong>] をクリックします。</p>
+</li>
+<li>
+<p>[<strong>作成</strong>] をクリックして、フォームが読み込まれるまで待機します。表示されたフォーム上のオプションの一部を変更する必要があります。</p>
+</li>
+<li>
+<p>[<strong>名前</strong>] はデフォルト値のままにし、[<strong>リージョン</strong>] で <strong>us-central1</strong>、[<strong>ゾーン</strong>] で <strong>us-central1-a</strong> を選択します。</p>
+</li>
+<li>
+<p>[<strong>ID と API へのアクセス</strong>] の [<strong>アクセス スコープ</strong>] で、[<strong>すべての Cloud API に完全アクセス権を許可</strong>] を選択します。</p>
+<p><img src="img/8ab244f9cffa6198.png" alt="8ab244f9cffa6198.png"></p>
+</li>
+<li>
+<p>[<strong>作成</strong>] をクリックします。</p>
+</li>
+</ol>
+<h2>タスク 2: インスタンスに SSH 接続する</h2>
+<p>インスタンスが作成されたら、リモートで Secure Shell（SSH）を使用して Compute Engine インスタンスにアクセスできます。</p>
+<ol>
+<li>
+<p>作成したインスタンスが利用可能になったら、[<strong>SSH</strong>] をクリックします。</p>
+<p><img src="img/e4d9f3244db5ba38.png" alt="e4d9f3244db5ba38.png"></p>
+<p><strong>注</strong>: SSH キーは自動的に転送されるため、ブラウザから直接 SSH 接続することができ、追加のソフトウェアを必要としません。</p>
+</li>
+<li>
+<p>起動した Compute Engine インスタンスに関する情報を表示するには、SSH ターミナルで次のコマンドを入力します。</p>
+<pre><code class="language-bash">cat /proc/cpuinfo
+</code></pre>
+</li>
+</ol>
+<h2>タスク 3: ソフトウェアをインストールする</h2>
+<ol>
+<li>
+<p>SSH ターミナルで、次のコマンドを入力します。</p>
+<pre><code class="language-bash">sudo apt-get update
+sudo apt-get -y -qq install git
+</code></pre>
+</li>
+<li>
+<p>Git がインストールされたことを確認します。</p>
+<pre><code class="language-bash">git --version
+</code></pre>
+</li>
+<li>
+<p>次のコマンドを入力して SSH セッションを終了します。</p>
+<pre><code class="language-bash">exit
+</code></pre>
+</li>
+</ol>
+<fragment path="/fragments/endqwiklab"></fragment>
+<h5>マニュアルの最終更新日: 2018 年 10 月 8 日</h5>
+<h5>ラボの最終テスト日: 2018 年 10 月 8 日</h5>
+<fragment path="/fragments/copyright"></fragment>

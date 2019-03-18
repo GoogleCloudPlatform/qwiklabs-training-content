@@ -1,0 +1,20 @@
+name: GCP Fundamentals - Getting Started with BigQuery - Test
+description: "The script loads the data from Cloud Storage into BigQuery and performs a query on the data in BigQuery."
+deployment_manager_time: 300
+run_regularly: true
+failure_alerts_only: true
+subscribers:
+ - training-qa-testers@google.com
+ - jrambo@google.com
+steps:
+ - command: |
+    # Enable required API
+    gcloud -q services enable bigquery-json.googleapis.com
+    # Load data from Cloud Storage into BigQuery
+    bq --location=US mk --dataset $PROJECT:logdata
+    bq mk --table $PROJECT:logdata.accesslog
+    bq --location=US load --autodetect --source_format=CSV $PROJECT:logdata.accesslog gs://cloud-training/gcpfci/access_log.csv
+    # Perform a query on the data using the BigQuery web UI
+    bq query "select int64_field_6 as hour, count(*) as hitcount from logdata.accesslog group by hour order by hour"
+    # Perform a query on the data using the bq command
+    bq query "select string_field_10 as request, count(*) as requestcount from logdata.accesslog group by request order by requestcount desc"

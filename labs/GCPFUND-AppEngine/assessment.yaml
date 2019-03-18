@@ -1,0 +1,23 @@
+---
+:name: 'GCP Fundamentals: Getting Started with App Engine'
+:description: 1. Deploy the Guestbook application to App Engine.
+:pass_percent: !ruby/object:BigDecimal 18:0.75e2
+:notify: false
+:score_completion_only: false
+:steps:
+- :title: Deploy the Guestbook application to App Engine
+  :points: 10
+  :max: 20
+  :interval: 10
+  :multi_region: false
+  :api: GCP
+  :services:
+  - AppengineV1
+  :method_name: step_one_check
+  :code: "def step_one_check(handles, points)\r\n  ae = handles[:AppengineV1]\r\n
+    \ ret_hash = { :done => false, :score => 0, :message => \"\" }\r\n  services =
+    ae.list_app_services(ae.project)\r\n  default_service = 'default'\r\n  app = ae.get_app(ae.project)\r\n
+    \ if app\r\n    versions = ae.list_app_service_versions(ae.project, default_service)&.versions
+    || []\r\n    if versions.count > 0\r\n      ret_hash = { :done => true, :score
+    => points, :message => \"Success: Deploy the Guestbook application to App Engine\"
+    }\r\n    end\r\n  end \r\n  return ret_hash\r\nend"

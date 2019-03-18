@@ -1,0 +1,231 @@
+<h1>Définir des données sur des locations dans Cloud SQL</h1>
+<h2>Aperçu</h2>
+<p>Dans cet atelier, vous allez apprendre à ajouter des données sur des locations dans Cloud SQL qui seront utilisées par un moteur de recommandations.</p>
+<h3><strong>Objectifs de l'atelier</strong></h3>
+<p>Au cours de cet atelier, vous allez apprendre à réaliser les opérations suivantes :</p>
+<ul>
+<li>
+<p>Créer une instance Cloud SQL</p>
+</li>
+<li>
+<p>Créer des tables de bases de données en important des fichiers .sql depuis Cloud Storage</p>
+</li>
+<li>
+<p>Insérer des valeurs dans les tables en important des fichiers .csv depuis Cloud Storage</p>
+</li>
+<li>
+<p>Autoriser l'accès à Cloud SQL</p>
+</li>
+<li>
+<p>Explorer les données sur des locations à l'aide d'instructions SQL à partir de Cloud Shell</p>
+</li>
+</ul>
+<h2>Présentation</h2>
+<p>Dans cet atelier, vous allez apprendre à ajouter des données sur des locations dans Cloud SQL qui seront utilisées par un moteur de recommandations. Le moteur de recommandations s'exécute sur Dataproc à l'aide de Spark ML. Vous le configurerez dans le prochain atelier.</p>
+<fragment path="/fragments/startqwiklab"></fragment>
+<h2>Configuration</h2>
+<fragment path="/fragments/cloudshell"></fragment>
+<h2>Tâche 1 : Accéder au code de l'atelier</h2>
+<p>Pour explorer le code de l'atelier dans Cloud Shell, procédez comme suit :</p>
+<ol>
+<li>
+<p>Dans Cloud Shell, saisissez la commande suivante :</p>
+<pre><code class="language-bash">git clone https://github.com/GoogleCloudPlatform/training-data-analyst
+</code></pre>
+<p>Le code est alors téléchargé depuis GitHub.</p>
+</li>
+<li>
+<p>Accédez au dossier correspondant à cet atelier :</p>
+<pre><code class="language-bash">cd training-data-analyst/CPB100/lab3a
+</code></pre>
+</li>
+<li>
+<p>Consultez le fichier de création de tables à l'aide de la commande <strong>less</strong> :</p>
+<pre><code class="language-bash">less cloudsql/table_creation.sql
+</code></pre>
+<p>La commande <strong>less</strong> vous permet d'afficher le fichier (appuyez sur la <strong>barre d'espace</strong> pour faire défiler la page vers le bas, sur la touche <strong>B</strong> pour accéder à la page précédente et sur la touche <strong>Q</strong> pour quitter).</p>
+</li>
+<li>
+<p>Indiquez les informations demandées (la première ligne est déjà renseignée) :</p>
+<table>
+<thead>
+<tr>
+<th align="left">Nom de la table</th>
+<th align="left">Colonnes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Hébergement</td>
+<td align="left">ID, titre, zone géographique, prix, nombre de chambres, note, type</td>
+</tr>
+<tr>
+<td align="left">________________ ?</td>
+<td align="left">________________ ?</td>
+</tr>
+<tr>
+<td align="left">________________ ?</td>
+<td align="left">________________ ?</td>
+</tr>
+</tbody>
+</table>
+<p>Quel lien ces données ont-elles avec l'utilisation d'un moteur de recommandations de locations ? Complétez les champs vides suivants :</p>
+<ul>
+<li>Lorsqu'un utilisateur attribue une note à un hébergement (quatre étoiles, par exemple), une entrée est ajoutée à la table _________________________.</li>
+<li>Les informations générales sur les hébergements, comme le nombre de chambres et la note moyenne, sont enregistrées dans la table ________________.</li>
+<li>Le rôle du moteur de recommandations est de renseigner la table __________________________ pour chaque utilisateur et hébergement. Les données renseignées correspondent alors à la note susceptible d'être attribuée à l'hébergement par l'utilisateur.</li>
+</ul>
+</li>
+<li>
+<p>Examinez les fichiers de données à l'aide de la commande <strong>head</strong> :</p>
+<pre><code class="language-bash">head cloudsql/*.csv
+</code></pre>
+<p>La commande <strong>head</strong> affiche les premières lignes de chaque fichier.</p>
+</li>
+</ol>
+<h2>Tâche 2 : Créer un bucket</h2>
+<ol>
+<li>
+<p>Dans la console GCP, accédez au <strong>menu de navigation</strong> (<img alt="8ab244f9cffa6198.png" src="img/mainmenu.png">).</p>
+</li>
+<li>
+<p>Cliquez sur <strong>Stockage</strong>.</p>
+</li>
+<li>
+<p>Cliquez sur <strong>Create bucket</strong> (Créer un compartiment).</p>
+</li>
+<li>
+<p>Dans le champ <strong>Nom</strong>. saisissez votre <strong>ID de projet</strong>. Sélectionnez <strong>Définir des autorisations au niveau de l'objet et du bucket</strong> en dessous de <strong>Modèle de contrôle des accès</strong>, puis cliquez sur <strong>Créer</strong>. Pour trouver votre <strong>ID de projet</strong>, cliquez sur le projet dans le menu supérieur de la console GCP et copiez la valeur sous <strong>ID</strong> pour le projet sélectionné.</p>
+<p>Notez le nom de votre bucket. Dans la suite de l'atelier, remplacez <code>&lt;NOM-BUCKET&gt;</code> par le nom unique de votre bucket.</p>
+</li>
+</ol>
+<h2>Tâche 3 : Organiser les fichiers .sql et .csv dans Cloud Storage</h2>
+<p>Pour organiser les fichiers de données et de définition de table dans Cloud Storage, et ainsi pouvoir les importer ultérieurement dans Cloud SQL, procédez comme suit :</p>
+<ol>
+<li>
+<p>Depuis Cloud Shell dans le répertoire <strong>lab3a</strong>, saisissez la commande suivante :</p>
+<pre><code class="language-bash">gsutil cp cloudsql/* gs://&lt;NOM-BUCKET&gt;/sql/
+</code></pre>
+<p>Veillez à spécifier le nom du bucket.</p>
+</li>
+<li>
+<p>Depuis la console GCP, dans la section <strong>Storage</strong> (Stockage), accédez à votre bucket et vérifiez que les fichiers <code>.sql</code> et <code>.csv</code> sont maintenant présents.</p>
+</li>
+</ol>
+<h2>Tâche 4 : Créer une instance Cloud SQL</h2>
+<ol>
+<li>
+<p>Dans la console GCP, cliquez sur <strong>SQL</strong> dans la section <Strong>Storage</Strong> (Stockage).</p>
+</li>
+<li>
+<p>Cliquez ensuite sur <strong>Create instance</strong> (Créer une instance).</p>
+</li>
+<li>
+<p><Strong>Choose MySQL</Strong>(Sélectionner MySQL). Cliquez sur <Strong>Next</Strong>(Suivant) si nécessaire. Cliquez sur <Strong>Configure MySQL Development</Strong>(Configurer Développement de MySQL) ou <Strong>Choose Second Generation</Strong>(Créer une instance de deuxième génération).</p>
+</li>
+<li>
+<p>Dans le champ <strong>Instance ID</strong> (ID d'instance), saisissez <strong>rentals</strong>.</p>
+<p><img src="img/ab1cdf08212ecadf.png" alt="ab1cdf08212ecadf.png"></p>
+</li>
+<li>
+<p>Faites défiler et spécifiez un mot de passe root. Avant d'oublier, notez le mot de passe root.</p>
+</li>
+<li>
+<p>Cliquez sur <strong>Create</strong> (Créer) pour créer l'instance. Le provisionnement de votre instance Cloud SQL devrait prendre environ une minute.</p>
+</li>
+</ol>
+<h2>Tâche 5 : Créer des tables</h2>
+<ol>
+<li>
+<p>Dans <strong>Cloud SQL</strong>, cliquez sur <strong>rentals</strong> pour afficher les informations sur l'instance.</p>
+</li>
+<li>
+<p>Cliquez sur <strong>Import</strong> (Importer) dans la barre de menu supérieure.</p>
+</li>
+<li>
+<p>Cliquez sur <strong>Browse</strong> (Parcourir). Une liste de buckets s'affiche alors. Cliquez sur le bucket que vous avez créé, puis accédez à <strong>sql</strong> et cliquez sur <strong>table_creation.sql</strong>.</p>
+</li>
+<li>
+<p>Cliquez sur <strong>Select</strong> (Sélectionner), puis sur <strong>Import</strong> (Importer).</p>
+</li>
+</ol>
+    <aside class="warning"><p>
+    <strong>Note</strong>: Si l'import de <code>.sql</code> ou <code>.csv</code> échoue au premier essai, relancez l'import.
+    </p>
+    </aside>
+<h2>Tâche 6 : Remplir des tables</h2>
+<ol>
+<li>
+<p>Pour importer des fichiers CSV depuis Cloud Storage, cliquez sur <strong>Import</strong> (Importer) dans le menu supérieur de la page de la console GCP contenant les détails de l'instance Cloud SQL.</p>
+</li>
+<li>
+<p>Cliquez sur <strong>Browse</strong> (Parcourir), accédez à <strong>sql</strong> dans le bucket que vous avez créé, puis sélectionnez <strong>accommodation.csv</strong>. Cliquez sur <strong>Select</strong> (Sélectionner).</p>
+</li>
+<li>
+<p>Dans le champ <strong>Database</strong> (Base de données), sélectionnez <strong>recommendation_spark</strong>.</p>
+</li>
+<li>
+<p>Dans le champ <strong>Table</strong>, saisissez <strong>Accommodation</strong>.</p>
+<p><img src="img/c899adb7fdb39f17.png" alt="c899adb7fdb39f17.png"></p>
+</li>
+<li>
+<p>Cliquez sur <strong>Import</strong> (Importer).</p>
+</li>
+<li>
+<p>Répétez le processus d'<strong>importation</strong> (étapes 1 à 5) pour le fichier nommé <strong>rating.csv</strong> en remplaçant le nom de la<strong></strong> table par <strong>Rating</strong>.</p>
+</li>
+</ol>
+<h2>Tâche 7 : Explorer Cloud SQL</h2>
+<ol>
+<li>
+<p>Pour explorer Cloud SQL, vous pouvez utiliser l'interface de ligne de commande MySQL. Depuis Cloud Shell, saisissez la ligne suivante:</p>
+<pre><code class="language-bash">wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
+chmod +x cloud_sql_proxy
+</code></pre>
+</li>
+<li>
+<p>Dans la console GCP, trouvez et copiez le Nom de connexion de l'instance SQL. Dans la commande suivante, remplacez <INSTANCE_CONNECTION_NAME> par cette valeur précédente et exécutez là.</p>
+<pre><code class="language-bash">./cloud_sql_proxy -instances=&lt;INSTANCE_CONNECTION_NAME&gt;=tcp:3306 &
+</code></pre>
+</li>
+<li>
+<p>Connectez vous à l'instance Cloud SQL en utilisant "mysql:"</p>
+<pre><code class="language-bash">mysql -u root -p --host 127.0.0.1
+</code></pre>
+</li>
+<li>
+<p>MySQL vous demandera alors le mot de passe racine. Saisissez le mot de passe lorsque vous y êtes invité.</p>
+</li>
+<li>
+<p>Dans Cloud Shell, à l'invite MySQL, saisissez la commande suite :</p>
+<pre><code class="language-bash">use recommendation_spark;
+</code></pre>
+<p>La base de données sera alors définie dans la session MySQL.</p>
+</li>
+<li>
+<p>Affichez la liste des tables que vous avez créées à l'aide de la commande ci-dessous. Elle vous sera utile pour éviter les erreurs de saisie dans la requête que vous effectuerez à l'étape 4.</p>
+<pre><code class="language-bash">show tables;
+</code></pre>
+</li>
+<li>
+<p>Vérifiez que les données ont bien été chargées.</p>
+<pre><code>select * from Rating;
+</code></pre>
+<p>Exemple de résultat :</p>
+<pre><code>1186 rows in set (0.03 sec)
+</code></pre>
+</li>
+<li>
+<p>Cherchez à présent si des offres intéressantes pour des séjours dans des châteaux sont disponibles.</p>
+<pre><code>select * from Accommodation where type = 'castle' and price &lt; 1500;
+</code></pre>
+<p>Tous les châteaux abordables ont reçu des notes médiocres.</p>
+</li>
+<li>
+<p>Vous pouvez quitter l'invite MySQL en saisissant <strong>exit</strong>.</p>
+</li>
+</ol>
+<fragment path="/fragments/endqwiklab"></fragment>
+<h5>Dernière mise à jour du manuel : 22 Février 2019</h5>
+<h5>Dernier test de l'atelier : 22 Février 2019</h5>
+<fragment path="/fragments/copyright"></fragment>

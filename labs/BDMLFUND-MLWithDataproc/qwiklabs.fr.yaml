@@ -1,0 +1,6 @@
+description: Au cours de cet atelier, vous allez entraîner un modèle de recommandations
+  basées sur le machine learning (précédentes notes attribuées par les utilisateurs)
+  à l'aide de Dataproc. Vous appliquerez ensuite ce modèle pour créer une liste de
+  recommandations pour chaque utilisateur figurant dans la base de données.
+title: 'Atelier 4 de la formation "Big Data & ML Fundamentals" : Machine learning
+  pour les recommandations avec Dataproc version 1.2'

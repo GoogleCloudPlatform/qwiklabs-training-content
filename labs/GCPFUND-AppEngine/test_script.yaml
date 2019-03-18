@@ -1,0 +1,20 @@
+name: GCP Fundamentals - Getting Started with App Engine - Test
+description: "The script creates a App Engine application and deploys it to App Engine."
+deployment_manager_time: 400
+run_regularly: true
+failure_alerts_only: true
+subscribers:
+ - training-qa-testers@google.com
+ - jrambo@google.com
+steps:
+ - command: |
+    # Enable required API
+    gcloud -q services enable appengine.googleapis.com appengineflex.googleapis.com datastore.googleapis.com
+    sudo apt-get update
+    sudo apt-get -y -qq install git
+    # Clone the source code repository for a sample application called guestbook
+    git clone https://github.com/GoogleCloudPlatform/appengine-guestbook-python
+    cd appengine-guestbook-python
+    # Deploy the Guestbook application to App Engine
+    gcloud app create --region=us-central
+    gcloud app deploy ./index.yaml ./app.yaml --project=$PROJECT --quiet

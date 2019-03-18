@@ -1,0 +1,73 @@
+<h1>Créer un ensemble de données pour le machine learning avec BigQuery</h1>
+<h2>Présentation</h2>
+<p>Dans cet atelier, vous allez utiliser BigQuery dans Datalab pour créer une structure de données Pandas de type "dataframe" qui servira de source de données d'entraînement pour effectuer la prédiction de la demande de taxis.</p>
+<h3><strong>Objectifs de l'atelier</strong></h3>
+<p>Au cours de cet atelier, vous allez apprendre à réaliser les opérations suivantes :</p>
+<ul>
+<li>
+<p>Explorer et visualiser des données avec BigQuery et Datalab</p>
+</li>
+<li>
+<p>Concevoir une structure de données Pandas de type "dataframe" qui servira d'ensemble de données d'entraînement pour le machine learning avec TensorFlow</p>
+</li>
+</ul>
+<h2>Introduction</h2>
+<p>Dans cet atelier et le suivant, vous allez concevoir un système de prévision du niveau de la demande de taxis en utilisant le machine learning. TensorFlow va vous permettre de prévoir votre demande de taxis au quotidien. Pour y parvenir, vous avez d'abord besoin d'un ensemble de données d'entraînement répertoriant les différents facteurs qui influent sur le niveau de demande de taxis (les "éléments d'entrée") ainsi que le niveau de demande réel (la "cible") des jours précédents. Vous allez vous servir de ces données pour former un réseau de neurones capable de prévoir le niveau de demande des jours à venir, à l'aide des éléments d'entrée dont il dispose.</p>
+<p>Dans cet atelier, vous allez utiliser BigQuery dans Datalab pour concevoir un ensemble de données que nous utiliserons dans le prochain atelier pour le machine learning.</p>
+<h2>Configuration</h2>
+<fragment path="/fragments/cloudshell"></fragment>
+<h2>Tâche 1 : Lancer Cloud Datalab</h2>
+<p>Pour lancer Cloud Datalab, procédez comme suit :</p>
+<ol>
+<li>
+<p>Dans <strong>Cloud Shell</strong>, saisissez ce qui suit :</p>
+<pre><code class="language-bash">datalab create bdmlvm --zone us-central1-a
+</code></pre>
+</li>
+</ol>
+<p>Le lancement de Datalab prend environ cinq minutes.</p>
+<p><code><strong>Remarque</strong> : Suivez les instructions à l'écran pour cette étape.</code></p>
+<p>Si vous ne connaissez pas Datalab, voici un aide-mémoire qui résume ses fonctionnalités principales :</p>
+<p><img src="img/369bf7e045b084ed.png" alt="369bf7e045b084ed.png"></p>
+<h2>Tâche 2 : Consulter le bloc-notes dans Cloud Datalab</h2>
+<p><strong>Remarque</strong> : Si nécessaire, patentiez jusqu'à la fin du lancement de Datalab. Vous saurez que l'outil est prêt à l'emploi lorsque l'instruction "Web Preview" (Aperçu sur le Web) s'affichera.</p>
+<ol>
+<li>
+<p>Cliquez sur l'icône <strong>Aperçu sur le Web</strong> (Aperçu sur le Web) dans l'angle supérieur droit du ruban Cloud Shell. Cliquez sur <strong>Modifier le port</strong> (Modifier le port). Choisissez le port <strong>8081</strong> dans la boîte de dialogue <strong>Modifier le port d'aperçu</strong> (Modifier le port d'aperçu), puis cliquez sur <strong>Modifier et prévisualiser</strong> (Modifier et prévisualiser).</p>
+<p><img src="img/ChangePort.png" alt="change_port.png"></p>
+<p><img src="img/ChangePreviewPort.png" alt="ChangePreviewPort.png"></p>
+<p><strong>Remarque</strong> : Vous restez connecté à votre instance Datalab tant que la commande datalab est active. Si l'instance Cloud Shell utilisée pour l'exécution de la commande datalab est fermée ou interrompue, vous êtes déconnecté de votre VM Cloud Datalab. Le cas échéant, essayez de vous reconnecter à l'aide de la commande <code>datalab connect bdmlvm</code> dans une nouvelle instance Cloud Shell.</p>
+</li>
+<li>
+<p>Dans l'angle supérieur droit du ruban <strong>Datalab</strong>, cliquez sur l'icône <strong>Open ungit</strong> (Ouvrir ungit).</p>
+<p><img src="img/fc5c4f63c40f83f.png" alt="fc5c4f63c40f83f.png"></p>
+</li>
+<li>
+<p>Dans la fenêtre Ungit, supprimez <strong>notebooks</strong> dans le nom <strong>/content/datalab/notebooks</strong> de manière à obtenir le nom de chemin suivant : <strong>/content/datalab</strong>. Appuyez ensuite sur <strong>Enter</strong>.</p>
+<p><img src="img/dbeb32393b0874e4.png" alt="dbeb32393b0874e4.png"></p>
+</li>
+<li>
+<p>Dans le panneau qui s'ouvre, indiquez à partir de quel dépôt GitHub effectuer le clonage. Pour ce faire, saisissez l'adresse suivante dans le champ <strong>Clone from</strong> (Cloner à partir de) :</p>
+<pre><code class="language-bash">https://github.com/GoogleCloudPlatform/training-data-analyst
+</code></pre>
+</li>
+<li>
+<p>Cliquez sur <strong>Clone repository</strong> (Cloner le dépôt).</p>
+</li>
+</ol>
+<h2>Tâche 3 : Ouvrir un bloc-notes Datalab</h2>
+<ol>
+<li>
+<p>Dans le navigateur Datalab, accédez à <strong>training-data-analyst &gt; CPB100 &gt; lab4a &gt; demandforecast.ipynb</strong>.</p>
+</li>
+<li>
+<p>Lisez le commentaire, cliquez sur <strong>Clear | Clear all Cells</strong> (Effacer | Effacer toutes les cellules), puis exécutez chaque extrait de code Python dans la cellule, un par un, à l'aide du raccourci clavier <strong>Shift+Enter</strong>.</p>
+</li>
+<li>
+<p>Arrêtez-vous lorsque vous arrivez à la section <strong>Machine Learning with Tensorflow</strong> (Machine Learning avec TensorFlow) : il s'agit de l'atelier suivant.</p>
+</li>
+</ol>
+<fragment path="/fragments/endqwiklab"></fragment>
+<h5>Dernière mise à jour du manuel : 09 octobre 2018</h5>
+<h5>Dernier test de l'atelier : 09 octobre 2018</h5>
+<fragment path="/fragments/copyright"></fragment>

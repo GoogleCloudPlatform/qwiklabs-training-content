@@ -1,0 +1,44 @@
+name: GCP Fundamentals - Getting Started with Deployment Manager and Stackdriver - Test
+description: "The script creates and updates a deployment manager deployment, and creates a CPU load on the VM instance."
+deployment_manager_time: 400
+run_regularly: true
+failure_alerts_only: true
+subscribers:
+ - training-qa-testers@google.com
+ - jrambo@google.com
+steps:
+ - command: |
+    # Enable the required APIs
+    gcloud -q services enable compute.googleapis.com deploymentmanager.googleapis.com runtimeconfig.googleapis.com monitoring.googleapis.com
+    # Create a Deployment Manager deployment
+    export MY_ZONE=us-central1-f
+    sudo cat >> mydeploy.yaml <<EOF
+    resources:
+    - name: my-vm
+      type: compute.v1.instance
+      properties:
+        zone: ZONE
+        machineType: zones/ZONE/machineTypes/n1-standard-1
+        metadata:
+          items:
+          - key: startup-script
+            value: "apt-get update"
+        disks:
+        - deviceName: boot
+          type: PERSISTENT
+          boot: true
+          autoDelete: true
+          initializeParams:
+            sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-9-stretch-v20170918
+        networkInterfaces:
+        - network: https://www.googleapis.com/compute/v1/projects/PROJECT_ID/global/networks/default
+          accessConfigs:
+          - name: External NAT
+            type: ONE_TO_ONE_NAT
+    EOF
+    sed -i -e 's/PROJECT_ID/'$PROJECT/ mydeploy.yaml
+    sed -i -e 's/ZONE/'$MY_ZONE/ mydeploy.yaml
+    gcloud deployment-manager deployments create my-first-depl --config mydeploy.yaml
+    # Update a Deployment Manager deployment
+    sed -i -e 's/value: "apt-get update"/value: "apt-get update; apt-get install nginx-light -y"/' mydeploy.yaml
+    gcloud deployment-manager deployments update my-first-depl --config mydeploy.yaml

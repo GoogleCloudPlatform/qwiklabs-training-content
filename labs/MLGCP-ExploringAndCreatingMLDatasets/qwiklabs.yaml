@@ -1,0 +1,26 @@
+---
+schema_version: 1
+title: '[ML on GCP C2] Exploring and Creating ML Datasets'
+description: In this lab, you will explore a dataset using BigQuery and Datalab, sample
+  the dataset and create training, validation, and testing datasets for local development
+  of TensorFlow models, and establish a benchmark for model performance.
+default_locale: en
+duration: 90
+max_duration: 120
+level: introductory
+tags: []
+credits: 0
+tagline:
+resources: []
+environment_resources:
+- type: gcp_user
+  id: user_0
+  permissions:
+  - project: project_0
+    roles:
+    - roles/editor
+    - roles/owner
+    - roles/appengine.appAdmin
+    - roles/bigquery.admin
+- type: gcp_project
+  id: project_0

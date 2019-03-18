@@ -1,0 +1,52 @@
+---
+:name: 'GCP Fundamentals: Getting Started with Deployment Manager and Stackdriver'
+:description: "1. Create a Deployment Manager deployment.\r\n2. Update a Deployment
+  Manager deployment."
+:pass_percent: !ruby/object:BigDecimal 18:0.75e2
+:notify: false
+:score_completion_only: false
+:steps:
+- :title: Create a Deployment Manager deployment
+  :points: 5
+  :max: 30
+  :interval: 10
+  :multi_region: false
+  :api: GCP
+  :services:
+  - DeploymentmanagerV2
+  :method_name: step_one_check
+  :code: "def step_one_check(handles, points)\r\n  dm = handles[:DeploymentmanagerV2]\r\n
+    \ ret_hash = { :done => false, :score => 0, :message => \"\" }\r\n  deployments
+    = dm.list_deployments &. deployments || []\r\n  desired_resource = 'my-vm'\r\n
+    \ desired_machine_type = 'machineTypes/n1-standard-1'\r\n  desired_network = 'networks/default'\r\n
+    \ checker = 0\r\n  \r\n  deployments.each do |deployment|\r\n    if !deployment.operation.error\r\n
+    \     deployment_name = deployment.name\r\n      resources = dm.list_resources(deployment_name)&.
+    resources || []\r\n      resources.each do |resource|\r\n        if resource.name.include?(desired_resource)
+    \r\n          if resource.final_properties.include?(desired_machine_type) && resource.final_properties.include?(desired_network)\r\n
+    \           checker += 1\r\n          end\r\n        end\r\n      end\r\n    end\r\n
+    \   if checker != 1\r\n      checker = 0\r\n    elsif checker == 1\r\n      ret_hash
+    = { :done => true, :score => points, :message => \"Success: Create a Deployment
+    Manager deployment\" }\r\n      break\r\n    end\r\n  end    \r\n  return ret_hash\r\nend"
+- :title: Update the Deployment Manager deployment
+  :points: 5
+  :max: 30
+  :interval: 10
+  :multi_region: false
+  :api: GCP
+  :services:
+  - DeploymentmanagerV2
+  :method_name: step_two_check
+  :code: "def step_two_check(handles, points)\r\n  dm = handles[:DeploymentmanagerV2]\r\n
+    \ ret_hash = { :done => false, :score => 0, :message => \"\" }\r\n  deployments
+    = dm.list_deployments &. deployments || []\r\n  desired_resource = 'my-vm'\r\n
+    \ desired_machine_type = 'machineTypes/n1-standard-1'\r\n  desired_network = 'networks/default'\r\n
+    \ desired_script = 'value: apt-get update; apt-get install nginx-light -y'\r\n
+    \ checker = 0\r\n  \r\n  deployments.each do |deployment|\r\n    if !deployment.operation.error\r\n
+    \     deployment_name = deployment.name\r\n      resources = dm.list_resources(deployment_name)&.
+    resources || []\r\n      resources.each do |resource|\r\n        if resource.name.include?(desired_resource)
+    \r\n          if resource.final_properties.include?(desired_machine_type) && resource.final_properties.include?(desired_network)\r\n
+    \            if resource.final_properties.include?(desired_script)\r\n              checker
+    += 1\r\n             end\r\n          end\r\n        end\r\n      end\r\n    end\r\n
+    \   if checker != 1\r\n      checker = 0\r\n    elsif checker == 1\r\n      ret_hash
+    = { :done => true, :score => points, :message => \"Success: Update the Deployment
+    Manager deployment\" }\r\n      break\r\n    end\r\n  end    \r\n  return ret_hash\r\nend"

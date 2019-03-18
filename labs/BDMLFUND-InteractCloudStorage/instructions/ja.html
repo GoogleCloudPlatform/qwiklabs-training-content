@@ -1,0 +1,180 @@
+<h1>Google Cloud Storage の操作</h1>
+<h2>概要</h2>
+<p>このラボでは、仮想マシンを起動してセキュリティを構成し、リモートでアクセスします。</p>
+<h3>学習内容</h3>
+<p>このラボの内容:</p>
+<ul>
+<li>
+<p>必要なアクセスとセキュリティを備えた Compute Engine インスタンスを作成する</p>
+</li>
+<li>
+<p>インスタンスに SSH 接続する</p>
+</li>
+<li>
+<p>ソフトウェア パッケージ Git（ソースコードのバージョン管理用）をインストールする</p>
+</li>
+<li>
+<p>Compute Engine インスタンスにデータを取り込む</p>
+</li>
+<li>
+<p>Compute Engine インスタンスでデータを変換する</p>
+</li>
+<li>
+<p>変換したデータを Cloud Storage に保存する</p>
+</li>
+<li>
+<p>Cloud Storage のデータをウェブに公開する</p>
+</li>
+</ul>
+<h2>はじめに</h2>
+<p>このラボでは、仮想マシンを起動して API アクセスを構成し、リモートでログインします。このような低レベルで Compute Engine インスタンスを操作するケースは少ないと思われますが、GCP の基礎がわかっていれば、トラブルシューティング時に役に立つ可能性があります。</p>
+<p>さらに、取り込み - 変換 - 公開のデータ処理パイプラインの手順を手動で実行します。</p>
+<ul>
+<li>Compute Engine インスタンスにデータを取り込む</li>
+<li>Compute Engine インスタンスでデータを変換する</li>
+<li>変換したデータを Cloud Storage に保存する</li>
+<li>Cloud Storage のデータをウェブに公開する</li>
+</ul>
+<p>アメリカ地質調査所（USGS）によって公開されているリアルタイムの地震データを使用します。</p>
+<fragment path="/fragments/startqwiklab"></fragment>
+<h2>タスク 1: 必要な API アクセスを備えた Compute Engine インスタンスを作成する</h2>
+<p>Compute Engine のインスタンスを作成するには:</p>
+<ol>
+<li>
+<p>GCP Console の[<strong>ナビゲーション メニュー</strong>]（<img alt="8ab244f9cffa6198.png" src="img/mainmenu.png">）で、[<strong>Compute Engine</strong>] をクリックします。</p>
+</li>
+<li>
+<p>[<strong>作成</strong>] をクリックして、フォームが読み込まれるまで待機します。表示されたフォーム上のオプションの一部を変更する必要があります。</p>
+</li>
+<li>
+<p>[<strong>名前</strong>] はデフォルト値のままにし、[<strong>リージョン</strong>] で <strong>us-central1</strong>、[<strong>ゾーン</strong>] で <strong>us-central1-a</strong> を選択します。</p>
+</li>
+<li>
+<p>[<strong>ID と API へのアクセス</strong>] の [<strong>アクセス スコープ</strong>] で、[<strong>すべての Cloud API に完全アクセス権を許可</strong>] を選択します。</p>
+<p><img src="img/8ab244f9cffa6198.png" alt="8ab244f9cffa6198.png"></p>
+</li>
+<li>
+<p>[<strong>作成</strong>] をクリックします。</p>
+</li>
+</ol>
+<h2>タスク 2: インスタンスに SSH 接続する</h2>
+<p>インスタンスが作成されたら、リモートで Secure Shell（SSH）を使用して Compute Engine インスタンスにアクセスできます。</p>
+<ol>
+<li>
+<p>作成したインスタンスが利用可能になったら、[<strong>SSH</strong>] をクリックします。</p>
+<p><img src="img/e4d9f3244db5ba38.png" alt="e4d9f3244db5ba38.png"></p>
+<p><strong>注</strong>: SSH キーは自動的に転送されるため、ブラウザから直接 SSH 接続することができ、追加のソフトウェアを必要としません。</p>
+</li>
+<li>
+<p>起動した Compute Engine インスタンスに関する情報を表示するには、SSH ターミナルで次のコマンドを入力します。</p>
+<pre><code class="language-bash">cat /proc/cpuinfo
+</code></pre>
+</li>
+</ol>
+<h2>タスク 3: ソフトウェアをインストールし、USGS データを取り込む</h2>
+<ol>
+<li>
+<p>SSH ターミナルで、次のコマンドを入力します。</p>
+<pre><code class="language-bash">sudo apt-get update
+sudo apt-get -y -qq install git
+</code></pre>
+</li>
+<li>
+<p>Git がインストールされたことを確認します。</p>
+<pre><code class="language-bash">git --version
+</code></pre>
+</li>
+<li>
+<p>コマンドラインで次のコマンドを入力します。</p>
+<pre><code class="language-bash">git clone https://github.com/GoogleCloudPlatform/training-data-analyst
+</code></pre>
+<p>これにより、github からコードがダウンロードされます。</p>
+<p><strong>注</strong>: git で認証エラーになった場合は、github URL に入力ミスがあることが考えられます。上記のコードをコピーして貼り付けてください。</p>
+</li>
+<li>
+<p>このラボに対応するフォルダに移動します。</p>
+<pre><code class="language-bash">cd training-data-analyst/CPB100/lab2b
+</code></pre>
+</li>
+<li>
+<p><strong>less</strong> コマンドを使用して、取り込みコードを確認します。</p>
+<pre><code class="language-bash">less ingest.sh
+</code></pre>
+<p><strong>less</strong> コマンドを使用すると、ファイルを表示できます（<strong>スペースキー</strong>を押すと下へスクロール、<strong>b</strong> で 1 ページ戻り、<strong>q</strong> で終了します）。</p>
+<p>プログラム <strong>ingest.sh</strong> により、過去 7 日間の地震情報のデータセットがアメリカ地質調査所からダウンロードされます。ファイルのダウンロード先は、ディスクと Cloud Storage のどちらですか。</p>
+</li>
+<li>
+<p>ingest コードを実行します。</p>
+<pre><code class="language-bash">bash ingest.sh
+</code></pre>
+</li>
+<li>
+<p>データがダウンロードされていることを確認します。</p>
+<pre><code class="language-bash">head earthquakes.csv
+</code></pre>
+<p><strong>head</strong> コマンドでは、そのファイルの先頭の数行が表示されます。</p>
+</li>
+</ol>
+<h2>タスク 4: データを変換する</h2>
+<p>Python プログラムを使用して、未加工データを地震活動のマップに変換します。</p>
+<p>変換コードについては、以下のノートブックで詳しく説明されています。
+<a href="https://github.com/GoogleCloudPlatform/datalab-samples/blob/master/basemap/earthquakes.ipynb">https://github.com/GoogleCloudPlatform/datalab-samples/blob/master/basemap/earthquakes.ipynb</a></p>
+<p>この説明を読むと、何をするための変換コードかを理解できます。このノートブック自体は Datalab に書き込まれています。Datalab は GCP プロダクトで、このコースで使用方法を学習します。</p>
+<ol>
+<li>
+<p>最初に、必要な Python パッケージを Compute Engine インスタンスにインストールします。SSH ターミナルで次のコマンドを入力します。</p>
+<pre><code class="language-bash">bash install_missing.sh
+</code></pre>
+</li>
+<li>
+<p>プロンプトが表示されたら、「<strong>Y</strong>」と入力して <strong>Enter</strong> キーを押します。</p>
+</li>
+<li>
+<p>変換コードを実行します。</p>
+<pre><code class="language-bash">python3 transform.py
+</code></pre>
+</li>
+<li>
+<p>ディレクトリの内容を表示すると、新しい画像ファイルがあるのがわかります。</p>
+<pre><code class="language-bash">ls -l
+</code></pre>
+</li>
+</ol>
+<h2>タスク 5: バケットを作成する</h2>
+<p>GCP Console を使用してバケットを作成します。</p>
+<ol>
+<li>
+<p>GCP Console の<strong>ナビゲーション メニュー</strong>（<img alt="8ab244f9cffa6198.png" src="img/mainmenu.png">）で、[<strong>Storage</strong>] をクリックします。</p>
+</li>
+<li>
+<p>[<strong>バケットを作成</strong>] をクリックします。</p>
+</li>
+<li>
+<p>[<strong>名前</strong>] に<strong>プロジェクト ID</strong> を入力し、[<strong>作成</strong>] をクリックします。<strong>プロジェクト ID</strong> を探すには、GCP Console のトップメニューでプロジェクトをクリックし、選択したプロジェクトの <strong>ID</strong> の値をコピーします。</p>
+<p>使用するバケットの名前をメモしておきます。このラボでは、これ以降 <code>&lt;YOUR-BUCKET&gt;</code> を自分のバケット名に置き換えてください。</p>
+</li>
+</ol>
+<h2>タスク 6: データを保存する</h2>
+<p>変換前と変換後のデータを Cloud Storage に保存するには:</p>
+<ol>
+<li>
+<p>SSH ターミナルで次のコマンドを入力します。<code>&lt;YOUR-BUCKET&gt;</code> は、前のタスクで作成したバケットの名前に置き換えてください。</p>
+<pre><code class="language-bash">gsutil cp earthquakes.* gs://&lt;YOUR-BUCKET&gt;/earthquakes/
+</code></pre>
+</li>
+<li>
+<p>GCP Console でバケット名をクリックすると、<strong>earthquakes</strong> フォルダに新しいファイルが 3 つ追加されたことがわかります（必要に応じて [<strong>バケットを更新</strong>] をクリックしてください）。</p>
+</li>
+</ol>
+<h2>タスク 7: Cloud Storage ファイルをウェブに公開する</h2>
+<p>次のコマンドを使用して Cloud Storage ファイルをウェブに公開します。</p>
+<pre><code class="language-bash">gsutil acl ch -u AllUsers:R gs://&lt;YOUR-BUCKET&gt;/earthquakes/*
+</code></pre>
+<p><strong>earthquakes.htm</strong> の [<strong>公開リンク</strong>] をクリックします。</p>
+<p><img src="img/public_access.png" alt="public_access.png"></p>
+<p>公開された Cloud Storage ファイルの URL は何ですか。バケット名とコンテンツとはどのような関連性がありますか。</p>
+<p>Cloud Storage にデータを公開する利点は何ですか。</p>
+<fragment path="/fragments/endqwiklab"></fragment>
+<h5>マニュアルの最終更新日: 2018 年 10 月 8 日</h5>
+<h5>ラボの最終テスト日: 2018 年 10 月 8 日</h5>
+<fragment path="/fragments/copyright"></fragment>

@@ -1,0 +1,73 @@
+<h1>ML-Dataset mit BigQuery erstellen</h1>
+<h2>Übersicht</h2>
+<p>In diesem Lab erstellen Sie mit BigQuery in Datalab einen Pandas-Dataframe, der als Trainings-Dataset für die Vorhersage des Taxibedarfs dient.</p>
+<h3><strong>Lerninhalte</strong></h3>
+<p>Aufgaben in diesem Lab:</p>
+<ul>
+<li>
+<p>Daten mit BigQuery und Datalab untersuchen und visualisieren</p>
+</li>
+<li>
+<p>Pandas-Dataframe erstellen, der als Trainings-Dataset für maschinelles Lernen mit TensorFlow dient</p>
+</li>
+</ul>
+<h2>Einführung</h2>
+<p>In diesem und dem nächsten Lab erstellen Sie ein System für die Bedarfsprognose und nutzen hierfür maschinelles Lernen. Sie möchten mit TensorFlow die tägliche Nachfrage nach Taxis vorhersagen. Dafür brauchen Sie zuerst ein Trainings-Dataset, das die Faktoren enthält, die den Taxibedarf beeinflussen ("Eingabemerkmale"), und die tatsächliche Nachfrage ("Ziel") an Tagen in der Vergangenheit umfasst. Anhand dieser Daten werden Sie ein neuronales Netzwerk trainieren, das dann auf Grundlage dieser Eingabemerkmale den Bedarf in der Zukunft vorhersagen kann.</p>
+<p>In diesem Lab erstellen Sie mit BigQuery in Datalab das Dataset, das Sie im nächsten Lab für das maschinelle Lernen brauchen.</p>
+<h2>Einrichtung</h2>
+<fragment path="/fragments/cloudshell"></fragment>
+<h2>Aufgabe 1: Cloud Datalab starten</h2>
+<p>So starten Sie Cloud Datalab:</p>
+<ol>
+<li>
+<p>Geben Sie Folgendes in <strong>Cloud Shell</strong> ein:</p>
+<pre><code class="language-bash">datalab create bdmlvm --zone us-central1-a
+</code></pre>
+</li>
+</ol>
+<p>Das Starten von Datalab dauert etwa 5 Minuten.</p>
+<p><code><strong>Hinweis</strong>: Folgen Sie bei diesem Vorgang den Eingabeaufforderungen.</code></p>
+<p>Wenn Sie bisher noch nicht mit Datalab gearbeitet haben, hier ein Diagramm mit den wichtigsten Funktionen:</p>
+<p><img src="img/369bf7e045b084ed.png" alt="369bf7e045b084ed.png"></p>
+<h2>Aufgabe 2: Notebook in Cloud Datalab auschecken</h2>
+<p><strong>Hinweis</strong>: Warten Sie gegebenenfalls, bis Datalab hochgefahren ist. Datalab ist bereit, wenn eine Nachricht angezeigt wird, die Sie zu einer Webvorschau auffordert.</p>
+<ol>
+<li>
+<p>Klicken Sie oben rechts in der Cloud Shell-Seitenleiste auf das Symbol <strong>Webvorschau</strong>. Klicken Sie auf <strong>Port ändern</strong>. Ändern Sie den Port über das Dialogfeld <strong>Vorschauport ändern</strong> in <strong>8081</strong> und klicken Sie dann auf <strong>Ändern und Vorschau</strong>.</p>
+<p><img src="img/ChangePort.png" alt="ChangePort.png"></p>
+<p><img src="img/ChangePreviewPort.png" alt="ChangePreviewPort.png"></p>
+<p><strong>Hinweis</strong>: Die Verbindung zur Datalab-Instanz bleibt so lange bestehen, wie der Befehl "datalab" aktiv ist. Wenn die zum Ausführen des Befehls "datalab" verwendete Cloud Shell-Anwendung geschlossen oder unterbrochen wurde, wird die Verbindung zu Ihrer Cloud Datalab-VM beendet. In diesem Fall können Sie die Verbindung in einer neuen Cloud Shell-Anwendung mit dem Befehl <code>datalab connect bdmlvm</code> wiederherstellen.</p>
+</li>
+<li>
+<p>Klicken Sie in <strong>Datalab</strong> auf der oberen rechten Seitenleiste auf das Symbol <strong>Open ungit</strong>.</p>
+<p><img src="img/fc5c4f63c40f83f.png" alt="fc5c4f63c40f83f.png"></p>
+</li>
+<li>
+<p>Markieren Sie im Ungit-Fenster den Text <strong>/content/datalab/notebooks</strong> und löschen Sie <strong>notebooks</strong>, sodass dort nur noch <strong>/content/datalab</strong> steht. Drücken Sie anschließend die <strong>ENTER</strong>.</p>
+<p><img src="img/dbeb32393b0874e4.png" alt="dbeb32393b0874e4.png"></p>
+</li>
+<li>
+<p>Geben Sie im neu angezeigten Feld als GitHub-Repository für den <strong>Clone from</strong> Folgendes ein:</p>
+<pre><code class="language-bash">https://github.com/GoogleCloudPlatform/training-data-analyst
+</code></pre>
+</li>
+<li>
+<p>Klicken Sie auf <strong>Clone repository</strong>.</p>
+</li>
+</ol>
+<h2>Aufgabe 3: Datalab-Notebook öffnen</h2>
+<ol>
+<li>
+<p>Rufen Sie im Datalab-Browser <strong>training-data-analyst &gt; CPB100 &gt; lab4a &gt; demandforecast.ipynb</strong> auf.</p>
+</li>
+<li>
+<p>Lesen Sie die Bemerkungen. Klicken Sie dann auf <strong>Clear | Clear all Cells</strong> und führen Sie Schritt für Schritt die Python-Snippets in den Zellen aus. Verwenden Sie die Tastenkombination <strong>Shift+Enter</strong>, um alle Teile des Codes auszuführen.</p>
+</li>
+<li>
+<p>Halten Sie an, wenn Sie den Abschnitt <strong>Machine Learning with Tensorflow</strong> erreichen. Dies ist das nächste Lab.</p>
+</li>
+</ol>
+<fragment path="/fragments/endqwiklab"></fragment>
+<h5>Handbuch zuletzt aktualisiert am 09. Oktober 2018</h5>
+<h5>Lab zuletzt getestet am 09. Oktober 2018</h5>
+<fragment path="/fragments/copyright"></fragment>

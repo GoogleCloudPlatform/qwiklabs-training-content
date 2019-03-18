@@ -1,0 +1,234 @@
+<h1>Maschinelles Lernen für Empfehlungen mit Dataproc</h1>
+<h2>Übersicht</h2>
+<p>In diesem Lab nutzen Sie mit Dataproc maschinelles Lernen für Empfehlungen.</p>
+<h3>Lerninhalte</h3>
+<p>In diesem Lab führen Sie die folgenden Aufgaben aus:</p>
+<ul>
+<li>
+<p>Dataproc starten</p>
+</li>
+<li>
+<p>SparkML-Jobs mit Dataproc ausführen</p>
+</li>
+</ul>
+<h2>Einführung</h2>
+<p>In diesem Lab trainieren Sie das Maschinenlernmodell für Empfehlungen mit Dataproc auf der Grundlage der bisherigen Nutzerbewertungen. Anschließend erstellen Sie durch Anwenden dieses Modells eine Liste mit Empfehlungen für jeden Nutzer in der Datenbank.</p>
+<p>In diesem Lab führen Sie die folgenden Aufgaben aus:</p>
+<ul>
+<li>Dataproc starten</li>
+<li>In PySpark geschriebenes ML-Modell trainieren und für das Erstellen von Produktempfehlungen anwenden</li>
+<li>Eingefügte Zeilen in Cloud SQL ansehen</li>
+</ul>
+<fragment path="/fragments/startqwiklab"></fragment>
+<h2>Einrichtung</h2>
+<fragment path="/fragments/cloudshell"></fragment>
+<h2>Aufgabe 1: Assets erstellen</h2>
+<p>Zuerst klonen wir das Code-Repository und erstellen einen Speicher-Bucket im GCP-Projekt sowie einige Staging-Dateien. Diese Schritte laufen analog zum vorherigen Lab ab.</p>
+<ol>
+<li>
+<p>Klonen Sie in Cloud Shell das Repository mit dem folgenden Befehl:</p>
+<pre><code class="language-bash">git clone https://github.com/GoogleCloudPlatform/training-data-analyst
+</code></pre>
+<p>Dadurch wird der Code aus GitHub heruntergeladen.</p>
+</li>
+<li>
+<p>Öffnen Sie den Ordner zu diesem Lab:</p>
+<pre><code class="language-bash">cd training-data-analyst/CPB100/lab3a
+</code></pre>
+</li>
+<li>
+<p>Klicken Sie in der GCP Console im <strong>Navigationsmenü</strong> (<img alt="mainmenu.png" src="img/mainmenu.png">) auf <strong>Storage</strong>.</p>
+</li>
+<li>
+<p>Klicken Sie auf <strong>Bucket erstellen</strong>.</p>
+</li>
+<li>
+<p>Geben Sie als <strong>Name</strong> Ihre <strong>Projekt-ID</strong> ein. Wählen Sie unter <strong>Zugriffssteuerungsmodell</strong> die Option <strong>Berechtigungen auf Objekt- und Bucket-Ebene festlegen</strong> aus, und klicken Sie auf <strong>Erstellen</strong>. Die <strong>Projekt-ID</strong> finden Sie, indem Sie im Menü oben in der GCP Console auf das Projekt klicken. Kopieren Sie dann den Wert unter <strong>ID</strong> für das ausgewählte Projekt.</p>
+</li>
+<li>
+<p>Bereiten Sie die Tabellendefinitions- und Datendateien in Cloud Storage auf, damit Sie sie später aus dem Verzeichnis "lab3a" von Cloud Shell in Cloud SQL importieren können. Geben Sie dazu Folgendes ein, wobei Sie <code>&lt;BUCKET-NAME&gt;</code> durch den Namen des neu erstellten Buckets ersetzen:</p>
+<pre><code class="language-bash">gsutil cp cloudsql/* gs://&lt;BUCKET-NAME&gt;/sql/
+</code></pre>
+</li>
+<li>
+<p>Öffnen Sie in der GCP Console unter "Storage" Ihren Bucket und überprüfen Sie, ob die SQL- und CSV-Dateien jetzt in Cloud Storage vorhanden sind.</p>
+</li>
+</ol>
+<h2>Aufgabe 2: Cloud SQL-Instanz erstellen</h2>
+<p>So erstellen Sie eine Cloud SQL-Instanz:</p>
+<ol>
+<li>
+<p>Klicken Sie in der GCP Console im <strong>Navigationsmenü</strong> (<img alt="mainmenu.png" src="img/mainmenu.png">) unter "Storage" auf <strong>SQL</strong>.</p>
+</li>
+<li>
+<p>Klicken Sie auf <strong>Instanz erstellen</strong>.</p>
+</li>
+<li>
+<p><strong>MySQL auswählen</strong>. Klicken Sie auf <strong>Weiter</strong> falls erforderlich. Klicken Sie auf <strong>MySQL-Entwicklung konfigurieren</strong> oder <strong>Zweite Generation auswählen</strong>.</p>
+</li>
+<li>
+<p>Geben Sie <strong>rentals</strong> als <strong>Instanz-ID</strong> ein.</p>
+<p><img src="img/ab1cdf08212ecadf.png" alt="ab1cdf08212ecadf.png"></p>
+</li>
+<li>
+<p>Scrollen Sie nach unten und legen Sie ein Root-Passwort fest.  Notieren Sie es sich. Achtung: Echte Passwörter sollten Sie sich aber nie irgendwo aufschreiben!</p>
+</li>
+<li>
+<p>Scrollen Sie nach unten und Klicken Sie auf <strong>Verbindung einstellen</strong> oder <strong>Konfigurationsoptionen einblenden</strong> zuerst (falls erforderlich) dann Klicken Sie auf <strong>Autorisierte Netzwerke</strong> > <strong>+ Netzwerk hinzufügen</strong>.</p>
+<p><img src="img/ad40ddbc1cfc0a81.png" alt="ad40ddbc1cfc0a81.png"></p>
+</li>
+<li>
+<p>Suchen Sie in Cloud Shell im Verzeichnis <strong>lab3a</strong> mit dem folgenden Befehl Ihre IP-Adresse:</p>
+<pre><code class="language-bash">bash ./find_my_ip.sh
+</code></pre>
+</li>
+<li>
+<p>Geben Sie im Dialogfeld <strong>Neues Netzwerk</strong> optional einen <strong>Name</strong> und die <strong>IP-Adresse</strong> aus dem vorherigen Schritt ein. Klicken Sie auf <strong>Fertig</strong>.</p>
+<p><img src="img/54d82efbc516bceb.png" alt="54d82efbc516bceb.png"></p>
+<p><strong>Hinweis</strong>: Wenn Sie Ihre Cloud Shell-VM aufgrund von Inaktivität verlieren, müssen Sie eine neue Cloud Shell-VM mit Cloud SQL autorisieren. Lab3a enthält dafür ein Skript namens <strong>authorize_cloudshell.sh</strong>, das Sie ausführen können.</p>
+</li>
+<li>
+<p>Klicken Sie auf <strong>Erstellen</strong>, um die Instanz zu erstellen. Die Bereitstellung Ihrer Cloud SQL-Instanz dauert etwa eine Minute.</p>
+</li>
+<li>
+<p>Notieren Sie sich die <strong>Öffentliche IP-Adresse</strong> Ihrer Cloud SQL-Instanz (sie wird im Browserfenster angezeigt).</p>
+</li>
+</ol>
+<h2>Aufgabe 3: Tabellen anlegen und mit Daten füllen</h2>
+<p>So importieren Sie Tabellendefinitionen aus Cloud Storage:</p>
+<ol>
+<li>
+<p>Klicken Sie auf <strong>rentals</strong>, um sich die Details Ihrer Cloud SQL-Instanz anzusehen.</p>
+</li>
+<li>
+<p>Klicken Sie auf <strong>Importieren</strong>.</p>
+</li>
+<li>
+<p>Klicken Sie auf <strong>Durchsuchen</strong>. Eine Liste mit Buckets wird angezeigt. Klicken Sie auf den Bucket, den Sie erstellt haben, und gehen Sie zu <strong>sql</strong>. Klicken Sie auf <strong>table_creation.sql</strong> und dann auf <strong>Auswählen</strong>.</p>
+</li>
+<li>
+<p>Klicken Sie auf <strong>Importieren</strong>.</p>
+</li>
+<aside class="warning"><p>
+<strong>Hinweis</strong>: Wenn der Import von <code>.sql</code> - oder <code>.csv</code> -Dateien beim ersten Versuch fehlschlägt, versuchen Sie es erneut.
+</p>
+</aside>
+<li>
+<p>Klicken Sie auf <strong>Importieren</strong>, um CSV-Dateien aus Cloud Storage zu importieren.</p>
+</li>
+<li>
+<p>Klicken Sie auf <strong>Durchsuchen</strong>, gehen Sie zu <strong>sql</strong>, klicken Sie auf <strong>accommodation.csv</strong> und dann auf <strong>Auswählen</strong>.</p>
+</li>
+<li>
+<p>Geben Sie in den restlichen Feldern des Dialogfelds folgende Daten an:</p>
+<p>Wählen Sie als <strong>Datenbank</strong> die Option <strong>recommendation_spark</strong> aus.</p>
+<p>Geben Sie für <strong>Tabelle</strong> die Bezeichnung <strong>Accommodation</strong> ein.</p>
+<p><img src="img/c899adb7fdb39f17.png" alt="c899adb7fdb39f17.png"></p>
+</li>
+<li>
+<p>Klicken Sie auf <strong>Importieren</strong>.</p>
+</li>
+<li>
+<p>Wiederholen Sie den Importvorgang (Schritte 5–8) für <strong>rating.csv</strong>, wobei Sie für <strong>Tabelle</strong> die Bezeichnung <strong>Rating</strong> eingeben.</p>
+</li>
+</ol>
+<h2>Aufgabe 4: Dataproc starten</h2>
+<p>Um Dataproc zu starten und so zu konfigurieren, dass jede Maschine im Cluster auf Cloud SQL zugreifen kann, gehen Sie so vor:</p>
+<ol>
+<li>
+<p>Klicken Sie in der GCP Console im <strong>Navigationsmenü</strong> (<img alt="mainmenu.pngg" src="img/mainmenu.png">) auf <strong>SQL</strong> und notieren Sie sich die Region Ihrer Cloud SQL-Instanz:</p>
+<p><img src="img/fc8f254ae64a75b4.png" alt="fc8f254ae64a75b4.png"></p>
+<p>Im oben gezeigten Beispiel ist die Region <code>us-central1</code>.</p>
+</li>
+<li>
+<p>Klicken Sie in der GCP Console im <strong>Navigationsmenü</strong> (<img alt="mainmenu.png" src="img/mainmenu.png">) auf <strong>Dataproc</strong> und nach Aufforderung auf <strong>API aktivieren</strong>. Klicken Sie nach der Aktivierung auf <strong>Cluster erstellen</strong>.</p>
+</li>
+<li>
+<p>Lassen Sie die "Region" wie es aussieht d.h "global", Ändern Sie die Zone in die Region, in der sich Ihre Cloud SQL-Instanz befindet. Dadurch ist die Netzwerklatenz zwischen dem Cluster und der Datenbank am geringsten.</p>
+</li>
+<li>
+<p>Wählen Sie für den <strong>Master-Knoten</strong> als <strong>Maschinentyp</strong> die Option <strong>2 vCPU (n1-standard-2)</strong> aus.</p>
+</li>
+<li>
+<p>Wählen Sie für die <strong>Worker-Knoten</strong> als <strong>Maschinentyp</strong> ebenfalls <strong>2 vCPU (n1-standard-2)</strong> aus.</p>
+</li>
+<li>
+<p>Lassen Sie alle anderen Standardwerte unverändert und klicken Sie auf <strong>Erstellen</strong>.  Es dauert bis zu zwei Minuten, Ihren Cluster bereitzustellen.</p>
+</li>
+<li>
+<p>Notieren Sie sich den <strong>Name</strong>, die <strong>Zone</strong> und die <strong>Gesamtzahl der Worker-Knoten</strong> in Ihrem Cluster.</p>
+</li>
+<li>
+<p>Öffnen Sie in Cloud Shell den Ordner für dieses Lab und gewähren Sie allen Dataproc-Knoten die Berechtigung, auf Ihre Cloud SQL-Instanz zuzugreifen. Ersetzen Sie dabei <code>&lt;Cluster-Name&gt;</code>, <code>&lt;Zone&gt;</code> und <code>&lt;Total-Worker-Nodes&gt;</code> durch die Werte, die Sie sich gerade notiert haben:</p>
+<pre><code class="language-bash">cd ~/training-data-analyst/CPB100/lab3b
+bash authorize_dataproc.sh &lt;Cluster-Name&gt; &lt;Zone&gt; &lt;Total-Worker-Nodes&gt;
+</code></pre>
+<p>Geben Sie bei entsprechender Aufforderung <strong>Y</strong> ein und drücken Sie die <strong>Enter</strong>, um fortzufahren.</p>
+</li>
+</ol>
+<h2>Aufgabe 5: ML-Modell ausführen</h2>
+<p>So erstellen Sie ein trainiertes Modell und wenden es für alle Nutzer im System an:</p>
+<ol>
+<li>
+<p>Bearbeiten Sie die Modelltrainingsdatei mit <code>nano</code>:</p>
+<pre><code class="language-bash">nano sparkml/train_and_apply.py
+</code></pre>
+</li>
+<li>
+<p>Ändern Sie die mit #CHANGE gekennzeichneten Felder am Anfang der Datei,  (mit der Pfeiltaste können Sie nach unten scrollen) so, dass sie Ihrer Cloud SQL-Konfiguration entsprechen. Diese Konfiguration haben Sie in den früheren Teilen dieses Labs notiert. Speichern Sie die Datei mit <strong>Ctrl+O</strong>. Drücken Sie anschließend die <strong>Enter</strong> und dann <strong>Ctrl+X</strong>, um die Datei zu schließen.</p>
+</li>
+<li>
+<p>Kopieren Sie diese Datei in Ihren Cloud Storage-Bucket. Verwenden Sie dazu diesen Befehl:</p>
+<pre><code class="language-bash">gsutil cp sparkml/tr*.py gs://&lt;bucket-name&gt;/
+</code></pre>
+</li>
+<li>
+<p>Klicken Sie in der Konsole unter <strong>Dataproc</strong> auf <strong>Jobs</strong>.</p>
+<p><img src="img/8508ce301ff584c3.png" alt="8508ce301ff584c3.png"></p>
+</li>
+<li>
+<p>Klicken Sie auf <strong>Job senden</strong>.</p>
+</li>
+<li>
+<p>Wählen Sie als <strong>Jobtyp</strong> die Option <strong>PySpark</strong> aus und geben Sie unter <strong>Hauptklasse oder JAR-Datei</strong> den Speicherort der Python-Datei an, die Sie in Ihren Bucket hochgeladen haben.</p>
+<p><img src="img/e15bafe2c29956b5.png" alt="e15bafe2c29956b5.png"></p>
+<p><code>gs://&lt;bucket-name&gt;/train_and_apply.py</code></p>
+</li>
+<li>
+<p>Klicken Sie auf <strong>Senden</strong> und warten Sie, bis sich der Jobstatus von <code>Aktiv</code> in <code>Erfolgreich</code> ändert. Dies kann bis zu fünf Minuten dauern.</p>
+<p><img src="img/af55e2a91617b1d5.png" alt="af55e2a91617b1d5.png"></p>
+<p>Wenn der Job als <code>Fehlgeschlagen</code> gemeldet wird, sehen Sie sich die Logs an, um die Fehler zu finden und zu beheben. Möglicherweise müssen Sie die geänderte Python-Datei noch einmal in Cloud Storage hochladen und den fehlgeschlagenen Job klonen und noch einmal senden.</p>
+</li>
+</ol>
+<h2>Aufgabe 6: Eingefügte Zeilen ansehen</h2>
+<ol>
+<li>
+<p>Klicken Sie in der GCP Console im <strong>Navigationsmenü</strong> (<img alt="mainmenu.png" src="img/mainmenu.png">) unter "Storage" auf <strong>SQL</strong>.</p>
+</li>
+<li>
+<p>Klicken Sie auf <strong>rentals</strong>, um sich die Details Ihrer Cloud SQL-Instanz anzusehen.</p>
+</li>
+<li>
+<p>Klicken Sie unter <strong>Mit dieser Instanz verbinden</strong> auf <strong>Über Cloud Shell verbinden</strong>. Ein neuer Cloud Shell-Tab wird angezeigt. Drücken Sie hier die <strong>Enter</strong>.</p>
+<p>Das Freischalten der IP-Adresse für eingehende Verbindungen dauert einige Minuten.</p>
+</li>
+<li>
+<p>Geben Sie bei entsprechender Aufforderung das von Ihnen festgelegte Root-Passwort ein und drücken Sie dann die <strong>Enter</strong>.</p>
+</li>
+<li>
+<p>Geben Sie in der mysql-Eingabeaufforderung Folgendes ein:</p>
+<pre><code class="language-bash">use recommendation_spark;
+</code></pre>
+<p>Damit wird die Datenbank in der mysql-Sitzung festgelegt.</p>
+</li>
+<li>
+<p>Suchen Sie die Empfehlungen für einen beliebigen Nutzer:</p>
+<pre><code class="language-bash">select r.userid, r.accoid, r.prediction, a.title, a.location, a.price, a.rooms, a.rating, a.type from Recommendation as r, Accommodation as a where r.accoid = a.id and r.userid = 10;
+</code></pre>
+<p>Dies sind die fünf Unterkünfte, die wir diesem Nutzer empfehlen würden. Die Qualität der Empfehlungen ist nicht besonders gut, da unser Datensatz so klein war. Wie Sie sehen, sind die prognostizierten Bewertungen nicht sehr hoch. In diesem Lab wird aber gezeigt, wie Sie Produktempfehlungen erstellen können.</p>
+</li>
+</ol>
+<fragment path="/fragments/endqwiklab"></fragment>
+<h5>Handbuch zuletzt aktualisiert am 25. Februar 2019</h5>
+<h5>Lab zuletzt getestet am 25. Februar 2019</h5>
+<fragment path="/fragments/copyright"></fragment>

@@ -1,0 +1,180 @@
+<h1>Interaktion mit Google Cloud Storage</h1>
+<h2>Übersicht</h2>
+<p>In diesem Lab stellen Sie eine virtuelle Maschine zusammen, konfigurieren ihre Sicherheitseinstellungen und greifen per Remote-Funktion darauf zu.</p>
+<h3>Lerninhalte</h3>
+<p>Aufgaben in diesem Lab:</p>
+<ul>
+<li>
+<p>Compute Engine-Instanz mit den notwendigen Zugriffs- und Sicherheitseinstellungen erstellen</p>
+</li>
+<li>
+<p>SSH-Verbindung mit der Instanz herstellen</p>
+</li>
+<li>
+<p>Softwarepaket Git (für die Quellcode-Versionskontrolle) installieren</p>
+</li>
+<li>
+<p>Daten in eine Compute Engine-Instanz aufnehmen</p>
+</li>
+<li>
+<p>Daten in der Compute Engine-Instanz transformieren</p>
+</li>
+<li>
+<p>Transformierte Daten in Cloud Storage speichern</p>
+</li>
+<li>
+<p>Cloud Storage-Daten im Web veröffentlichen</p>
+</li>
+</ul>
+<h2>Einführung</h2>
+<p>In diesem Lab stellen Sie eine virtuelle Maschine zusammen, konfigurieren den API-Zugriff und melden sich über die Remote-Funktion an.  Sie werden nur selten auf einer systemnahen Ebene wie dieser mit Compute Engine-Instanzen arbeiten, aber für die Fehlerbehebung kann es hilfreich sein, die Grundlagen der GCP zu kennen.</p>
+<p>Sie führen die folgenden Schritte einer Pipeline zur Aufnahme, Transformation und Veröffentlichung von Daten manuell aus:</p>
+<ul>
+<li>Daten in eine Compute Engine-Instanz aufnehmen</li>
+<li>Daten in der Compute Engine-Instanz transformieren</li>
+<li>Transformierte Daten in Cloud Storage speichern</li>
+<li>Cloud Storage-Daten im Web veröffentlichen</li>
+</ul>
+<p>Als Grundlage verwenden Sie vom United States Geological Survey (USGS) in Echtzeit veröffentlichte Daten über Erdbeben.</p>
+<fragment path="/fragments/startqwiklab"></fragment>
+<h2>Aufgabe 1: Compute Engine-Instanz mit dem notwendigen API-Zugriff erstellen</h2>
+<p>So erstellen Sie eine Compute Engine-Instanz:</p>
+<ol>
+<li>
+<p>Klicken Sie in der GCP Console im <strong>Navigationsmenü</strong> (<img alt="8ab244f9cffa6198.png" src="img/mainmenu.png">) auf <strong>Compute Engine</strong>.</p>
+</li>
+<li>
+<p>Klicken Sie auf <strong>Erstellen</strong> und warten Sie, bis ein Formular geladen wird. Darin müssen Sie einige Optionen ändern.</p>
+</li>
+<li>
+<p>Lassen Sie als <strong>Name</strong> den Standardwert stehen. Wählen Sie als <strong>Region</strong> die Option <strong>us-central1</strong> und als <strong>Zone</strong> die Option <strong>us-central1-a</strong> aus.</p>
+</li>
+<li>
+<p>Wählen Sie für <strong>Identität und API-Zugriff </strong>unter <strong>Zugriffsbereiche</strong> die Option <strong>Uneingeschränkten Zugriff auf alle Cloud-APIs zulassen</strong> aus:</p>
+<p><img src="img/8ab244f9cffa6198.png" alt="8ab244f9cffa6198.png"></p>
+</li>
+<li>
+<p>Klicken Sie auf <strong>Erstellen</strong>.</p>
+</li>
+</ol>
+<h2>Aufgabe 2: SSH-Verbindung mit der Instanz herstellen</h2>
+<p>Wenn die Instanz erstellt ist, können Sie mithilfe von Secure Shell (SSH) über die Remote-Funktion auf Ihre Compute Engine-Instanz zugreifen:</p>
+<ol>
+<li>
+<p>Klicken Sie auf <strong>SSH</strong>, sobald die neu erstellte Instanz verfügbar ist:</p>
+<p><img src="img/e4d9f3244db5ba38.png" alt="e4d9f3244db5ba38.png"></p>
+<p><strong>Hinweis</strong>: SSH-Schlüssel werden automatisch übertragen. So können Sie ohne zusätzliche Software direkt über Ihren Browser eine SSH-Verbindung herstellen.</p>
+</li>
+<li>
+<p>Geben Sie Folgendes im SSH-Terminal ein, um Informationen zur Compute Engine-Instanz zu erhalten, die Sie gerade gestartet haben:</p>
+<pre><code class="language-bash">cat /proc/cpuinfo
+</code></pre>
+</li>
+</ol>
+<h2>Aufgabe 3: Software installieren und USGS-Daten aufnehmen</h2>
+<ol>
+<li>
+<p>Geben Sie Folgendes im SSH-Terminal ein:</p>
+<pre><code class="language-bash">sudo apt-get update
+sudo apt-get -y -qq install git
+</code></pre>
+</li>
+<li>
+<p>Überprüfen Sie, ob Git jetzt installiert ist:</p>
+<pre><code class="language-bash">git --version
+</code></pre>
+</li>
+<li>
+<p>Geben Sie Folgendes in die Befehlszeile ein:</p>
+<pre><code class="language-bash">git clone https://github.com/GoogleCloudPlatform/training-data-analyst
+</code></pre>
+<p>Dadurch wird der Code aus GitHub heruntergeladen.</p>
+<p><strong>Hinweis:</strong> Falls ein Git-Autorisierungsfehler auftritt, enthält die GitHub-URL wahrscheinlich einen Tippfehler.  Kopieren Sie daher einfach den obigen Code und fügen Sie ihn ein.</p>
+</li>
+<li>
+<p>Öffnen Sie den Ordner zu diesem Lab:</p>
+<pre><code class="language-bash">cd training-data-analyst/CPB100/lab2b
+</code></pre>
+</li>
+<li>
+<p>Sehen Sie sich den Aufnahmecode mit <strong>less</strong> an:</p>
+<pre><code class="language-bash">less ingest.sh
+</code></pre>
+<p>Mit dem Befehl <strong>less</strong> können Sie sich die Datei ansehen. Drücken Sie die <strong>Leertaste</strong>, um nach unten zu scrollen, die Taste <strong>B</strong>, um wieder nach oben zurückzukehren, oder die Taste <strong>Q</strong>, um das Fenster zu schließen.</p>
+<p>Das Programm <strong>ingest.sh</strong> lädt ein Dataset mit Daten des US Geological Survey über die Erdbeben der vergangenen sieben Tage herunter.  Wo wird diese Datei gespeichert? Auf der Festplatte oder in Cloud Storage?</p>
+</li>
+<li>
+<p>Führen Sie den Aufnahmecode aus:</p>
+<pre><code class="language-bash">bash ingest.sh
+</code></pre>
+</li>
+<li>
+<p>Überprüfen Sie, ob Daten heruntergeladen wurden:</p>
+<pre><code class="language-bash">head earthquakes.csv
+</code></pre>
+<p>Mit dem Befehl <strong>head</strong> können Sie sich die ersten Zeilen der Datei anzeigen lassen.</p>
+</li>
+</ol>
+<h2>Aufgabe 4: Daten transformieren</h2>
+<p>Die Rohdaten werden Sie nun mit einem Python-Programm in eine Karte transformieren, in der die Erdbebentätigkeit dargestellt ist:</p>
+<p>Der Transformationscode wird im folgenden Notebook genauer erläutert:
+<a href="https://github.com/GoogleCloudPlatform/datalab-samples/blob/master/basemap/earthquakes.ipynb">https://github.com/GoogleCloudPlatform/datalab-samples/blob/master/basemap/earthquakes.ipynb</a></p>
+<p>Detaillierte Informationen zum Transformationscode finden Sie in der Beschreibung.  Das Notebook wurde in Datalab geschrieben, einem GCP-Produkt, das Sie in diesem Kurs näher kennenlernen werden.</p>
+<ol>
+<li>
+<p>Installieren Sie zuerst die notwendigen Python-Pakete auf der Compute Engine-Instanz. Geben Sie dazu in Ihrem SSH-Terminal Folgendes ein:</p>
+<pre><code class="language-bash">bash install_missing.sh
+</code></pre>
+</li>
+<li>
+<p>Geben Sie, wenn Sie dazu aufgefordert werden, <strong>Y</strong> ein und drücken Sie dann <strong>ENTER.</strong></p>
+</li>
+<li>
+<p>Führen Sie den Transformationscode aus:</p>
+<pre><code class="language-bash">python3 transform.py
+</code></pre>
+</li>
+<li>
+<p>Beim Auflisten des Verzeichnisinhalts sehen Sie eine neue Bilddatei:</p>
+<pre><code class="language-bash">ls -l
+</code></pre>
+</li>
+</ol>
+<h2>Aufgabe 5: Bucket erstellen</h2>
+<p>So erstellen Sie mit der GCP Console einen Bucket:</p>
+<ol>
+<li>
+<p>Klicken Sie in der GCP Console im <strong>Navigationsmenü</strong> (<img alt="8ab244f9cffa6198.png" src="img/mainmenu.png">) auf <strong>Storage</strong>.</p>
+</li>
+<li>
+<p>Klicken Sie auf <strong>Bucket erstellen</strong>.</p>
+</li>
+<li>
+<p>Geben Sie als <strong>Name</strong> Ihre <strong>Projekt-ID</strong> ein und klicken Sie auf <strong>Erstellen</strong>. Die <strong>Projekt-ID</strong> finden Sie, indem Sie im oberen Menü der GCP Console auf das Projekt klicken. Kopieren Sie dann den Wert unter <strong>ID</strong> für das ausgewählte Projekt.</p>
+<p>Notieren Sie sich den Namen des Buckets. Für den Rest dieses Labs ersetzen Sie <code>&lt;YOUR-BUCKET&gt;</code> durch Ihren Bucket-Namen.</p>
+</li>
+</ol>
+<h2>Aufgabe 6: Daten speichern</h2>
+<p>So speichern Sie die ursprünglichen und die transformierten Daten in Cloud Storage:</p>
+<ol>
+<li>
+<p>Geben Sie im SSH-Terminal Folgendes ein und ersetzen Sie <code>&lt;YOUR-BUCKET&gt;</code> durch den Namen des Buckets, den Sie in der vorherigen Aufgabe erstellt haben:</p>
+<pre><code class="language-bash">gsutil cp earthquakes.* gs://&lt;YOUR-BUCKET&gt;/earthquakes/
+</code></pre>
+</li>
+<li>
+<p>Klicken Sie in der GCP Console auf den Bucket-Namen und beachten Sie, dass sich im Ordner <strong>earthquakes</strong> drei neue Dateien befinden (klicken Sie ggf. auf <strong>Bucket Aktualisieren</strong>).</p>
+</li>
+</ol>
+<h2>Aufgabe 7: Cloud Storage-Dateien im Web veröffentlichen</h2>
+<p>Mit dem folgenden Befehl veröffentlichen Sie Cloud Storage-Dateien im Web:</p>
+<pre><code class="language-bash">gsutil acl ch -u AllUsers:R gs://&lt;YOUR-BUCKET&gt;/earthquakes/*
+</code></pre>
+<p>Für <strong>earthquakes.htm</strong> klicken Sie auf <strong>Öffentlicher Link</strong>.</p>
+<p><img src="img/public_access.png" alt="public_access.png"></p>
+<p>Wie lautet die URL der veröffentlichten Cloud Storage-Datei? In welcher Beziehung steht sie zum Bucket-Namen und zum Inhalt?</p>
+<p>Welche Vorteile hat die Veröffentlichung in Cloud Storage?</p>
+<fragment path="/fragments/endqwiklab"></fragment>
+<h5>Handbuch zuletzt aktualisiert am 08. Oktober 2018</h5>
+<h5>Lab zuletzt getestet am 08. Oktober 2018</h5>
+<fragment path="/fragments/copyright"></fragment>
