@@ -1,5 +1,0 @@
-description: Dans cet atelier, vous allez utiliser BigQuery dans Datalab pour créer
-  une structure de données Pandas de type "dataframe" qui servira de source de données
-  d'entraînement pour effectuer la prédiction de la demande de taxis.
-title: 'Formation "Big Data & ML Fundamentals", Atelier 5 : Créer un ensemble de données
-  pour le machine learning avec BigQuery v1.3'

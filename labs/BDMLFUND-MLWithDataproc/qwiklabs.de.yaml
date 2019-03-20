@@ -1,6 +1,0 @@
-description: In diesem Lab trainieren Sie das Maschinenlernmodell für Empfehlungen
-  mit Dataproc auf der Grundlage der bisherigen Nutzerbewertungen. Anschließend erstellen
-  Sie durch Anwenden dieses Modells eine Liste mit Empfehlungen für jeden Nutzer in
-  der Datenbank.
-title: 'Big Data &amp; ML Fundamentals Lab 4: Maschinelles Lernen für Empfehlungen
-  mit Dataproc v1.2'

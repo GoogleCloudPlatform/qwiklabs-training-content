@@ -1,6 +1,0 @@
-description: Neste laboratório, você usará o Dataproc para treinar o modelo de machine
-  learning de recomendações com base nas classificações anteriores dos usuários. Em
-  seguida, você aplicará esse modelo para criar uma lista de recomendações para cada
-  usuário no banco de dados.
-title: 'Princípios básicos de Big Data e Machine Learning Laboratório 4: ML de recomendações
-  com o Dataproc v1.2'

@@ -1,7 +1,0 @@
-description: Dans cet atelier, vous allez démarrer une machine virtuelle, configurer
-  ses paramètres d'accès aux API et vous y connecter à distance. Les instances Compute Engine
-  s'utilisent généralement à un niveau plus poussé, mais il peut être utile de connaître
-  les principes de base de GCP en cas de problèmes. Vous effectuerez ensuite manuellement
-  les étapes d'un pipeline de données de type "Ingestion, transformation, publication".
-title: 'Atelier 2 de la formation "Big Data & ML Fundamentals" : Interagir avec Google
-  Cloud Storage version 1.2'

@@ -1,7 +1,0 @@
-description: Neste laboratório, você aprenderá a provisionar uma máquina virtual,
-  configurar o acesso à API e fazer login na VM de maneira remota. Você raramente
-  trabalhará com instâncias do Compute Engine em um nível tão baixo. No entanto, entender
-  as noções básicas do GCP pode ser útil para resolver problemas. Depois, você realizará
-  manualmente as etapas de ingestão, transformação e publicação de dados de um canal.
-title: 'Princípios básicos de Big Data e aprendizado de máquina Laboratório 1: criar
-  uma instância do Compute Engine v1.2'
