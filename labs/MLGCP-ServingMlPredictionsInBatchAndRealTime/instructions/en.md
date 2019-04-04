@@ -245,7 +245,7 @@ Look at the left-side menu and you should see the __babyweight__ dataset. Click 
 
 ### __Step 9__
 
-Type the query below in the __Query editor__ to retrieve rows from your predictions table..
+Type the query below in the __Query editor__ to retrieve rows from your predictions table.
 
 ```sql
 SELECT * FROM babyweight.predictions LIMIT 1000

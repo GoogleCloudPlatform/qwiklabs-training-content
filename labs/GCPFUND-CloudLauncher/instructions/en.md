@@ -107,7 +107,7 @@ Click _Check my progress_ to verify the objective.
 
 ## Congratulations!
 
-In this lab you deployed a LAMP stack to a Compute Engine instance.
+In this lab, you deployed a LAMP stack to a Compute Engine instance.
 
 ![[/fragments/endqwiklab]]
 

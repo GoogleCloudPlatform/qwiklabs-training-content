@@ -27,7 +27,7 @@ In this lab, you learn how to perform the following tasks:
 
 3. On the __Create an Instance__ page, for __Name__, type ```bloghost```
 
-4. For __Region__ and __Zone__, select the zone assigned by Qwiklabs.
+4. For __Region__ and __Zone__, select the region and zone assigned by Qwiklabs.
 
 5. For __Machine type__, accept the default.
 
@@ -208,7 +208,7 @@ sudo nano index.php
 <body>
 <h1>Welcome to my excellent blog</h1>
 <?php
-$dbserver = "CLOUDSQLIP";
+ $dbserver = "CLOUDSQLIP";
 $dbuser = "blogdbuser";
 $dbpassword = "DBPASSWORD";
 // In a production blog, we would not store the MySQL

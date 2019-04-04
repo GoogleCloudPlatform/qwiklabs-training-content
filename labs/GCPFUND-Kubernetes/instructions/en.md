@@ -122,11 +122,10 @@ If either API is missing, click __Enable APIs and Services__ at the top. Search 
 
 9. Return to the web browser tab in which you viewed your cluster's external IP address. Refresh the page to confirm that the nginx web server is still responding.
 
-![[/fragments/endqwiklab]]
 
 ## Congratulations!
 
-In this lab you configured a Kubernetes cluster in Kubernetes Engine. You populated the cluster with several pods containing an application, exposed the application, and scaled the application.
+In this lab, you configured a Kubernetes cluster in Kubernetes Engine. You populated the cluster with several pods containing an application, exposed the application, and scaled the application.
 
 ![[/fragments/endqwiklab]]
 

@@ -87,7 +87,7 @@ Click _Check my progress_ to verify the objective.
 
 ## Task 4: Connect between VM instances
 
-1. On the __Navigation menu__ (![Navigation menu](img/menu.png)), click __Compute Engine \> VM instances__.
+1. In the __Navigation menu__ (![Navigation menu](img/menu.png)), click __Compute Engine \> VM instances__.
 
     You will see the two VM instances you created, each in a different zone.
 
@@ -156,7 +156,7 @@ Click _Check my progress_ to verify the objective.
 
     The response will again be the HTML source of the web server's home page, including your line of custom text.
 
-13. On the __Navigation menu__ (![Navigation menu](img/menu.png)), click __Compute Engine \> VM instances__.
+13. In the __Navigation menu__ (![Navigation menu](img/menu.png)), click __Compute Engine \> VM instances__.
 
 14. Copy the External IP address for __my-vm-1__ and paste it into the address bar of a new browser tab. You will see your web server's home page, including your custom text.
 

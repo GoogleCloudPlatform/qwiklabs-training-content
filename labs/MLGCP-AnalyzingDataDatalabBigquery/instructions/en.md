@@ -1,4 +1,4 @@
-# [ML on GCP C1] Analyzing data using Datalab and BigQuery
+# Analyzing data using Datalab and BigQuery
 
 
 ## Overview

@@ -29,7 +29,7 @@ Make a note of whether your assigned region is closer to the United States or to
 
 ## Task 2: Load data from Cloud Storage into BigQuery
 
-1. In the Console, on the __Navigation menu__(![Navigation menu](img/menu.png)), click __BigQuery__ then click __Done__.
+1. In the Console, on the __Navigation menu__ (![Navigation menu](img/menu.png)), click __BigQuery__ then click __Done__.
 
 2. Create a new dataset within your project by selecting your project in the Resources section, then clicking on __CREATE DATASET__ on the right.
 
