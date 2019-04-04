@@ -21,13 +21,13 @@ In this lab, you learn how to perform the following tasks:
 
 ## Task 2: Deploy a web server VM instance
 
-1. In the GCP Console, on the __Navigation menu__(![Navigation menu](img/menu.png)), click __Compute Engine__ \> __VM instances__.
+1. In the GCP Console, on the __Navigation menu__ (![Navigation menu](img/menu.png)), click __Compute Engine__ \> __VM instances__.
 
 2. Click __Create__.
 
 3. On the __Create an Instance__ page, for __Name__, type ```bloghost```
 
-4. For __Zone__, select the zone assigned by Qwiklabs.
+4. For __Region__ and __Zone__, select the zone assigned by Qwiklabs.
 
 5. For __Machine type__, accept the default.
 
@@ -51,7 +51,7 @@ service apache2 restart
 
 11. Leave the remaining settings as their defaults, and click __Create__.
 
-<aside class="special"><p>The VM instance can take about two minutes to launch and be fully available for use.</p></aside>
+<aside class="special"><p>Instance can take about two minutes to launch and be fully available for use.</p></aside>
 
 12. On the __VM instances__ page, copy the __bloghost__ VM instance's internal and external IP addresses to a text editor for use later in this lab.
 
@@ -68,7 +68,7 @@ All Cloud Storage bucket names must be globally unique. To ensure that your buck
 
 Cloud Storage buckets can be associated with either a region or a multi-region location: __US__, __EU__, or __ASIA__. In this activity, you associate your bucket with the multi-region closest to the region and zone that Qwiklabs or your instructor assigned you to.
 
-1. On the __Google Cloud Platform__ menu, click __Activate Google Cloud Shell__ ![Activate Cloud Shell](img/devshell.png). If a dialog box appears, click __Start Cloud Shell__.
+1. On the __Google Cloud Platform__ menu, click __Activate Cloud Shell__ ![Activate Cloud Shell](img/devshell.png). If a dialog box appears, click __Start Cloud Shell__.
 
 2. For convenience, enter your chosen location into an environment variable called LOCATION. Enter one of these commands:
 
@@ -121,53 +121,47 @@ Click _Check my progress_ to verify the objective.
 
 ## Task 4: Create the Cloud SQL instance
 
-1. In the GCP Console, on the __Navigation menu__(![Navigation menu](img/menu.png)), click __Storage__ \> __SQL__.
+1. In the GCP Console, on the __Navigation menu__ (![Navigation menu](img/menu.png)), click __Storage__ \> __SQL__.
 
 2. Click __Create instance__.
 
 3. For __Choose a database engine__, select __MySQL__.
 
-4. Click __Next__.
-
-5. Click __Choose Second Generation__.
-
-<aside class="special"><p>If you are prompted to choose among <b>MySQL Development</b>, <b>MySQL Staging</b>, and <b>MySQL Production</b>, choose <b>MySQL Staging</b>.</p></aside>
-
-6. For __Instance ID,__ type __blog-db__, and for __Root password__ type a password of your choice.
+4. For __Instance ID__, type __blog-db__, and for __Root password__ type a password of your choice.
 
 <aside class="special"><p>Choose a password that you remember. There's no need to obscure the password because you'll use mechanisms to connect that aren't open access to everyone.</p></aside>
 
-7. Set the region and zone assigned by Qwiklabs.
+5. Set the region and zone assigned by Qwiklabs.
 
 <aside class="special"><p>This is the same region and zone into which you launched the <b>bloghost</b> instance. The best performance is achieved by placing the client and the database close to each other.</p></aside>
 
-8. Click __Create__.
+6. Click __Create__.
 
 <aside class="special"><p>Wait for the instance to finish deploying. It will take a few minutes.</p></aside>
 
-9. Click on the name of the instance, __blog-db__, to open its details page.
+7. Click on the name of the instance, __blog-db__, to open its details page.
 
-10. From the SQL instances details page, copy the __Public IP address__ for your SQL instance to a text editor for use later in this lab.
+8. From the SQL instances details page, copy the __Public IP address__ for your SQL instance to a text editor for use later in this lab.
 
-11. Click the __Users__ tab, and then click __Create user account__.
+9. Click the __Users__ tab, and then click __Create user account__.
 
-12. For __User name__, type ```blogdbuser```
+10. For __User name__, type ```blogdbuser```
 
-13. For __Password__, type a password of your choice. Make a note of it.
+11. For __Password__, type a password of your choice. Make a note of it.
 
-14. Click __Create__ to create the user account in the database.
+12. Click __Create__ to create the user account in the database.
 
 <aside class="special"><p>Wait for the user to be created.</p></aside>
 
-15. Click the __Connections__ tab, and then click __Add network__.
+13. Click the __Connections__ tab, and then click __Add network__.
 
 <aside class="special"><p>If you are offered the choice between a <b>Private IP</b> connection and a <b>Public IP</b> connection, choose <b>Public IP</b> for purposes of this lab. The <b>Private IP</b> feature is in beta at the time this lab was written.</p></aside>
 
 <aside class="special"><p>The <b>Add network</b> button may be grayed out if the user account creation is not yet complete.</p></aside>
 
-16. For __Name__, type ```web front end```
+14. For __Name__, type ```web front end```
 
-17. For __Network__, type the external IP address of your __bloghost__ VM instance, followed by ```/32```
+15. For __Network__, type the external IP address of your __bloghost__ VM instance, followed by ```/32```
 
 The result will look like this:
 
@@ -177,9 +171,9 @@ The result will look like this:
 
 <aside class="special"><p>Be sure to use the external IP address of your VM instance followed by /32. Do not use the VM instance's internal IP address. Do not use the sample IP address shown here.</p></aside>
 
-18. Click __Done__ to finish defining the authorized network.
+16. Click __Done__ to finish defining the authorized network.
 
-19. Click __Save__ to save the configuration change.
+17. Click __Save__ to save the configuration change.
 
 
 Click _Check my progress_ to verify the objective.
@@ -190,7 +184,7 @@ Click _Check my progress_ to verify the objective.
 
 ## Task 5: Configure an application in a Compute Engine instance to use Cloud SQL
 
-1. On the __Navigation menu__(![Navigation menu](img/menu.png)), click __Compute Engine__ \> __VM instances__.
+1. On the __Navigation menu__ (![Navigation menu](img/menu.png)), click __Compute Engine__ \> __VM instances__.
 
 2. In the VM instances list, click __SSH__ in the row for your VM instance __bloghost__.
 
@@ -266,7 +260,7 @@ Database connection failed: ...
 sudo nano index.php
 ```
 
-11. In the __nano__ text editor, replace ```CLOUDSQLIP``` with the Cloud SQL instance IP address that you noted above. Leave the quotation marks around the value in place.
+11. In the __nano__ text editor, replace ```CLOUDSQLIP``` with the Cloud SQL instance Public IP address that you noted above. Leave the quotation marks around the value in place.
 
 12. In the __nano__ text editor, replace ```DBPASSWORD``` with the Cloud SQL database password that you defined above. Leave the quotation marks around the value in place.
 
@@ -349,6 +343,20 @@ sudo service apache2 restart
 13. Return to the web browser tab in which you opened your __bloghost__ VM instance's external IP address. When you load the page, its content now includes a banner image.
 
 
+
+## Congratulations!
+
+In this lab, you configured a Cloud SQL instance and connected an application in a Compute Engine instance to it. You also worked with a Cloud Storage bucket.
+
+
+![[/fragments/endqwiklab]]
+
+##### Manual Last Updated: April 01, 2019
+
+##### Lab Last Tested: April 01, 2019
+
+![[/fragments/copyright]]
+
 ## More resources
 
 Read the  [Google Cloud Platform documentation on Cloud SQL](https://cloud.google.com/sql/docs/).
@@ -356,15 +364,3 @@ Read the  [Google Cloud Platform documentation on Cloud SQL](https://cloud.googl
 Read the  [Google Cloud Platform documentation on Cloud Storage](https://cloud.google.com/storage/docs/).
 
 ![827b33e18db55754.png](img/827b33e18db55754.png)
-
-## Congratulations!
-
-In this lab you configured a Cloud SQL instance and connected an application in a Compute Engine instance to it. You also worked with a Cloud Storage bucket.
-
-![[/fragments/endqwiklab]]
-
-Last Tested Date: March 11 2019
-
-Last Updated Date: March 11 2019
-
-![[/fragments/copyright]]

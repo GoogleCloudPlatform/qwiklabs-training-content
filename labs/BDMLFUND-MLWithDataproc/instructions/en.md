@@ -75,17 +75,19 @@ To create Cloud SQL instance:
 
 5. Scroll down and specify a root password.  Before you forget, note down the root password (please don't do this in real-life!).
 
-6. Scroll down and click __Set Connectivity__ or Click __Show configuration options__ first (if required), then click __Authorize networks__ > __+Add network__.
+6. For __Zone__ select __us-central1-a__.
+
+7. Scroll down and click __Set Connectivity__ or Click __Show configuration options__ first (if required), then click __Authorize networks__ > __+Add network__.
 
     ![ad40ddbc1cfc0a81.png](img/ad40ddbc1cfc0a81.png)
 
-7. In Cloud Shell, make sure you're in the __lab3a__ directory and find your IP address by typing:
+8. In Cloud Shell, make sure you're in the __lab3a__ directory and find your IP address by typing:
 
     ```
     bash ./find_my_ip.sh
     ```
 
-8. In the __Add Network__ dialog, enter an optional __Name__ and enter the __IP address__ output in the previous step. Click __Done__.
+9. In the __Add Network__ dialog, enter an optional __Name__ and enter the __IP address__ output in the previous step. Click __Done__.
 
     ![54d82efbc516bceb.png](img/54d82efbc516bceb.png)
 
@@ -94,9 +96,9 @@ To create Cloud SQL instance:
   </p>
   </aside>
 
-9. Click __Create__ to create the instance. It will take a minute or so for your Cloud SQL instance to be provisioned.
+10. Click __Create__ to create the instance. It will take a minute or so for your Cloud SQL instance to be provisioned.
 
-10. Note down the __Public IP address__ of your Cloud SQL instance (from the browser window).
+11. Note down the __Public IP address__ of your Cloud SQL instance (from the browser window).
 
 ## Task 3: Create and populate tables
 
@@ -143,7 +145,7 @@ To launch Dataproc and configure it so that each of the machines in the cluster 
 
 2. In the GCP Console, on the __Navigation menu__ (![mainmenu.png](img/mainmenu.png)), click __Dataproc__ and click __Enable API__ if prompted. Once enabled, click __Create cluster__.
 
-3. Leave the __Region__ as it is i.e. __global__, change the __Zone__ to be in the same region as your Cloud SQL instance. This will minimize network latency between the cluster and the database.
+3. Leave the __Region__ as it is i.e. __global__ and change the __Zone__ to __us-central1-a__ (in the same zone as your Cloud SQL instance). This will minimize network latency between the cluster and the database.
 
 4. For __Master node__, for __Machine type__, select __2 vCPU (n1-standard-2)__.
 
@@ -228,8 +230,8 @@ To create a trained model and apply it to all the users in the system:
 
     ![[/fragments/endqwiklab]]
 
-    Last Manual Updated Date: 2019-03-06
+    Last Manual Updated Date: 2019-03-22
 
-    Last Tested Date: 2019-03-06
+    Last Tested Date: 2019-03-22
 
     ![[/fragments/copyright]]

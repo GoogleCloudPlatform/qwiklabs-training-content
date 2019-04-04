@@ -2,7 +2,7 @@
 
 ## Overview
 
-In this lab you use Cloud Marketplace to quickly and easily deploy a LAMP stack on a Compute Engine instance. The Bitnami LAMP Stack provides a complete web development environment for Linux that can be launched in one click.
+In this lab, you use Cloud Marketplace to quickly and easily deploy a LAMP stack on a Compute Engine instance. The Bitnami LAMP Stack provides a complete web development environment for Linux that can be launched in one click.
 
 | Component | Role |
 |---|---|
@@ -27,7 +27,7 @@ In this lab, you learn how to perform the following task:
 
 ## Task 2: Use Cloud Marketplace to deploy a LAMP stack
 
-1. In the GCP Console, on the __Navigation menu__(![Navigation menu](img/menu.png)), click __Marketplace__.
+1. In the GCP Console, on the __Navigation menu__ (![Navigation menu](img/menu.png)), click __Marketplace__.
 
 2. In the search bar, type ```LAMP```
 
@@ -83,7 +83,7 @@ Click _Check my progress_ to verify the objective.
     ```
     sudo cp docs/phpinfo.php apache2/htdocs
     ```
-    
+
     The phpinfo.php script displays your PHP configuration. It is often used to verify a new PHP installation.
 
 6. To close the SSH window, execute the following command:
@@ -104,11 +104,18 @@ Click _Check my progress_ to verify the objective.
 
 9. Close the phpinfo tab.
 
-![[/fragments/endqwiklab]]
 
 ## Congratulations!
 
 In this lab you deployed a LAMP stack to a Compute Engine instance.
+
+![[/fragments/endqwiklab]]
+
+##### Manual Last Updated: April 01, 2019
+
+##### Lab Last Tested: April 01, 2019
+
+![[/fragments/copyright]]
 
 ## More resources
 

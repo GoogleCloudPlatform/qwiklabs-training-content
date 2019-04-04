@@ -1,4 +1,4 @@
-# Analyzing data using Datalab and BigQuery
+# [ML on GCP C1] Analyzing data using Datalab and BigQuery
 
 
 ## Overview
@@ -42,7 +42,7 @@ To invoke a BigQuery query:
 
 __Step 1__
 
-Navigate to the BigQuery console by selecting __BigQuery__ from the top-left-corner (![7a91d354499ac9f1.png](img/7a91d354499ac9f1.png)) menu.
+Navigate to the BigQuery console by selecting __Navigation menu > BigQuery__ from the top-left-corner (![7a91d354499ac9f1.png](img/7a91d354499ac9f1.png)) menu and click __Done__.
 
 
 __Step 2__
@@ -71,7 +71,7 @@ ORDER BY
   departure_delay ASC
 ```
 
-Click __Run Query__.
+Click __Run__.
 
 What is the median arrival delay for flights left 35 minutes early?
 
@@ -207,8 +207,8 @@ In this lab, you learned how to carry out data exploration of large datasets usi
 
 ![[/fragments/endqwiklab]]
 
-Last Tested Date: 12-03-2018
+##### Manual Last Updated: Marc 27, 2019
 
-Last Updated Date: 12-03-2018
+##### Lab Last Tested: March 27, 2019
 
 ![[/fragments/copyright]]

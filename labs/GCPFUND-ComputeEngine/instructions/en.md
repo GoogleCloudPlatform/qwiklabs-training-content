@@ -18,10 +18,10 @@ In this lab, you will learn how to perform the following tasks:
 
 ## Task 2: Create a virtual machine using  the GCP Console
 
-1. On the __Navigation menu__(![Navigation menu](img/menu.png)), click __Compute Engine__ \> __VM instances__.
+1. In the __Navigation menu__ (![Navigation menu](img/menu.png)), click __Compute Engine__ \> __VM instances__.
 2. Click __Create__.
 3. On the __Create an Instance__ page, for __Name__, type ```my-vm-1```
-4. For __Zone__, select the zone assigned by Qwiklabs.
+4. For __Region__ and __Zone__, select the region and zone assigned by Qwiklabs.
 5. For __Machine type__, accept the default.
 6. For __Boot disk__, if the __Image__ shown is not __Debian GNU/Linux 9 (stretch)__, click __Change__ and select __Debian GNU/Linux 9 (stretch)__.
 7. Leave the defaults for Identity and API access unmodified.
@@ -29,7 +29,9 @@ In this lab, you will learn how to perform the following tasks:
 9. Leave all other defaults unmodified.
 10. To create and launch the VM, click __Create__.
 
-    Note: The VM can take about two minutes to launch and be fully available for use.
+  <aside class="special">
+    <p><strong>Note</strong>: The VM can take about two minutes to launch and be fully available for use.</p>
+  </aside>
 
 
 Click _Check my progress_ to verify the objective.
@@ -39,7 +41,7 @@ Click _Check my progress_ to verify the objective.
 
 ## Task 3: Create a virtual machine using  the gcloud command line
 
-1. On the __Google Cloud Platform__ menu, click __Activate Google Cloud Shell__ ![Activate Cloud Shell](img/devshell.png). If a dialog box appears, click __Start Cloud Shell__.
+1. On the __Google Cloud Platform__ menu, click __Activate Cloud Shell__ ![Activate Cloud Shell](img/devshell.png). If a dialog box appears, click __Start Cloud Shell__.
 2. To display a list of all the zones in the region to which Qwiklabs assigned you, enter this partial command ```gcloud compute zones list | grep``` followed by the region that Qwiklabs or your instructor assigned you to.
 
     Your completed command will look like this:
@@ -67,7 +69,10 @@ Click _Check my progress_ to verify the objective.
     --subnet "default"
     ```
 
-    The VM can take about two minutes to launch and be fully available for use.
+    <aside class="special">
+      <p><strong>Note</strong>: The VM can take about two minutes to launch and be fully available for use.</p>
+    </aside>
+
 
 6. To close the Cloud Shell, execute the following command:
 
@@ -79,10 +84,10 @@ Click _Check my progress_ to verify the objective.
   <ql-activity-tracking step=2>
        Create a virtual machine using the gcloud command line
   </ql-activity-tracking>
-  
+
 ## Task 4: Connect between VM instances
 
-1. On the __Navigation menu__(![Navigation menu](img/menu.png)), click __Compute Engine \> VM instances__.
+1. On the __Navigation menu__ (![Navigation menu](img/menu.png)), click __Compute Engine \> VM instances__.
 
     You will see the two VM instances you created, each in a different zone.
 
@@ -151,17 +156,24 @@ Click _Check my progress_ to verify the objective.
 
     The response will again be the HTML source of the web server's home page, including your line of custom text.
 
-13. On the __Navigation menu__(![Navigation menu](img/menu.png)), click __Compute Engine \> VM instances__.
+13. On the __Navigation menu__ (![Navigation menu](img/menu.png)), click __Compute Engine \> VM instances__.
 
 14. Copy the External IP address for __my-vm-1__ and paste it into the address bar of a new browser tab. You will see your web server's home page, including your custom text.
 
 <aside class="special"><p>If you forgot to click <b>Allow HTTP traffic</b> when you created the <b>my-vm-1</b> VM instance, your attempt to reach your web server's home page will fail. You can add a <a href="https://cloud.google.com/vpc/docs/firewalls" target="_blank">firewall rule</a> to allow inbound traffic to your instances, although this topic is out of scope for this course.</p></aside>
 
-![[/fragments/endqwiklab]]
 
 ## Congratulations!
 
 In this lab, you created virtual machine (VM) instances in two different zones and connected to them using ping, ssh, and HTTP.
+
+![[/fragments/endqwiklab]]
+
+##### Manual Last Updated: April 01, 2019
+
+##### Lab Last Tested: April 01, 2019
+
+![[/fragments/copyright]]
 
 ## More Resources
 

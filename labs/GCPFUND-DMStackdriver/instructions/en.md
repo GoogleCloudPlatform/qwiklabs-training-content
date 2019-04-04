@@ -20,11 +20,11 @@ In this lab, you will learn how to perform the following tasks:
 
 1.  Make a note of the name of your GCP project. This value is shown in the top bar of the Google Cloud Platform Console. It will be of the form `qwiklabs-gcp-` followed by hexadecimal numbers.
 
-2. In the GCP Console, on the __Navigation menu__(![Navigation menu](img/menu.png)), click __APIs & services__.
+2. In the GCP Console, on the __Navigation menu__ (![Navigation menu](img/menu.png)), click __APIs & services__.
 
 3. Scroll down in the list of enabled APIs, and confirm that these APIs are enabled:
 
-* Google Cloud Deployment Manager v2 API
+* Cloud Deployment Manager v2 API
 * Cloud Runtime Configuration API
 * Stackdriver Monitoring API
 
@@ -32,7 +32,7 @@ In this lab, you will learn how to perform the following tasks:
 
 ## Task 3: Create a Deployment Manager deployment
 
-1. On the __Google Cloud Platform__ menu, click __Activate Google Cloud Shell__ (![Activate Cloud Shell](img/devshell.png)). If a dialog box appears, click __Start Cloud Shell__.
+1. On the __Google Cloud Platform__ menu, click __Activate Cloud Shell__ (![Activate Cloud Shell](img/devshell.png)). If a dialog box appears, click __Start Cloud Shell__.
 
 2. For your convenience, place the zone that Qwiklabs assigned you to into an environment variable called MY_ZONE. At the Cloud Shell prompt, type this partial command:
 
@@ -69,9 +69,9 @@ In this lab, you will learn how to perform the following tasks:
   ```
   cat mydeploy.yaml
   ```
-  
+
   The file will look something like this:
-  
+
  <pre>
   resources:
   - name: my-vm
@@ -107,7 +107,7 @@ In this lab, you will learn how to perform the following tasks:
 
   When the deployment operation is complete, the __gcloud__ command displays a list of the resources named in the template and their current state.
 
-8. Confirm that the deployment was successful. In the GCP Console, on the __Navigation menu__(![Navigation menu](img/menu.png)), click __Compute Engine \> VM instances__.
+8. Confirm that the deployment was successful. In the GCP Console, on the __Navigation menu__ (![Navigation menu](img/menu.png)), click __Compute Engine \> VM instances__.
   You will see that a VM instance called __my-vm__ has been created, as specified by the template.
 
 9. Click on the VM instance's name to open its VM instance details screen.
@@ -117,9 +117,9 @@ In this lab, you will learn how to perform the following tasks:
 
 Click _Check my progress_ to verify the objective.
   <ql-activity-tracking step=1>
-       Create a Deployment Manager deployment 
+       Create a Deployment Manager deployment
   </ql-activity-tracking>
-  
+
 
 ## Task 4: Update a Deployment Manager deployment
 
@@ -149,7 +149,7 @@ Click _Check my progress_ to verify the objective.
 
   Wait for the __gcloud__ command to display a message confirming that the update operation was completed successfully.
 
-6. In the GCP console, on the __Navigation menu__(![Navigation menu](img/menu.png)), click __Compute Engine \> VM instances__.
+6. In the GCP console, on the __Navigation menu__ (![Navigation menu](img/menu.png)), click __Compute Engine \> VM instances__.
 
 7. Click on the __my-vm__ VM instance's name to open its __VM instance details__ pane.
 
@@ -157,13 +157,13 @@ Click _Check my progress_ to verify the objective.
 
 Click _Check my progress_ to verify the objective.
   <ql-activity-tracking step=2>
-       Update the Deployment Manager deployment 
+       Update the Deployment Manager deployment
   </ql-activity-tracking>
 
 
 ## Task 5: View the Load on a VM using Stackdriver
 
-1. In the GCP Console, on the __Navigation menu__(![Navigation menu](img/menu.png)), click __Compute Engine__ \> __VM instances__.
+1. In the GCP Console, on the __Navigation menu__ (![Navigation menu](img/menu.png)), click __Compute Engine__ \> __VM instances__.
 
 2. To open a command prompt on the __my-vm__ instance, click __SSH__ in its row in the __VM instances__ list.
 
@@ -177,9 +177,9 @@ Click _Check my progress_ to verify the objective.
 
   <aside class="special"><p>Leave the window containing your ssh open while you proceed with the lab.</p></aside>
 
-4. In the GCP Console, on the __Navigation menu__(![Navigation menu](img/menu.png)), under __Stackdriver__, click __Monitoring__.
+4. In the GCP Console, on the __Navigation menu__ (![Navigation menu](img/menu.png)), under __Stackdriver__, click __Monitoring__.
 
-5. On the Stackdriver welcome screen (__Create your free Stackdriver account__), confirm that the Google Cloud Platform project shown is the one to which Qwiklabs assigned you. Click __Create account__.
+5. On the Stackdriver welcome screen (__Create your free Stackdriver account__), confirm that the Google Cloud Platform project shown is the one to which Qwiklabs assigned you. Click __Create Workspace__.
 
 6. In the __Add Google Cloud Platform projects to monitor__ dialog, confirm that the GCP project that Qwiklabs created for you is shown as selected, and then click __Continue__.
 
@@ -196,7 +196,7 @@ After a short delay, Stackdriver displays the message __Finished initial collect
 
 11. On the __Welcome to Stackdriver Monitoring__ screen, click __Resources \> Metrics Explorer__.
 
-12. In the __Metrics Explorer__'s __Metric__ pane, select the resource type __GCE VM instance__ and the metric __CPU usage__. 
+12. In the __Metrics Explorer__'s __Metric__ pane, select the resource type __GCE VM instance__ and the metric __CPU usage__.
 
   In the resulting graph, notice that CPU usage increased sharply a few minutes ago.
 
@@ -206,11 +206,18 @@ After a short delay, Stackdriver displays the message __Finished initial collect
   kill %1
   ```
 
-![[/fragments/endqwiklab]]
 
 ## Congratulations!
 
 In this lab, you used Deployment Manager to create a deployment using a template, and you demonstrated Deployment Manager's ability to bring a deployment into compliance with a template. You also used Stackdriver to view resource consumption on a VM instance.
+
+![[/fragments/endqwiklab]]
+
+##### Manual Last Updated: April 01, 2019
+
+##### Lab Last Tested: April 01, 2019
+
+![[/fragments/copyright]]
 
 ## More resources
 
