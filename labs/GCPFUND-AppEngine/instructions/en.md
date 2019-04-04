@@ -18,7 +18,7 @@ In this lab, you learn how to perform the following tasks:
 
 ## Task 2: Preview an App Engine application
 
-1. On the __Google Cloud Platform__ menu, click __Activate Google Cloud Shell__ ![Activate Cloud Shell](img/devshell.png). If a dialog box appears, click __Start Cloud Shell__.
+1. On the __Google Cloud Platform__ menu, click __Activate Cloud Shell__ ![Activate Cloud Shell](img/devshell.png). If a dialog box appears, click __Start Cloud Shell__.
 
 2. Clone the source code repository for a sample application called __guestbook__:
 
@@ -64,7 +64,7 @@ In this lab, you learn how to perform the following tasks:
 
 8. Try the application. Make a few entries in Guestbook, and click __Sign Guestbook__ after each entry.
 
-9. Using the Google Cloud Platform Console, verify that the app is not deployed. In the GCP Console, on the __Navigation menu__(![Navigation menu](img/menu.png)), click __App Engine__ \> __Dashboard__. Notice that no resources are deployed. The App Engine development environment is local.
+9. Using the Google Cloud Platform Console, verify that the app is not deployed. In the GCP Console, on the __Navigation menu__ (![Navigation menu](img/menu.png)), click __App Engine__ \> __Dashboard__. Notice that no resources are deployed. The App Engine development environment is local.
 
 10. To end the test, return to Cloud Shell and press __Ctrl+C__ to abort the __App Engine development server__.
 
@@ -80,9 +80,9 @@ Ensure that you are at the Cloud Shell command prompt.
 
     If prompted for a region, enter the number corresponding to the region that Qwiklabs or your instructor assigned you to. Type __Y__ to continue.
 
-2. To view the startup of the application, in the GCP Console, on the __Navigation menu__(![Navigation menu](img/menu.png)), click __App Engine__ \> __Dashboard__.
+2. To view the startup of the application, in the GCP Console, on the __Navigation menu__ (![Navigation menu](img/menu.png)), click __App Engine__ \> __Dashboard__.
 
-    You may see messages about "creating your first app". Keep refreshing the page periodically until the application is deployed.
+    You may see messages about "Create Application". Keep refreshing the page periodically until the application is deployed.
 
 3. View the application on the Internet. The URL for your application is ```https://PROJECT_ID.appspot.com/``` where `PROJECT_ID` represents your Google Cloud Platform project name. This URL is listed in two places:
 
@@ -100,7 +100,7 @@ Congratulations!  You created your first application using App Engine, including
 
 Click _Check my progress_ to verify the objective.
   <ql-activity-tracking step=1>
-        Deploy the Guestbook application to App Engine 
+        Deploy the Guestbook application to App Engine
   </ql-activity-tracking>
 
 ## Task 4: Disable the application
@@ -109,7 +109,7 @@ App Engine offers no option to __undeploy__ an application. After an application
 
 However, you can disable the application, which causes it to no longer be accessible to users.
 
-1. In the GCP Console, on the __Navigation menu__(![Navigation menu](img/menu.png)), click  __App Engine__ \> __Settings__.
+1. In the GCP Console, on the __Navigation menu__ (![Navigation menu](img/menu.png)), click  __App Engine__ \> __Settings__.
 
 2. Click __Disable application__.
 
@@ -119,11 +119,18 @@ However, you can disable the application, which causes it to no longer be access
 
     ![f17c85cf862ddae3.png](img/f17c85cf862ddae3.png)
 
-![[/fragments/endqwiklab]]
 
 ## Congratulations!
 
 In this lab, you deployed an application on App Engine.
+
+![[/fragments/endqwiklab]]
+
+##### Manual Last Updated: April 01, 2019
+
+##### Lab Last Tested: April 01, 2019
+
+![[/fragments/copyright]]
 
 ## More resources
 

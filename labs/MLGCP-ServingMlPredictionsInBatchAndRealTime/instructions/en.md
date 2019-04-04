@@ -124,7 +124,11 @@ Click on the  (![b8ebde10ba2a31c8.png](img/b8ebde10ba2a31c8.png)) icon on the to
 
 ### __Step 2__
 
-After it is launched, navigate to the following directory: `training-data-analyst/courses/machine_learning/deepdive/06_structured/labs/serving/pipeline/src/main/java/com/google/cloud/training/mlongcp`
+After it is launched, navigate to the following directory:
+
+```bash
+training-data-analyst/courses/machine_learning/deepdive/06_structured/labs/serving/pipeline/src/main/java/com/google/cloud/training/mlongcp
+```
 
 ### __Step 3__
 
@@ -146,7 +150,11 @@ This section of the lab calls AddPrediction.java that takes a batch input (one b
 
 ### __Step 1__
 
-In your Cloud Shell code editor, open the `AddPrediction.java` file available in the following directory: `training-data-analyst/courses/machine_learning/deepdive/06_structured/labs/serving/pipeline/src/main/java/com/google/cloud/training/mlongcp`
+In your Cloud Shell code editor, open the `AddPrediction.java` file available in the following directory:
+
+```bash
+training-data-analyst/courses/machine_learning/deepdive/06_structured/labs/serving/pipeline/src/main/java/com/google/cloud/training/mlongcp
+```
 
 ### __Step 2__
 
@@ -225,43 +233,42 @@ You may go back into Dataflow jobs on your GCP Console, click on your job and se
 
 Lets verify that the predicted weights have been recorded into the BigQuery table.
 
-![[/fragments/openbigquery]]
+![[/fragments/bigquery-new-ui]]
 
-Look at the left-side menu and you should see the __babyweight__ dataset. Click on the blue down arrow to its left, and you should see your __prediction__ table.
+Look at the left-side menu and you should see the __babyweight__ dataset. Click on the blue down arrow to its left, and you should see your __predictions__ table.
 
 <aside class="special"><p><strong>Note: </strong>If you do not see the prediction table, give it a few minutes as the pipeline has allowed-latency and that can add some delay.</p>
 </aside>
 
-![1fbaf89946687844.png](img/1fbaf89946687844.png)
+![predictions_table.png](img/predictions_table.png)
+
 
 ### __Step 9__
 
-Click on __Compose Query__ button on the top left. Type the query below in the query box to retrieve rows from your predictions table. Click on __Show Options__ button under the query box and uncheck __Use Legacy SQL__ and click __Hide Options__.
+Type the query below in the __Query editor__ to retrieve rows from your predictions table..
 
 ```sql
 SELECT * FROM babyweight.predictions LIMIT 1000
 ```
 
-![ccb8ccce73d92d9a.png](img/ccb8ccce73d92d9a.png)
-
 
 ### __Step 10__
 
-Click the __Run Query__ button. Notice the __predicted\_weights\_pounds__ column in the result.
+Click the __Run__ button. Notice the __predicted\_weights\_pounds__ column in the result.
 
-![549d498cd2f18780.png](img/549d498cd2f18780.png)
+![query_result.png](img/query_result.png)
 
 ### __Step 11__
 
-Remember that your pipeline is still running. You can publish additional messages from your example.csv.gz and verify new rows added to your predictions table. Once you are satisfied, you may stop the Dataflow pipeline by going into your Dataflow Jobs page, and click the __Stop job__ button on the right side Job summary window.
+Remember that your pipeline is still running. You can publish additional messages from your example.csv.gz and verify new rows added to your predictions table. Once you are satisfied, you may stop the Dataflow pipeline by going into your Dataflow Jobs page, and click the __Stop job__ button on the right side Job summary window. Select __Drain__ and click __Stop Job__.
 
 ![69cff18d8f1cabb5.png](img/69cff18d8f1cabb5.png)
 
 
 ![[/fragments/endqwiklab]]
 
-Last Tested Date: 12-11-2018
+##### Manual Last Updated: March 22, 2019
 
-Last Updated Date: 12-12-2018
+##### Lab Last Tested: March 22, 2019
 
 ![[/fragments/copyright]]

@@ -2,7 +2,7 @@
 
 ## Overview
 
-In this lab you create a Kubernetes Engine cluster containing several containers, each containing a web server. You place a load balancer in front of the cluster and view its contents.
+In this lab, you create a Kubernetes Engine cluster containing several containers, each containing a web server. You place a load balancer in front of the cluster and view its contents.
 
 ## Objectives
 
@@ -19,18 +19,18 @@ In this lab, you learn how to perform the following tasks:
 
 1. Make a note of the name of your GCP project. This value is shown in the top bar of the Google Cloud Platform Console. It will be of the form `qwiklabs-gcp-` followed by hexadecimal numbers.
 
-2. In the GCP Console, on the __Navigation menu__(![Navigation menu](img/menu.png)), click __APIs & Services__.
+2. In the GCP Console, on the __Navigation menu__ (![Navigation menu](img/menu.png)), click __APIs & Services__.
 
 3. Scroll down in the list of enabled APIs, and confirm that both of these APIs are enabled:
 
-*  Google Kubernetes Engine API
-*  Google Container Registry API
+*  Kubernetes Engine API
+*  Container Registry API
 
 If either API is missing, click __Enable APIs and Services__ at the top. Search for the above APIs by name and enable each for your current project. (You noted the name of your GCP project above.)
 
 ## Task 3: Start a Kubernetes Engine cluster
 
-1. On the __Google Cloud Platform__ menu, click __Activate Google Cloud Shell__ (![Activate Cloud Shell](img/devshell.png)). If a dialog box appears, click __Start Cloud Shell__.
+1. On the __Google Cloud Platform__ menu, click __Activate Cloud Shell__ (![Activate Cloud Shell](img/devshell.png)). If a dialog box appears, click __Start Cloud Shell__.
 
 2. For convenience, place the zone that Qwiklabs assigned you to into an environment variable called MY_ZONE. At the Cloud Shell prompt, type this partial command:
 
@@ -38,7 +38,7 @@ If either API is missing, click __Enable APIs and Services__ at the top. Search 
     export MY_ZONE=
     ```
 
-    followed by the zone that Qwiklabs assigned you to. Your complete command will look like this:
+    followed by the zone that Qwiklabs assigned to you. Your complete command will look like this:
 
     ```
     export MY_ZONE=us-central1-a
@@ -60,7 +60,7 @@ If either API is missing, click __Enable APIs and Services__ at the top. Search 
 
     The ```gcloud container clusters create``` command automatically authenticated ```kubectl``` for you.
 
-5. View your running nodes in the GCP Console. On the __Navigation menu__(![Navigation menu](img/menu.png)), click __Compute Engine \> VM Instances__.
+5. View your running nodes in the GCP Console. On the __Navigation menu__ (![Navigation menu](img/menu.png)), click __Compute Engine \> VM Instances__.
 
     Your Kubernetes cluster is now ready for use.
 
@@ -127,6 +127,14 @@ If either API is missing, click __Enable APIs and Services__ at the top. Search 
 ## Congratulations!
 
 In this lab you configured a Kubernetes cluster in Kubernetes Engine. You populated the cluster with several pods containing an application, exposed the application, and scaled the application.
+
+![[/fragments/endqwiklab]]
+
+##### Manual Last Updated: April 01, 2019
+
+##### Lab Last Tested: April 01, 2019
+
+![[/fragments/copyright]]
 
 ## More resources
 
