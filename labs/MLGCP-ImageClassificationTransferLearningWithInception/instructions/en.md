@@ -40,25 +40,20 @@ In transfer learning, when you build a new model to classify your original datas
 
 ## Requirements
 
-### Step 1: Enable the Cloud Machine Learning Engine API
 
-Enable the Cloud Machine Learning Engine API.
+### Step 1: Confirm that needed APIs are enable.
 
-* Navigate to  [https://console.cloud.google.com/apis/library](https://console.cloud.google.com/apis/library).
-* Search "Cloud Machine Learning Engine"
-* Click on ENABLE button if necessary
+In the GCP Console, on the __Navigation menu__ (![mainmenu.png](img/mainmenu.png)), click __APIs & Services__ > __Library__.
 
-### Step 2: Enable the Cloud Dataflow API
+Search for the below APIs by name and click on __ENABLE__ button if necessary.
 
-Enable the Cloud Dataflow API.
+* Cloud Machine Learning Engine
+* Dataflow API
 
-* Navigate to  [https://console.cloud.google.com/apis/library](https://console.cloud.google.com/apis/library).
-* Search "Dataflow API"
-* Click on ENABLE button if necessary
 
-### Step 3: Launch CloudShell
+### Step 2: Launch CloudShell
 
-Now let's open the cloud shell. The cloud shell icon is at the top right:
+Open the __cloud shell__. The cloud shell icon is at the top right:
 
 ![8206c366e1f66c6e.png](img/8206c366e1f66c6e.png)
 
@@ -66,17 +61,17 @@ A cloud shell session will open inside a new frame at the bottom of your browser
 
 ![29c891701d874b22.png](img/29c891701d874b22.png)
 
-### Step 4: Install Cloud ML SDK
+### Step 3: Install Cloud ML SDK
 
 Install Cloud ML SDK, and modify the PATH.
 
 ```bash
-sudo pip install google-cloud-dataflow
+sudo pip install apache-beam[gcp]
 sudo pip install image
 export PATH=${HOME}/.local/bin:${PATH}
 ```
 
-### Step 5: Download tutorial files
+### Step 4: Download tutorial files
 
 Download tutorial files and set your current directory.
 
@@ -160,16 +155,16 @@ python trainer/preprocess.py \
   --num_workers 5
 ```
 
-By clicking on the Cloud __Dataflow__ menu on the Cloud Console, you find the running job and the link navigates to the data flow graph as below:
+In the GCP Console, on the __Navigation menu__ (![mainmenu.png](img/mainmenu.png)), click __Dataflow__, you find the running job and the link navigates to the data flow graph as below:
 
 ![3a348c6bd13df85b.png](img/3a348c6bd13df85b.png)
 
-<aside class="warning"><p><strong>Note</strong>: The job takes around 5-30 minutes (depending on the environment) to finish. You can proceed with the next subsection to process the training set in parallel.</p>
+<aside class="warning"><p><strong>Note</strong>: The job takes around 10-15 minutes (depending on the environment) to finish. You can proceed with the next subsection to process the training set in parallel.</p>
 </aside>
 
 ### Preprocess the Training Set
 
-Since the job takes some time to finish, you open a new tab in the cloud shell and submit another job to process the training set in parallel.
+Since the job takes some time to finish, click __+__  symbol to open a new tab in the cloud shell and submit another job to process the training set in parallel.
 
 #### Step 3
 
@@ -202,7 +197,7 @@ python trainer/preprocess.py \
   --cloud
 ```
 
-<aside class="warning"><p><strong>Note</strong>: The whole process takes around 10 to 45 minutes (depending on the environment) to finish. Please wait for both jobs to finish successfully.</p>
+<aside class="warning"><p><strong>Note</strong>: The whole process takes around 10 to 15 minutes (depending on the environment) to finish. Please wait for both jobs to finish successfully.</p>
 </aside>
 
 ### Confirm the Preprocessed Files
@@ -276,7 +271,7 @@ gcloud ml-engine jobs submit training "$JOB_ID" \
 
 #### Step 2
 
-Click on the __Navigation menu__ > __ML Engine__ on the Cloud Console, find the running job and navigate to the __Logs__ > __View Logs__ to see log messages. The training process takes about 10 minutes. After 1000 training steps, you see the messages as below:
+In the __Navigation menu__ (![mainmenu.png](img/mainmenu.png)), click __AI Platform__ > __Jobs__ on the Cloud Console, find the running job and  navigate to the __Logs__ > __View Logs__ to see log messages. The training process takes about 10 minutes. After 1000 training steps, you see the messages as below:
 
 ```bash
 INFO    2016-12-28 14:19:19 +0900       master-replica-0                Eval, step 1000:
@@ -397,8 +392,8 @@ You can see more details in scores which show the estimated probabilities for ea
 
 ![[/fragments/endqwiklab]]
 
-Last Tested Date: 12-12-2018
+Last Tested Date: April 18, 2019
 
-Last Updated Date: 12-12-2018
+Last Updated Date: April 18, 2019
 
 ![[/fragments/copyright]]
