@@ -165,8 +165,9 @@ Click the __Pencil Icon__ to edit the GCS path.
 Paste in the 2015 taxi rides dataset CSV from Google Cloud Storage:
 
 ```bash
-gs://asl-ml-immersion/nyctaxicab/tlc_yellow_trips_2015.csv
+gs://cloud-training/gcpml/c4/tlc_yellow_trips_2015_small.csv
 ```
+
 Click __Go__.
 
 #### Step 7
@@ -174,7 +175,7 @@ Click __Go__.
 Before selecting Import, click the Pencil Icon to __edit the GCS path__ a second time and paste in the 2016 CSV below:
 
 ```bash
-gs://asl-ml-immersion/nyctaxicab/tlc_yellow_trips_2016.csv
+gs://cloud-training/gcpml/c4/tlc_yellow_trips_2016_small.csv
 ```
 
 Click __Go__.
@@ -183,17 +184,17 @@ Click __Go__.
 
 Click __Import & Add to Flow__.
 
-![c84d286e0bf83367.png](img/c84d286e0bf83367.png)
+![step_8.png](img/step_8.png)
 
 #### Step 9
 
 __Wait__ for the datasets to be loaded into DataPrep.
 
-The tool load a 10MB sample of the underlying data as well as connects to and ingests the original data source when the flow is ran.
+The tool loads up to a 10MB sample of the underlying data as well as connects to and ingests the original data source when the flow is ran.
 
 #### Step 10
 
-Click on the __tlc\_yellow\_trips\_2015__ icon and select __Add New Recipe__.
+Click on the __tlc\_yellow\_trips\_2015\_small__ icon and select __Add New Recipe__.
 
 ![739caa0b0fc2d860.png](img/739caa0b0fc2d860.png)
 
@@ -207,11 +208,11 @@ Wait for Dataprep to load your data sample into the explorer view
 
 In the explorer view, find the __trip_distance__ column and examine the histogram.
 
-True or False, the majority of the cab rides for 2015 were less than 5 miles.
+True or False, the majority of the cab rides for 2015 were less than 2 miles?
 
 ![f183c09abec52669.png](img/f183c09abec52669.png)
 
-__True.__ In our sample, 68% were between 0 to 5 miles.
+__True.__ In our sample, 57% were between 0 to 2 miles.
 
 Now, let's combine our 2016 and 2015 datasets.
 
@@ -225,13 +226,13 @@ In the navigation bar, find the icon for __Union__ and select it.
 
 In the Union Page, click __Add data__.
 
-In the popup window, select __tlc\_yellow\_trips\_2016__ and click __Apply__.
+In the popup window, select __tlc\_yellow\_trips\_2016\_small__ and click __Apply__.
 
 #### Step 15
 
 Confirm the union looks like below (UNION DATA (2)) and then click __Add to Recipe__.
 
-![5275e266f3a7d849.png](img/5275e266f3a7d849.png)
+![step_15.png](img/step_15.png)
 
 Wait for Dataprep to Apply the Union.
 
@@ -243,13 +244,13 @@ Now we have a single table with 2016 and 2015 taxicab data.
 
 Examine the __pickup\_time__ histogram. Which hours had the fewest amount of pickups? The most?
 
-In our sample, the early morning hours (3 - 4am) had the __fewest__ taxicab pickups.
+In our sample, the early morning hours (5 - 6am) had the __fewest__ taxicab pickups.
 
-![8db12f8faf352ae8.png](img/8db12f8faf352ae8.png)
+![step_16_a.png](img/step_16_a.png)
 
 The most taxi cab pickups were in the evening hours with 21:00 (9pm) having slightly more than others.
 
-![bfb3ac39d47e8a6e.png](img/bfb3ac39d47e8a6e.png)
+![step_16_b.png](img/step_16_b.png)
 
 Is this unusual? Would you expect NYC taxi cab trips to be clustered around lunch and earlier hours in the day? Let's continue exploring.
 
@@ -257,13 +258,13 @@ Examine the __pickup\_day__ histogram. Which months and years of data do we have
 
 * Only December 2015 and December 2016
 
-![360c1c8ce7196679.png](img/360c1c8ce7196679.png)
+![step_16_c.png](img/step_16_c.png)
 
 Examine the __dropoff\_day__ histogram. Is there anything unusual about it when compared to pickup\_day? Why are there records for January 2017?
 
-![4ad948eeb3d7aba2.png](img/4ad948eeb3d7aba2.png)
+![step_16_d.png](img/step_16_d.png)
 
-__Answer:__ There are quite a few trips that start in December and end in January (spending New Years in a taxicab!).
+__Answer:__ There are a few trips that start in December and end in January (spending New Years in a taxicab!).
 
 Next, we want to concatenate our date and time fields into a single timestamp.
 
@@ -271,7 +272,7 @@ Next, we want to concatenate our date and time fields into a single timestamp.
 
 In the navigation bar, find __Merge columns__.
 
-![864cafbb906a2cca.png](img/864cafbb906a2cca.png)
+![step_17.png](img/step_17.png)
 
 For columns to merge, specify __pickup\_day__ and __pickup\_time__.
 
@@ -305,13 +306,13 @@ In the formula, paste the following which will truncate the pickup time to just 
 DATEFORMAT(pickup_datetime,"yyyyMMddHH")
 ```
 
-![8a396bfb77d9854e.png](img/8a396bfb77d9854e.png)
+![step_18.png](img/step_18.png)
 
 Specify the New Column as __hour\_pickup\_datetime__.
 
 Confirm the new derived column is shown correctly in the __preview__.
 
-![91d6c220515efcc1.png](img/91d6c220515efcc1.png)
+![step_18_a.png](img/step_18_a.png)
 
 Click __Add__.
 
@@ -321,13 +322,13 @@ In order to get the field properly recognized as a DATETIME data type, we are go
 
 In the navigation bar, find __Merge columns__.
 
-![864cafbb906a2cca](img/864cafbb906a2cca.png)
+![step_19.png](img/step_19.png)
 
 For columns to merge, specify __hour\_pickup\_datetime__ and __'0000'__.
 
 Name the column to __pickup\_hour__.
 
-![811495c4ff7e9022.png](img/811495c4ff7e9022.png)
+![step_19_a.png](img/step_19_a.png)
 
 Click __Add__.
 
@@ -357,7 +358,7 @@ For __Group by__, specify:
 pickup_hour
 ```
 
-![7f4646dc02c251c9.png](img/7f4646dc02c251c9.png)
+![step_20.png](img/step_20.png)
 
 Click __Add__.
 
@@ -367,9 +368,9 @@ We now have our average cab fares statistic.
 
 Explore the __average\_fare\_amount__ histogram. Is there a range of fares that are most common?
 
-![db1b0979177de255.png](img/db1b0979177de255.png)
+![step_21.png](img/step_21.png)
 
-In our sample, most NYC cab fares are in the $18-19 range.
+In our sample, most NYC cab fares are in the $12-13 range.
 
 Next, we want to calculate a rolling window of average fares over the past 3 hours.
 
@@ -395,7 +396,7 @@ Sort rows by:
 
 Note that we are sorting recent taxicab rides first (the negative sign -__pickup\_hour__ indicates descending order) and operating over a rolling 3 hour period.
 
-![5d65593d8ab10586.png](img/5d65593d8ab10586.png)
+![step_22.png](img/step_22.png)
 
 Click __Add__.
 
@@ -405,7 +406,7 @@ Toggle open the __Recipe icon__ to preview your final transformation steps.
 
 ![ac7bfdfafab6e41.png](img/ac7bfdfafab6e41.png)
 
-![775040262524cfd8.png](img/775040262524cfd8.png)
+![step_23.png](img/step_23.png)
 
 #### Step 24
 
@@ -415,7 +416,7 @@ Click __Run Job__.
 
 In __Publishing Actions page__, under Settings, edit the path by clicking the pencil icon
 
-![770160f86eb41a96.png](img/770160f86eb41a96.png)
+![step_25.png](img/step_25.png)
 
 Choose __BigQuery__ and choose your __taxi\_cab\_reporting__ BigQuery dataset where you want to create the output table.
 
@@ -437,7 +438,7 @@ Select __Run Job__.
 
 Optional: View the Cloud Dataflow Job by selecting \[...\] and __View dataflow job__.
 
-![64c9d114b1186328.png](img/64c9d114b1186328.png)
+![step_27.png](img/step_27.png)
 
 Wait for your Cloud Dataflow job to complete and confirm your new new table shows in BigQuery.
 
@@ -462,7 +463,7 @@ Extra credit:
 
 You can schedule Cloud Dataprep jobs to run at set intervals. Select a flow and click \[...\] and __Schedule Flow__.
 
-![schedule_flow.png](img/schedule_flow.png)
+![step_28.png](img/step_28.png)
 
 Congratulations! You have now built a data transformation pipeline using the Cloud Dataprep UI.
 

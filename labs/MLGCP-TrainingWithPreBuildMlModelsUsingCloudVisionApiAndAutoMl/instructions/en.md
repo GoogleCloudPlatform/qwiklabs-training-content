@@ -54,7 +54,7 @@ In your GCP Console, click on the __Navigation menu__ (![menu.png](/images/menu.
 
 __Step 5__
 
-If you do not already have an API key, click the __Create credentials__ button and select __API key__. Once created, copy the API key and then click __Close__.
+If you do not already have an API key, click __Create credentials__ and select __API key__. Once created, copy the API key and then click __Close__.
 
 ![bc4940935c1bef7f.png](img/bc4940935c1bef7f.png)
 
@@ -73,17 +73,17 @@ export API_KEY=<YOUR_API_KEY>
 
 ![[/fragments/create-bucket]]
 
-__Step 4__
+__Step 1__
 
 Download the image below by right-clicking and saving it locally (save it as cirrus.png):
 
 ![aa9c98d75e404b18.png](img/aa9c98d75e404b18.png)
 
-__Step 5__
+__Step 2__
 
 Upload the file you just downloaded into the storage bucket you just created using the __upload files__ button.
 
-__Step 6__
+__Step 3__
 
 In Cloud Shell, run the command below to make the file publicly accessible.
 
@@ -212,27 +212,22 @@ __Step 1__
 
 In your GCP Console, click on the __Navigation menu__ (![menu.png](/images/menu.png)), click on __Vision__.
 
-![72381e48433d551f.png](img/72381e48433d551f.png)
+![vision_api.png](img/vision_api.png)
 
 __Step 2__
 
-Select the GCP account created by qwiklabs (if prompted) and allow AutoML access :
+In the __Image Classification__ dialog, click __Get started__.
 
-![e1e349d894d056dd.png](img/e1e349d894d056dd.png)
+![cloudml_dashboard.png](img/cloudml_dashboard.png)
 
 __Step 3__
 
-Click on __Get started with AutoML__.
+Select the GCP account created by qwiklabs and allow AutoML access :
 
-![f728506dd99d1857.png](img/f728506dd99d1857.png)
+![e1e349d894d056dd.png](img/e1e349d894d056dd.png)
 
 __Step 4__
 
-Choose the correct GCP project created by qwiklabs and click __Continue__.
-
-![e5d39cbdbb996a43.png](img/e5d39cbdbb996a43.png)
-
-__Step 5__
 
 Next, Click on __Go To Billing__ and choose to __Go to linked billing account__:
 
@@ -240,17 +235,21 @@ Next, Click on __Go To Billing__ and choose to __Go to linked billing account__:
 
 ![3a40cb7562c52efc.png](img/3a40cb7562c52efc.png)
 
-__Step 6__
+__Step 5__
 
 Confirm the step was successful.
 
 ![9816b5a6a0248310.png](img/9816b5a6a0248310.png)
 
-__Step 7__
+__Step 6__
 
 Now setup the necessary APIs and service accounts by clicking on __Set Up Now__.
 
 ![deb160242e65e406.png](img/deb160242e65e406.png)
+
+__Step 7__
+
+Select the Project ID and click __Continue__.
 
 __Step 8__
 
@@ -376,7 +375,7 @@ If any image is labeled incorrectly you can click on them to switch the label or
 
 ![5eb5e78a8ac730c2.png](img/5eb5e78a8ac730c2.png)
 
-To see a summary of how many images you have for each label, click on Label stats. You should see the following show up on the left side of your browser.
+To see a summary of how many images you have for each label, click  __Label Stats__. You should see the following show up on the right side of your browser. Click __Close__.
 
 ![label_stats.png](img/label_stats.png)
 
@@ -462,8 +461,8 @@ Pretty cool - the model classified each type of cloud correctly! Does your train
 
 ![[/fragments/endqwiklab]]
 
-Last Tested Date: 12-13-2018
+##### Manual Last Updated: May 7, 2019
 
-Last Updated Date: 12-14-2018
+##### Lab Last Tested: May 7, 2019
 
 ![[/fragments/copyright]]

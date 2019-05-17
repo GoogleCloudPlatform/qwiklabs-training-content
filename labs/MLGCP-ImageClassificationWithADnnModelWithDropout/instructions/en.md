@@ -48,7 +48,7 @@ Choose a Regional bucket and set a unique name (use your project ID because it i
 
 __Step 4__
 
-For location, select from the following: `asia-northeast1, europe-west1, us-central1, us-east1`
+For location, select from the following: `europe-west1, us-central1, us-east1`
 
 __Step 5__
 
@@ -107,8 +107,8 @@ Now read the narrative in the following cells and execute each cell in turn.
 
 ![[/fragments/endqwiklab]]
 
-Last Tested Date: 12-12-2018
+Last Tested Date: 05-01-2019
 
-Last Updated Date: 12-18-2018
+Last Updated Date: 05-01-2019
 
 ![[/fragments/copyright]]
