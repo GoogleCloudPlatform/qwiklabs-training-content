@@ -210,7 +210,7 @@ In the explorer view, find the __trip_distance__ column and examine the histogra
 
 True or False, the majority of the cab rides for 2015 were less than 2 miles?
 
-![f183c09abec52669.png](img/f183c09abec52669.png)
+![step_12.png](img/step_12.png)
 
 __True.__ In our sample, 57% were between 0 to 2 miles.
 
