@@ -60,8 +60,10 @@ To create a Dialogflow agent:
 
 ![4767285463efdad7.png](img/4767285463efdad7.png)
 
-3. Enter your agent's name, default language, and default time zone, then click the __Create__ button.
-![32615f1898bb1252.png](img/32615f1898bb1252.png)
+3. Enter your agent's name, default language, and default time zone.
+
+4. For the __GOOGLE PROJECT__, click on the drop-down arrow button and select your assigned __qwiklabs project ID__, then click the __Create__ button.
+![Create_Agent.png](img/Create_Agent.png)
 
 ### The Dialogflow console
 
@@ -97,7 +99,7 @@ Dialogflow uses intents to categorize a user's intentions. Intents have __Traini
 
 To cover this query, create a "name" intent:
 
-1. Click on the plus add next to __Intents__ in the left menu.
+1. 1. Click on the __+__ icon next to __Intents__ in the left menu.
 2. Add the name "name" into the __Intent name__ text field.
 3. In the __Training Phrases__ section, click __Add Training Phrases__ enter the following, pressing enter after each entry:
 
@@ -135,7 +137,7 @@ This section describes how to extract data from a user's query.
 
 Parameters are important and relevant words or phrases in a user's query that are extracted so your agent can provide a proper response. You'll create a new intent with parameters for spoken and programming languages to explore how these can match specific intents and be included in your responses.
 
-1. Create a new intent by clicking on the plus add next to __Intents__ in the left menu.
+1. Create a new intent by clicking on the __+__ icon next to __Intents__ in the left menu.
 2. Name the intent "Languages" at the top of the intent page.
 3. Add the following as Training phrases:
 
@@ -181,7 +183,7 @@ You can also create your own entities, which function similarly to Dialogflow's 
 
 To create an entity:
 
-1. Click on the plus add next to __Entities__ in the left menu.
+1. Click on the __+__ icon next to __Entities__ in the left menu.
 2. Enter "ProgrammingLanguage" for the name of the entity.
 3. Click on the text field and add the following entries:
 
@@ -332,8 +334,8 @@ You might also want to check out:
 
 ![[/fragments/endqwiklab]]
 
-Last Tested Date: 12-14-2018
+Manual Last Updated: May 16, 2019
 
-Last Updated Date: 12-14-2018
+Lab Last Tested: May 16, 2019
 
 ![[/fragments/copyright]]

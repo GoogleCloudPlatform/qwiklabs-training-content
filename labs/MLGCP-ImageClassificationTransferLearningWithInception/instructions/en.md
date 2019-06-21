@@ -194,7 +194,8 @@ python trainer/preprocess.py \
   --input_dict "$DICT_FILE" \
   --input_path "gs://cloud-ml-data/img/flower_photos/train_set.csv" \
   --output_path "${GCS_PATH}/preproc/train" \
-  --cloud
+  --cloud \
+  --num_workers 5
 ```
 
 <aside class="warning"><p><strong>Note</strong>: The whole process takes around 10 to 15 minutes (depending on the environment) to finish. Please wait for both jobs to finish successfully.</p>
@@ -392,8 +393,8 @@ You can see more details in scores which show the estimated probabilities for ea
 
 ![[/fragments/endqwiklab]]
 
-Last Tested Date: April 18, 2019
+Manual last Updated: june 12, 2019
 
-Last Updated Date: April 18, 2019
+Lab Last Tested: june 12, 2019
 
 ![[/fragments/copyright]]

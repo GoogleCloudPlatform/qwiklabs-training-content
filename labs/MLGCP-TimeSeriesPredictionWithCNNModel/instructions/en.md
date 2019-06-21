@@ -66,7 +66,7 @@ __Step 3__
 
 Now that you have defined your CNN model, you are ready to run the training job.
 
-In Cloud Datalab, click on the __Home__ icon, and then navigate to __datalab \> notebooks \> training-data-analyst \> courses \> machine\_learning \> deepdive \> 09\_sequence__ and open __sinewaves.ipynb__.
+In Cloud Datalab, click on the __Home__ icon, and then navigate to __datalab \> notebooks \> training-data-analyst \> courses \> machine\_learning \> deepdive \> 09\_sequence \> labs__ and open __sinewaves.ipynb__.
 
 __Step 4__
 
@@ -84,8 +84,8 @@ Now read the narrative in the following cells and execute each cell in turn.
 
 ![[/fragments/endqwiklab]]
 
-Last Tested Date: December 13, 2018
+Manual Last Updated: June 12, 2019
 
-Last Updated Date: December 18, 2018
+Lab Last Tested: June 12, 2019
 
 ![[/fragments/copyright]]

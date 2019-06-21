@@ -20,7 +20,7 @@ Kubeflow will let you organize loosely-coupled microservices as a single unit an
 
 ### What you'll build
 
-In this lab you're going to build a web app that summarizes GitHub issues using a trained model. Upon completion, your infrastructure will contain:
+In this lab, you're going to build a web app that summarizes GitHub issues using a trained model. Upon completion, your infrastructure will contain:
 
 * A GKE cluster with standard Kubeflow and Seldon Core installations
 * A training job that uses Tensorflow to generate a Keras model
@@ -93,7 +93,7 @@ export \
 Set the correct version and an environment variable:
 
 ```bash
-export KS_VER=ks_0.11.0_linux_amd64
+export KS_VER=ks_0.13.1_linux_amd64
 ```
 
 
@@ -105,7 +105,7 @@ export KS_VER=ks_0.11.0_linux_amd64
 Download and unpack the appropriate binary, then add it to your $PATH:
 
 ```bash
-wget -O /tmp/$KS_VER.tar.gz https://github.com/ksonnet/ksonnet/releases/download/v0.11.0/$KS_VER.tar.gz
+wget -O /tmp/$KS_VER.tar.gz https://github.com/ksonnet/ksonnet/releases/download/v0.13.1/$KS_VER.tar.gz
 ```
 
 ```bash
@@ -122,11 +122,10 @@ export PATH=$PATH:${HOME}/bin/$KS_VER
 
 ### Retrieve the project ID
 
-Store the project ID and activate the latest scopes:
+Store the project ID:
 
 ```bash
 export PROJECT_ID=$(gcloud config get-value project)
-gcloud config set container/new_scopes_behavior true
 ```
 
 
@@ -567,8 +566,8 @@ Navigate to  [https://github.com/settings/tokens](https://github.com/settings/to
 
 ![[/fragments/endqwiklab]]
 
-Last Tested Date: 12-11-2018
+Manual Last Updated: May 21, 2019
 
-Last Updated Date: 12-11-2018
+Lab Last Tested: May 21, 2019
 
 ![[/fragments/copyright]]

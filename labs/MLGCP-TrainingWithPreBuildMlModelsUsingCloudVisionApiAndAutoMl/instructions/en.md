@@ -60,7 +60,7 @@ If you do not already have an API key, click __Create credentials__ and select _
 
 __Step 6__
 
-In Cloud Shell, export your API key as environment variable. Be sure to replace \<YOUR\_API\_KEY\> with the key you just copied.
+In Cloud Shell, export your API key as an environment variable. Be sure to replace \<YOUR\_API\_KEY\> with the key you just copied.
 
 ```bash
 export API_KEY=<YOUR_API_KEY>
@@ -73,17 +73,17 @@ export API_KEY=<YOUR_API_KEY>
 
 ![[/fragments/create-bucket]]
 
-__Step 1__
+__Step 4__
 
 Download the image below by right-clicking and saving it locally (save it as cirrus.png):
 
 ![aa9c98d75e404b18.png](img/aa9c98d75e404b18.png)
 
-__Step 2__
+__Step 5__
 
 Upload the file you just downloaded into the storage bucket you just created using the __upload files__ button.
 
-__Step 3__
+__Step 6__
 
 In Cloud Shell, run the command below to make the file publicly accessible.
 
@@ -214,6 +214,10 @@ In your GCP Console, click on the __Navigation menu__ (![menu.png](/images/menu.
 
 ![vision_api.png](img/vision_api.png)
 
+<aside class="warning"><p><strong>Note:</strong> Make sure to logout other google accounts while accessing AutoML.</p>
+</aside>
+
+
 __Step 2__
 
 In the __Image Classification__ dialog, click __Get started__.
@@ -229,7 +233,7 @@ Select the GCP account created by qwiklabs and allow AutoML access :
 __Step 4__
 
 
-Next, Click on __Go To Billing__ and choose to __Go to linked billing account__:
+Next, Click on __Go To Billing__ and choose __Go to linked billing account__:
 
 ![deb160242e65e406.png](img/deb160242e65e406.png)
 
@@ -329,7 +333,6 @@ __Step 4__
 
 Navigate back to the  [AutoML Vision UI](https://cloud.google.com/automl/ui/vision).
 
-![c1d8628f395e3753.png](img/c1d8628f395e3753.png)
 
 <aside class="special"><p><strong>Note: </strong>If you&#39;ve previously created a dataset with AutoML vision, you will see a list of datasets instead. In this case, click <strong>+ New Dataset</strong>.</p>
 </aside>
@@ -461,8 +464,8 @@ Pretty cool - the model classified each type of cloud correctly! Does your train
 
 ![[/fragments/endqwiklab]]
 
-##### Manual Last Updated: May 7, 2019
+##### Manual Last Updated: June 10, 2019
 
-##### Lab Last Tested: May 7, 2019
+##### Lab Last Tested: June 10, 2019
 
 ![[/fragments/copyright]]
