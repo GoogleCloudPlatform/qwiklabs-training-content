@@ -41,7 +41,7 @@ Make a note of whether your assigned region is closer to the United States or to
 
 6. Click on __Create Table__. On the __Create Table__ page, in the __Source__ section:
 
-  * For Create table from, choose select Google Cloud Storage, and in the field, type `gs://cloud-training/gcpfci/access_log.csv`.
+  * For Create table from, choose select Google Cloud Storage, and in the field, type `cloud-training/gcpfci/access_log.csv`.
   * Verify File format is set to CSV.
 
 
