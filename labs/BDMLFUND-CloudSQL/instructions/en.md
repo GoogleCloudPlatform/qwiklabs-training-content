@@ -55,8 +55,8 @@ To explore the lab code in Cloud Shell:
     | Table Name | Columns |
     |---|---|
     | Accommodation | Id, title, location, price, rooms, rating, type |
-    | ________________? | ________________? |
-    | ________________? | ________________? |
+    | ____Rating____________? | _______userId,accoId,rating,________? |
+    | __________Recommendation______? | ___userId, accoId, prediction_____________? |
 
     How do these relate to the rentals recommendation scenario? Fill the following blanks:
 
